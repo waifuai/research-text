@@ -24,8 +24,8 @@ HTML_TEMPLATE_START = """<!DOCTYPE html>
     <title>Combined Research Text</title>
     <style>
         body {{ font-family: sans-serif; line-height: 1.6; margin: 20px; }}
-        section {{ border: 1px solid #ccc; margin-bottom: 20px; padding: 15px; border-radius: 5px; }}
-        article {{ border-top: 1px dashed #eee; margin-top: 15px; padding-top: 15px; }}
+        section {{ border: 1px solid #ccc; margin-bottom: 20px; padding: 15px; border-radius: 5px; scroll-margin-top: 10px; /* Offset for fixed header if needed */ }}
+        article {{ border-top: 1px dashed #eee; margin-top: 15px; padding-top: 15px; scroll-margin-top: 10px; }}
         h1 {{ color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; }}
         h2 {{ color: #555; font-size: 1.2em; margin-top: 0; }} /* File name */
         h3, h4, h5, h6 {{ color: #666; margin-top: 1em; margin-bottom: 0.5em; }} /* Converted MD headings */
@@ -33,6 +33,12 @@ HTML_TEMPLATE_START = """<!DOCTYPE html>
         code {{ font-family: monospace; }}
         .filename {{ font-weight: bold; color: #0056b3; }}
         .directory-title {{ color: #0056b3; }}
+        .toc {{ border: 1px solid #e0e0e0; background-color: #f9f9f9; padding: 10px 15px; margin-bottom: 15px; border-radius: 4px; }}
+        .toc ul {{ list-style-type: none; padding-left: 0; }}
+        .toc li {{ margin-bottom: 5px; }}
+        .toc a {{ text-decoration: none; color: #0056b3; }}
+        .toc a:hover {{ text-decoration: underline; }}
+        .back-link {{ font-size: 0.9em; margin-top: 5px; }}
     </style>
 </head>
 <body>
@@ -44,9 +50,27 @@ HTML_TEMPLATE_END = """
 </html>
 """
 
+def create_safe_id(text):
+    """Creates a URL-safe ID from a string."""
+    # Lowercase
+    safe_id = text.lower()
+    # Remove invalid chars (keep alphanumeric, hyphen, underscore)
+    safe_id = re.sub(r'[^\w\-]+', '-', safe_id)
+    # Remove leading/trailing hyphens
+    safe_id = safe_id.strip('-')
+    # Ensure it doesn't start with a digit
+    if safe_id and safe_id[0].isdigit():
+        safe_id = 'id-' + safe_id
+    # Handle potentially empty IDs after sanitization
+    if not safe_id:
+        # Use a hash or a counter if needed for truly unique empty cases
+        # For simplicity here, just use a default or raise error
+        safe_id = 'invalid-id-' + str(hash(text)) # Basic fallback
+    return safe_id
+
 def convert_markdown_headings_to_html(md_text):
     """
-    Converts only Markdown headings (#, ##, etc.) to HTML h tags.
+    Converts only Markdown headings (#, ##, etc.) to HTML h tags (starting from h3).
     Escapes the rest of the content to display as plain text within paragraphs.
     """
     lines = md_text.splitlines()
@@ -64,7 +88,9 @@ def convert_markdown_headings_to_html(md_text):
             level = len(heading_match.group(1))
             level = min(level, 6) # Cap heading level at h6
             content = html.escape(heading_match.group(2).strip())
-            html_lines.append(f"<h{level+1}>{content}</h{level+1}>") # +1 because h1 is dir name
+            # Start MD headings from h3 (h1=Overall, h2=Filename)
+            html_level = min(level + 2, 6)
+            html_lines.append(f"<h{html_level}>{content}</h{html_level}>")
         else:
             escaped_line = html.escape(line)
             if stripped_line: # Non-empty line
@@ -83,15 +109,22 @@ def convert_markdown_headings_to_html(md_text):
     return "\n".join(html_lines)
 
 
-def process_directory(directory_path):
-    """Processes files in a directory and returns their HTML representation."""
+def process_directory(directory_path, section_id):
+    """
+    Processes files in a directory.
+    Returns a tuple: (HTML content string, list of (filename, file_id) tuples for TOC).
+    """
     html_content_parts = []
+    file_toc_items = [] # Store tuples of (filename, file_id)
 
     if not os.path.isdir(directory_path):
         print(f"Warning: Directory not found: {directory_path}")
-        return "" # Return empty string if directory doesn't exist
+        return "", [] # Return empty string and empty list
 
-    # Sort files for consistent order, perhaps numerically if possible
+    section_toc_id = f"toc-{section_id}"
+    section_title = directory_path.replace("-", " ").title()
+
+    # Sort files for consistent order
     try:
         # Attempt natural sorting (e.g., 1, 2, 10 instead of 1, 10, 2)
         files_list = sorted(os.listdir(directory_path), key=lambda x: [int(c) if c.isdigit() else c for c in re.split('([0-9]+)', x)])
@@ -104,8 +137,13 @@ def process_directory(directory_path):
         file_path = os.path.join(directory_path, filename)
         if os.path.isfile(file_path):
             print(f"Processing: {file_path}")
-            html_content_parts.append(f"<article>")
+            file_id = create_safe_id(f"{directory_path}-{filename}")
+            file_toc_items.append((filename, file_id)) # Add to TOC list
+
+            html_content_parts.append(f'<article id="{file_id}">') # Add ID to article
             html_content_parts.append(f'<h2><span class="filename">{html.escape(filename)}</span></h2>')
+            # Add back link
+            html_content_parts.append(f'<p class="back-link"><a href="#{section_toc_id}">Back to {html.escape(section_title)} TOC</a></p>')
 
             content = ""
             try:
@@ -143,19 +181,45 @@ def process_directory(directory_path):
 
             html_content_parts.append("</article>")
 
-    return "\n".join(html_content_parts)
+    return "\n".join(html_content_parts), file_toc_items
 
 def main():
     all_html_content = [HTML_TEMPLATE_START]
+    main_toc_html = ['<nav class="toc"><h2>Table of Contents</h2><ul>']
 
     print("Starting HTML combination process...")
 
+    # --- Main TOC Generation ---
+    for directory in DIRECTORIES_TO_PROCESS:
+        if os.path.isdir(directory):
+            section_id = create_safe_id(directory)
+            section_title = directory.replace("-", " ").title()
+            main_toc_html.append(f'<li><a href="#{section_id}">{html.escape(section_title)}</a></li>')
+    main_toc_html.append('</ul></nav>')
+    all_html_content.append("\n".join(main_toc_html)) # Add Main TOC near the top
+
+    # --- Process Directories and Generate Content ---
     for directory in DIRECTORIES_TO_PROCESS:
         print(f"\nProcessing directory: {directory}")
-        all_html_content.append(f'<section id="{html.escape(directory)}">')
-        all_html_content.append(f'<h1 class="directory-title">{html.escape(directory.replace("-", " ").title())}</h1>') # Title case dir name
-        dir_html = process_directory(directory)
-        all_html_content.append(dir_html)
+        section_id = create_safe_id(directory)
+        section_title = directory.replace("-", " ").title()
+
+        all_html_content.append(f'<section id="{section_id}">') # Add section ID
+        all_html_content.append(f'<h1 class="directory-title">{html.escape(section_title)}</h1>')
+
+        # Process directory and get content + file TOC items
+        dir_html, file_toc_items = process_directory(directory, section_id) # Pass section_id
+
+        # Generate and add section mini-TOC
+        if file_toc_items:
+            section_toc_id = f"toc-{section_id}" # ID for the mini-TOC itself
+            mini_toc_html = [f'<nav class="toc" id="{section_toc_id}"><h3>Files in {html.escape(section_title)}</h3><ul>']
+            for fname, f_id in file_toc_items:
+                mini_toc_html.append(f'<li><a href="#{f_id}">{html.escape(fname)}</a></li>')
+            mini_toc_html.append('</ul></nav>')
+            all_html_content.append("\n".join(mini_toc_html)) # Add Mini-TOC
+
+        all_html_content.append(dir_html) # Add the processed file content
         all_html_content.append("</section>")
 
     all_html_content.append(HTML_TEMPLATE_END)
