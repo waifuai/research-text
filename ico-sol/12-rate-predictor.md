@@ -47,9 +47,9 @@ The primary objective is to determine the commission rate α<sub>j</sub> for tok
 
 **3.5. Optimization Function:**
 
-* Define an optimization function that represents the affiliate's expected earnings (E<sub>j</sub>) as a function of α<sub>j</sub>. 
-* **E<sub>j</sub>(α<sub>j</sub>) = α<sub>j</sub> * I<sub>j</sub>(α<sub>j</sub>)**  
-    * Where I<sub>j</sub>(α<sub>j</sub>) is the estimated investment volume at commission rate α<sub>j</sub>, obtained from the demand model.
+* Define an optimization function that represents the affiliate's expected earnings ($E_j$) as a function of $\alpha_j$.
+* **$E_j(\alpha_j) = \alpha_j \times I_j(\alpha_j)$**
+    * Where $I_j(\alpha_j)$ is the estimated investment volume at commission rate $\alpha_j$, obtained from the demand model.
 
 **3.6. Constraint Definition:**
 

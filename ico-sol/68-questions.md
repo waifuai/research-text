@@ -178,7 +178,11 @@ AI Agent Optimization for Profit and Stability
 The AI agent's objective is to maximize profit while ensuring market stability, formulated as an optimization problem:
 Profit Maximization: Profit is defined as the spread captured minus inventory costs:
 \text{profit} = \text{spread}(t) \times \text{volume}_{\text{traded}} - \text{cost}_{\text{inventory}}
-where inventory costs include holding costs or risk from price changes, calculated as:\text{cost}_{\text{inventory}} = \text{holding_cost} \times \text{inventory_level} + \text{risk_cost} \times \text{volatility}The agent aims to maximize this profit by adjusting spreads and managing inventory levels.
+where inventory costs include holding costs or risk from price changes, calculated as:
+$$
+\text{cost}_{\text{inventory}} = \text{holding\_cost} \times \text{inventory_level} + \text{risk_cost} \times \text{volatility}
+$$
+The agent aims to maximize this profit by adjusting spreads and managing inventory levels.
 Stability Constraints: Market stability is ensured by keeping price deviations within limits, such as:
 | p(t) - \text{TWAP}(t) | < \epsilon
 where 

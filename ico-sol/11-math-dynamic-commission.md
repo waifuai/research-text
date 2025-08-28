@@ -15,7 +15,7 @@ We retain the notation from the original model, introducing the following additi
 
 Unlike the fixed commission rate in the original model, affiliates now have the flexibility to set individual commission rates for each token they promote. The commission earned for a single investment in token *j* is now defined as:
 
-* **C<sub>j</sub> = α<sub>j</sub> * I<sub>j</sub> (Equation 1')**
+* **$C_j = \alpha_j \times I_j$ (Equation 1')**
 
 Where α<sub>j</sub> is the custom commission rate set by the affiliate for token *j*.
 
@@ -41,7 +41,7 @@ This highlights that the change in demand for token *j* is influenced by the aff
 
 With variable commission rates, the distribution of tokens becomes more heterogeneous. The total tokens distributed for token *j* are:
 
-* **∑<sub>i=1</sub><sup>N<sub>A</sub></sup> C<sub>j,i</sub> = ∑<sub>i=1</sub><sup>N<sub>A</sub></sup> α<sub>j,i</sub> * I<sub>j,i</sub> (Equation 3')**
+* **$\sum_{i=1}^{N_A} C_{j,i} = \sum_{i=1}^{N_A} \alpha_{j,i} \times I_{j,i}$ (Equation 3')**
 
 Where C<sub>j,i</sub> is the commission earned by the i-th affiliate for token *j*, and α<sub>j,i</sub> is the commission rate set by the i-th affiliate for token *j*. This introduces a weighted distribution based on individual affiliate strategies.
 
@@ -55,7 +55,7 @@ Each token *j* might have its own bonding curve equation *P<sub>j</sub>(S<sub>j<
 
 An affiliate's total earnings are now calculated as the sum of commissions earned across all tokens:
 
-* **E = ∑<sub>j∈J</sub> ∑<sub>i=1</sub><sup>n<sub>j</sub></sup> α<sub>j</sub> * I<sub>j,i</sub>  (Equation 5')**
+* **$E = \sum_{j\in J} \sum_{i=1}^{n_j} \alpha_j \times I_{j,i}$ (Equation 5')**
 
 Where *n<sub>j</sub>* is the number of investments made in token *j* through the affiliate's link and I<sub>j,i</sub> is the i-th investment in token *j*.
 

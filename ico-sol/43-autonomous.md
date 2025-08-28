@@ -54,9 +54,9 @@ The price of each asset is determined by a specific mechanism, which can be one 
 
 The price of an asset \( j \) is governed by a bonding curve function \( f_j \):
 
-\[
+$$
 P_j(t) = f_j(S_j(t), \mathbf{\Phi}_j(t))
-\]
+$$
 
 where \( \mathbf{\Phi}_j(t) \) represents the parameters of the bonding curve at time \( t \). Common examples include:
 
@@ -74,9 +74,9 @@ Prices can emerge from the interaction of AI buyers and sellers in a market. Thi
 - **Demand and Supply Functions:** Modeling aggregate demand \( D_j(P_j(t)) \) and supply \( O_j(P_j(t)) \) and finding the equilibrium price where \( D_j(P_j(t)) = O_j(P_j(t)) \).
 - **Price Adjustment Rules:** Mechanisms where the price adjusts based on the imbalance between demand and supply:
 
-\[
+$$
 \Delta P_j(t) = g(D_j(t) - O_j(t), S_j(t))
-\]
+$$
 
 where \( g \) is a function determining the price change.
 
@@ -90,12 +90,12 @@ At each time step, AI agents make decisions based on their objectives, current p
 
 AI agents buy or sell assets based on their decision policies. The probability of buying \( P_{buy, i, j}(t) \) and selling \( P_{sell, i, j}(t) \) asset \( j \) by agent \( i \) can be modeled as:
 
-\[
+$$
 P_{buy, i, j}(t) = h_{buy}(P_j(t), \text{state}_i(t), \pi_i)
-\]
-\[
+$$
+$$
 P_{sell, i, j}(t) = h_{sell}(P_j(t), \text{state}_i(t), \pi_i)
-\]
+$$
 
 where \( h_{buy} \) and \( h_{sell} \) are functions determined by the agent’s policy \( \pi_i \), and \( \text{state}_i(t) \) represents the agent’s internal state.
 
@@ -103,9 +103,9 @@ where \( h_{buy} \) and \( h_{sell} \) are functions determined by the agent’s
 
 If the assets represent resources, AI agents may request quantities \( Q_{i,j}(t) \) based on their objectives and constraints:
 
-\[
+$$
 Q_{i,j}(t) = q(P_j(t), \text{needs}_i(t), \mathbf{P}_i)
-\]
+$$
 
 where \( \mathbf{P}_i \) represents the agent’s resource preferences. Allocation mechanisms determine the actual amount received based on availability and allocation rules.
 
@@ -131,21 +131,21 @@ The state of the system evolves over time based on the interactions of AI agents
 
 - **Asset Supply:** Changes based on minting, burning, or production/consumption:
 
-\[
+$$
 \Delta S_j(t) = \text{NetFlow}_j(t)
-\]
+$$
 
 - **Agent Balances:** Updated based on trading, income, expenses, and policy interventions:
 
-\[
+$$
 \Delta B_i(t) = \text{Income}_i(t) - \text{Expenses}_i(t) + \sum_{j=1}^{M} \text{TradeValue}_{i,j}(t) + \text{PolicyEffects}_i(t)
-\]
+$$
 
 - **Agent Asset Holdings:** Updated based on trading and token distribution:
 
-\[
+$$
 \Delta H_{i,j}(t) = \text{NetAcquisition}_{i,j}(t)
-\]
+$$
 
 ---
 
@@ -278,9 +278,9 @@ Let’s formalize this system mathematically:
 - The reward \( R_a(x_f) \) is distributed to \( f \) based on the contribution \( x_f \).
 
 For example, if the goal is to increase token adoption:
-\[
+$$
 R_a(x_f) = k \cdot \Delta S(x_f)
-\]
+$$
 where \( \Delta S(x_f) \) is the increase in token supply due to \( f \)’s actions, and \( k \) is a reward coefficient.
 
 ---
@@ -390,15 +390,15 @@ As the **intelligence of AI agents** increases, the dynamics of the system can c
 The increasing intelligence of agents can be modeled using more advanced mathematical tools:
 
 1. **Reinforcement Learning:** Agents optimize their strategies using reward signals:
-   \[
+   $$
    \pi_i^* = \arg\max_{\pi_i} \mathbb{E} \left[ \sum_{t=0}^\infty \gamma^t R_i(t) \right]
-   \]
+   $$
    where \( \pi_i \) is the agent’s policy, \( R_i(t) \) is the reward, and \( \gamma \) is the discount factor.
 
 2. **Game Theory:** Interactions between intelligent agents can be analyzed using game-theoretic models:
-   \[
+   $$
    \text{Nash Equilibrium: } \pi_i^* = \arg\max_{\pi_i} U_i(\pi_i, \pi_{-i}^*)
-   \]
+   $$
    where \( U_i \) is the utility of agent \( i \) and \( \pi_{-i}^* \) represents the strategies of other agents.
 
 3. **Evolutionary Dynamics:** The evolution of strategies can be modeled using replicator dynamics or genetic algorithms.

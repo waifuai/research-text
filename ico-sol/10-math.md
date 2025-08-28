@@ -8,52 +8,52 @@ This paper presents a formal mathematical model of the TokenAffiliates program, 
 * **C:** Commission earned by the affiliate, denominated in the invested token.
 * **α:** Commission rate (fixed at 10%, or 0.10 in the current model).
 * **E:** Total earnings of an affiliate.
-* **I<sub>total</sub>:** Total investment generated through an affiliate's referral link.
-* **S:** Current supply of tokens in the ecosystem (applicable for bonding curve scenarios).
-* **P(S):** Price of the token as a function of supply, defined by the project's bonding curve equation.
-* **Affiliate Identifier (A<sub>ID</sub>):** Unique identifier associated with an affiliate, embedded in their referral link.
+* **$I_{\text{total}}$:** Total investment generated through an affiliate's referral link.
+* **$S$:** Current supply of tokens in the ecosystem (applicable for bonding curve scenarios).
+* **$P(S)$:** Price of the token as a function of supply, defined by the project's bonding curve equation.
+* **Affiliate Identifier ($A_{\text{ID}}$):** Unique identifier associated with an affiliate, embedded in their referral link.
 
 **2. Commission Structure:**
 
 The commission earned by an affiliate for a single investment is a linear function of the investment amount:
 
-* **C = α * I  (Equation 1)**
+* **$C = \alpha \times I$ (Equation 1)**
 
 Where α = 0.10 (fixed commission rate).
 
 **3. Payout Mechanism (Formalized):**
 
-The payout mechanism is modeled as a sequence of transactions executed on the Solana blockchain via a smart contract. Let **T<sub>i</sub>** represent the i-th transaction within the system.
+The payout mechanism is modeled as a sequence of transactions executed on the Solana blockchain via a smart contract. Let **$T_i$** represent the i-th transaction within the system.
 
-* **T<sub>1</sub> (Investment):** User invests *I* tokens through an affiliate link with identifier *A<sub>ID</sub>*. The smart contract registers *A<sub>ID</sub>*.
-* **T<sub>2</sub> (Commission Calculation):** The smart contract calculates the commission *C* using Equation 1.
-* **T<sub>3</sub> (Payout):** The smart contract transfers *C* tokens from the ICO's designated address to the affiliate's wallet associated with *A<sub>ID</sub>*.
+* **$T_1$ (Investment):** User invests $I$ tokens through an affiliate link with identifier $A_{\text{ID}}$. The smart contract registers $A_{\text{ID}}$.
+* **$T_2$ (Commission Calculation):** The smart contract calculates the commission $C$ using Equation 1.
+* **$T_3$ (Payout):** The smart contract transfers $C$ tokens from the ICO's designated address to the affiliate's wallet associated with $A_{\text{ID}}$.
 
 **4. Impact on Token Dynamics:**
 
 **4.1 Increased Demand:**
 
-Let **D(x)** represent the demand function for the token, where *x* represents factors influencing demand (e.g., marketing efforts, project fundamentals, market sentiment). The TokenAffiliates program aims to increase *x* through enhanced marketing, potentially leading to an increase in demand:
+Let **$D(x)$** represent the demand function for the token, where $x$ represents factors influencing demand (e.g., marketing efforts, project fundamentals, market sentiment). The TokenAffiliates program aims to increase $x$ through enhanced marketing, potentially leading to an increase in demand:
 
-* **D(x + Δx) > D(x)  (Equation 2)**
+* **$D(x + \Delta x) > D(x)$ (Equation 2)**
 
-Where Δx represents the positive change in demand factors due to affiliate marketing.
+Where $\Delta x$ represents the positive change in demand factors due to affiliate marketing.
 
 **4.2 Token Distribution:**
 
 The commission payout mechanism contributes to token decentralization. Let **N<sub>A</sub>** be the number of active affiliates. The total tokens distributed through commissions are:
 
-* **∑<sub>i=1</sub><sup>N<sub>A</sub></sup> C<sub>i</sub>  (Equation 3)**
+* **$\sum_{i=1}^{N_A} C_i$ (Equation 3)**
 
 Where C<sub>i</sub> is the commission earned by the i-th affiliate. This distribution broadens token ownership beyond the initial investor base.
 
 **4.3 Bonding Curve Effects:**
 
-For projects employing bonding curves, the increase in demand shifts the supply and influences the price. Let the initial supply be *S*. After an investment *I*, the new supply becomes *S' = S + I*.
+For projects employing bonding curves, the increase in demand shifts the supply and influences the price. Let the initial supply be $S$. After an investment $I$, the new supply becomes $S' = S + I$.
 
 The price change is given by:
 
-* **ΔP = P(S') - P(S) = P(S + I) - P(S)  (Equation 4)**
+* **$\Delta P = P(S') - P(S) = P(S + I) - P(S)$ (Equation 4)**
 
 The specific form of P(S) depends on the chosen bonding curve equation (e.g., linear, exponential, sigmoid).
 
@@ -61,7 +61,7 @@ The specific form of P(S) depends on the chosen bonding curve equation (e.g., li
 
 Let P(S) = k * S, where k is the slope of the linear curve. Then:
 
-* **ΔP = k * (S + I) - k * S = k * I**
+* **$\Delta P = k \times (S + I) - k \times S = k \times I$**
 
 This demonstrates that for a linear bonding curve, the price increase is directly proportional to the investment amount.
 
@@ -69,7 +69,7 @@ This demonstrates that for a linear bonding curve, the price increase is directl
 
 An affiliate's total earnings *E* are the sum of all commissions earned:
 
-* **E = α * ∑<sub>i=1</sub><sup>n</sup> I<sub>i</sub> = α * I<sub>total</sub>  (Equation 5)**
+* **$E = \alpha \times \sum_{i=1}^{n} I_i = \alpha \times I_{\text{total}}$ (Equation 5)**
 
 Where *n* is the number of investments made through the affiliate's link and I<sub>i</sub> is the i-th investment.
 

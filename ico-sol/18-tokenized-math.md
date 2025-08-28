@@ -25,7 +25,7 @@ A simple model for token pricing is a linear bonding curve. Let:
 
 Then, the relationship between price and supply is given by:
 
-**Equation 1:**  *P* = *mS* + *c*
+**Equation 1:** $P = mS + c$
 
 **2.2. Integral for Buy/Sell Price**
 
@@ -34,9 +34,9 @@ To calculate the cost of buying or selling a certain amount of tokens, we need t
 *   Δ*S* be the change in token supply (positive for buying, negative for selling).
 *   *Cost* be the total cost to buy Δ*S* tokens.
 
-**Equation 2 (Buy):**  *Cost* = ∫<sub>*S*</sub><sup>*S*+Δ*S*</sup> (*mS* + *c*) *dS* = *m*(Δ*S*)<sup>2</sup>/2 + (*mS* + *c*)Δ*S*
+**Equation 2 (Buy):** $Cost = \int_S^{S+\Delta S} (mS + c) \, dS = m(\Delta S)^2/2 + (mS + c)\Delta S$
 
-**Equation 3 (Sell):**  *Revenue* = ∫<sub>*S*-Δ*S*</sub><sup>*S*</sup> (*mS* + *c*) *dS* = -*m*(Δ*S*)<sup>2</sup>/2 + (*mS* + *c*)Δ*S*
+**Equation 3 (Sell):** $Revenue = \int_{S-\Delta S}^S (mS + c) \, dS = -m(\Delta S)^2/2 + (mS + c)\Delta S$
 
 **Note:**  The revenue from selling tokens is less than the cost of buying the same amount due to the shape of the bonding curve, incentivizing holding tokens.
 
@@ -44,8 +44,8 @@ To calculate the cost of buying or selling a certain amount of tokens, we need t
 
 More complex bonding curve models can be used, such as:
 
-*   **Sigmoid:**  *P* = *k* / (1 + *e*<sup>-*a*(*S*-*b*)</sup>)  (where *k*, *a*, and *b* are constants) - This can model an initial slow price increase, followed by rapid growth and eventual price stabilization.
-*   **Polynomial:** *P* = a<sub>n</sub> *S*<sup>n</sup> + a<sub>n-1</sub>*S*<sup>n-1</sup> + ... + a<sub>1</sub>*S* + a<sub>0</sub> - Allows for more flexible price curves.
+*   **Sigmoid:** $P = k / (1 + e^{-a(S-b)})$ (where $k$, $a$, and $b$ are constants) - This can model an initial slow price increase, followed by rapid growth and eventual price stabilization.
+*   **Polynomial:** $P = a_n S^n + a_{n-1} S^{n-1} + \cdots + a_1 S + a_0$ - Allows for more flexible price curves.
 
 The choice of bonding curve model impacts the token's price dynamics and should be carefully considered based on the specific project's goals.
 
@@ -58,9 +58,9 @@ In the Tokenized Economy, token demand is driven by utility. Let:
 
 We propose a simplified relationship:
 
-**Equation 4:** *D* = *f*(*U*)
+**Equation 4:** $D = f(U)$
 
-Where *f* is a monotonically increasing function. Higher utility leads to higher demand.
+Where $f$ is a monotonically increasing function. Higher utility leads to higher demand.
 
 **4. Interconnected ICO Ecosystem**
 
@@ -76,7 +76,7 @@ The Tokenized Economy is characterized by multiple interconnected ICOs. Let:
 
 Demand for a token can be influenced by the utility of other tokens in the ecosystem. For instance, if ICO *i* offers a product that complements a product from ICO *j*, then an increase in *U<sub>j</sub>* might lead to an increase in *D<sub>i</sub>*.
 
-**Equation 5:** *D<sub>i</sub>* = *f*(*U<sub>i</sub>*) + Σ<sub>j≠i</sub> *k* *g*(*U<sub>i</sub>*, *U<sub>j</sub>*)
+**Equation 5:** $D_i = f(U_i) + \sum_{j \neq i} k \, g(U_i, U_j)$
 
 Where *g* is a function that models the cross-utility relationship between ICOs *i* and *j*.
 

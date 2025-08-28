@@ -33,9 +33,9 @@ Each agent \( i \) at time \( t \) is characterized by:
 - **Asset Holdings:** \( H_{i,j}(t) \), representing their holdings of asset \( j \).  
 - **Behavioral Parameters:** A vector \( \mathbf{\Theta}_i \) capturing their trading strategies, risk preferences, and other decision-making factors. These parameters can be fixed or evolve over time.  
 - **Utility Function:** Agents act to maximize their utility, which can be explicitly modeled as a function of their holdings and beliefs. For example:  
-  \[
+  $$
   U_i(t) = \sum_{j=1}^{M} \left( \alpha_{i,j} \log(H_{i,j}(t)) + \beta_{i,j} B_i(t) \right)
-  \]  
+  $$  
   where \( \alpha_{i,j} \) and \( \beta_{i,j} \) are preference parameters.
 
 #### **2.2. Assets:**
@@ -54,9 +54,9 @@ The price of each asset is determined by a specific mechanism, which can be one 
 #### **3.1. Bonding Curves:**
 
 The price of an asset \( j \) can be governed by a bonding curve function \( f_j \):  
-\[
+$$
 P_j(t) = f_j(S_j(t), \mathbf{\Phi}_j(t))
-\]  
+$$  
 where \( \mathbf{\Phi}_j(t) \) represents the parameters of the bonding curve at time \( t \). Common examples include:  
 - **Linear:** \( f(S) = m S + b \)  
 - **Exponential:** \( f(S) = a e^{k S} \)  
@@ -68,9 +68,9 @@ Prices can emerge from the interaction of buyers and sellers in a market. This c
 - **Order Books:** Matching buy and sell orders to determine the clearing price.  
 - **Demand and Supply Functions:** Modeling aggregate demand \( D_j(P_j(t)) \) and supply \( O_j(P_j(t)) \) and finding the equilibrium price where \( D_j(P_j(t)) = O_j(P_j(t)) \).  
 - **Price Adjustment Rules:** Mechanisms where the price adjusts based on the imbalance between demand and supply:  
-  \[
+  $$
   \Delta P_j(t) = g(D_j(t) - O_j(t), S_j(t))
-  \]  
+  $$  
   where \( g \) is a function determining the price change.
 
 ---
@@ -82,20 +82,20 @@ At each time step, agents make decisions based on their individual states, the c
 #### **4.1. Trading:**
 
 The probability of buying \( P_{buy, i, j}(t) \) and selling \( P_{sell, i, j}(t) \) asset \( j \) by agent \( i \) can be modeled probabilistically:  
-\[
+$$
 P_{buy, i, j}(t) = h_{buy}(P_j(t), \text{beliefs}_i(t), \mathbf{\Theta}_i)
-\]  
-\[
+$$  
+$$
 P_{sell, i, j}(t) = h_{sell}(P_j(t), \text{beliefs}_i(t), \mathbf{\Theta}_i)
-\]  
+$$  
 where \( h_{buy} \) and \( h_{sell} \) are functions determining the probabilities, and \( \text{beliefs}_i(t) \) represents agent \( i \)’s beliefs about future prices.
 
 #### **4.2. Learning Mechanisms:**
 
 Agents can adapt their strategies over time using reinforcement learning. For example, an agent may update its trading strategy based on past rewards:  
-\[
+$$
 \mathbf{\Theta}_i(t+1) = \mathbf{\Theta}_i(t) + \eta \nabla_{\mathbf{\Theta}_i} R_i(t)
-\]  
+$$  
 where \( \eta \) is the learning rate, and \( R_i(t) \) is the reward earned by agent \( i \) at time \( t \).
 
 ---
@@ -104,9 +104,9 @@ where \( \eta \) is the learning rate, and \( R_i(t) \) is the reward earned by 
 
 The system can be influenced by external factors and policy interventions:  
 - **Airdrops:** Initial distribution of assets to agents, following specific rules (uniform, lottery, tiered):  
-  \[
+  $$
   H_{i,j}(t_{airdrop}) = H_{i,j}(t_{airdrop}^-) + AirdropAmount_{i,j}
-  \]  
+  $$  
 - **Taxes and Subsidies:** Government or protocol-level interventions that affect agent balances.  
 - **Changes in Bonding Curve Parameters:** Algorithmic adjustments to the price function.
 
@@ -116,17 +116,17 @@ The system can be influenced by external factors and policy interventions:
 
 The state of the system evolves over time based on the interactions of agents and the asset pricing mechanisms. The key state variables are updated as follows:  
 - **Asset Supply:** Changes based on minting, burning, or production/consumption:  
-  \[
+  $$
   \Delta S_j(t) = \text{NetFlow}_j(t)
-  \]  
+  $$  
 - **Agent Balances:** Updated based on trading, income, expenses, and policy interventions:  
-  \[
+  $$
   \Delta B_i(t) = \text{Income}_i(t) - \text{Expenses}_i(t) + \sum_{j=1}^{M} \text{TradeValue}_{i,j}(t) + \text{PolicyEffects}_i(t)
-  \]  
+  $$  
 - **Agent Asset Holdings:** Updated based on trading and airdrops:  
-  \[
+  $$
   \Delta H_{i,j}(t) = \text{NetAcquisition}_{i,j}(t)
-  \]
+  $$
 
 ---
 

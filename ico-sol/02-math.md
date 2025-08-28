@@ -6,14 +6,14 @@ This paper formalizes the mathematical underpinnings of the Tokenized Economy, f
 
 A bonding curve, denoted by *P*( *S* ), defines the price *P* of a token as a function of its total supply *S*. Different curve types can be implemented, each with unique properties.  For this framework, we consider two primary types:
 
-* **Linear Bonding Curve:**  *P*( *S* ) = *mS* + *b*, where *m* represents the slope (price increment per token) and *b* is the initial price. This curve offers simplicity and predictable price changes.
-* **Exponential Bonding Curve:**  *P*( *S* ) = *ae*<sup>(*kS*)</sup>, where *a* is a scaling factor, *k* controls the curve's steepness, and *e* is the base of the natural logarithm. This curve creates more dramatic price changes as supply increases.
+* **Linear Bonding Curve:**  $P(S) = mS + b$, where $m$ represents the slope (price increment per token) and $b$ is the initial price. This curve offers simplicity and predictable price changes.
+* **Exponential Bonding Curve:**  $P(S) = ae^{kS}$, where $a$ is a scaling factor, $k$ controls the curve's steepness, and $e$ is the base of the natural logarithm. This curve creates more dramatic price changes as supply increases.
 
 **2. Token Exchange:**
 
 Token exchange between participants occurs directly on the bonding curves. Consider two companies, A and B, with tokens A and B respectively. The exchange rate between tokens is determined by the ratio of their prices on their respective bonding curves:
 
-Exchange Rate (A/B) = *P*<sub>A</sub>( *S*<sub>A</sub> ) / *P*<sub>B</sub>( *S*<sub>B</sub> )
+Exchange Rate (A/B) = $P_A(S_A) / P_B(S_B)$
 
 When a participant exchanges *x* amount of token A for token B, the following occurs:
 
@@ -25,7 +25,7 @@ When a participant exchanges *x* amount of token A for token B, the following oc
 
 The value of SOL within the Tokenized Economy is determined by its purchasing power relative to the goods and services offered by participating companies.  As token prices fluctuate on their bonding curves, the relative value of SOL can change. This can be visualized by considering the ratio of a token's price to the price of SOL.
 
-Relative Value (A/SOL) = *P*<sub>A</sub>( *S*<sub>A</sub> ) / *P*<sub>SOL</sub>
+Relative Value (A/SOL) = $P_A(S_A) / P_{SOL}$
 
 If the demand for token A increases, driving its price up, its relative value to SOL increases. This implies that more SOL would be required to purchase the same amount of goods or services offered by company A.
 

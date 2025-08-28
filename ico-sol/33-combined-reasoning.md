@@ -84,38 +84,53 @@ This section details the mathematical models that govern the AbundanceCoin ICO a
 
 The AbundanceCoin ICO utilizes a linear bonding curve for price discovery:
 
-*   **P(S) = mS + b**
+$$
+P(S) = mS + b
+$$
 
-    *   *P(S)*: Price of the token at supply *S*.
-    *   *S*: Current circulating supply of AbundanceCoin.
-    *   *m*: Slope of the bonding curve, determining the price increase per token.
-    *   *b*: Initial price of the token.
+Where:
 
-The cost to purchase Δ*S* tokens is calculated by integrating the bonding curve:
+- $P(S)$: Price of the token at supply $S$
+- $S$: Current circulating supply of AbundanceCoin
+- $m$: Slope of the bonding curve, determining the price increase per token
+- $b$: Initial price of the token
 
-*   **Cost = ∫<sub>S</sub><sup>S+ΔS</sup> (mS + b) dS = m(ΔS)<sup>2</sup>/2 + bΔS**
+The cost to purchase $\Delta S$ tokens is calculated by integrating the bonding curve:
+
+$$
+\text{Cost} = \int_{S}^{S+\Delta S} (mS + b) \, dS = \frac{m(\Delta S)^2}{2} + b\Delta S
+$$
 
 ### 3.2. The Tokenized Economy: Interconnectedness and Dynamics
 
 Consider a simplified Tokenized Economy with two tokens, Token A and Token B, each with its own bonding curve:
 
-*   **P<sub>A</sub>(S<sub>A</sub>) = m<sub>A</sub>S<sub>A</sub> + b<sub>A</sub>**
-*   **P<sub>B</sub>(S<sub>B</sub>) = m<sub>B</sub>S<sub>B</sub> + b<sub>B</sub>**
+$$
+P_A(S_A) = m_A S_A + b_A
+$$
+
+$$
+P_B(S_B) = m_B S_B + b_B
+$$
 
 The exchange rate between Token A and Token B is determined by the ratio of their prices:
 
-*   **Exchange Rate (A/B) = P<sub>A</sub>(S<sub>A</sub>) / P<sub>B</sub>(S<sub>B</sub>)**
+$$
+\text{Exchange Rate (A/B)} = \frac{P_A(S_A)}{P_B(S_B)}
+$$
 
-When exchanging *x* units of Token A for Token B:
+When exchanging $x$ units of Token A for Token B:
 
-1. *x* units of Token A are burned, reducing *S<sub>A</sub>*.
-2. *y* units of Token B are minted, increasing *S<sub>B</sub>*, where *y* is calculated based on the exchange rate.
+1. $x$ units of Token A are burned, reducing $S_A$
+2. $y$ units of Token B are minted, increasing $S_B$, where $y$ is calculated based on the exchange rate
 
 ### 3.3. Relative Debasement
 
 The value of SOL within the Tokenized Economy is relative to the purchasing power it provides within the ecosystem. The relative value of a Token (e.g., Token A) compared to SOL is:
 
-*   **Relative Value (A/SOL) = P<sub>A</sub>(S<sub>A</sub>) / P<sub>SOL</sub>**
+$$
+\text{Relative Value (A/SOL)} = \frac{P_A(S_A)}{P_{\text{SOL}}}
+$$
 
 Changes in token prices on their bonding curves affect this relative value.
 
@@ -135,34 +150,50 @@ Affiliates receive a unique referral link. For every successful ICO investment m
 
 The commission structure is a fixed percentage of the investment:
 
-*   **Commission (C) = α * Investment (I)**
+$$
+C = \alpha \cdot I
+$$
 
-    *   *C*: Commission earned.
-    *   *α*: Commission rate (10% or 0.10).
-    *   *I*: Investment amount.
+Where:
+
+- $C$: Commission earned
+- $\alpha$: Commission rate (10% or 0.10)
+- $I$: Investment amount
 
 The total earnings for an affiliate are:
 
-*   **Total Earnings (E) = α * Σ I<sub>i</sub>**
+$$
+E = \alpha \cdot \sum I_i
+$$
 
-    *   *I<sub>i</sub>*: Each individual investment made through the affiliate's link.
+Where:
+
+- $I_i$: Each individual investment made through the affiliate's link
 
 ### 4.3. Dynamic Commission Model
 
 To further incentivize performance, a dynamic commission model can be implemented:
 
-*   **α = a + bx**
+$$
+\alpha = a + bx
+$$
 
-    *   *α*: Commission rate.
-    *   *a*: Base commission rate.
-    *   *b*: Sensitivity factor.
-    *   *x*: Performance metric (e.g., number of referrals, investment volume).
+Where:
+
+- $\alpha$: Commission rate
+- $a$: Base commission rate
+- $b$: Sensitivity factor
+- $x$: Performance metric (e.g., number of referrals, investment volume)
 
 Alternatively, tiered commission structures can be used:
 
-*   **α = α<sub>1</sub> if x < T<sub>1</sub>**
-*   **α = α<sub>2</sub> if T<sub>1</sub> ≤ x < T<sub>2</sub>**
-*   **α = α<sub>3</sub> if x ≥ T<sub>2</sub>**
+$$
+\alpha = \begin{cases}
+\alpha_1 & \text{if } x < T_1 \\
+\alpha_2 & \text{if } T_1 \leq x < T_2 \\
+\alpha_3 & \text{if } x \geq T_2
+\end{cases}
+$$
 
 ### 4.4. Algorithm for Dynamic Commission Rate Optimization
 
@@ -172,7 +203,11 @@ An algorithm can be used to dynamically calculate the optimal commission rate:
 2. **Demand Modeling:**  Develop a model to estimate investment volume based on commission rates.
 3. **Competition Analysis:** Analyze competitor commission rates.
 4. **Risk Assessment:** Evaluate token volatility and affiliate risk tolerance.
-5. **Optimization Function:** Define a function to maximize expected affiliate earnings: **E(α) = α * I(α)**.
+5. **Optimization Function:** Define a function to maximize expected affiliate earnings:
+
+$$
+E(\alpha) = \alpha \cdot I(\alpha)
+$$
 6. **Constraints:** Define minimum and maximum commission rates.
 7. **Optimization Algorithm:** Use algorithms like gradient descent to find the optimal commission rate.
 8. **Continuous Monitoring:** Track performance and adjust the algorithm as needed.
@@ -284,10 +319,10 @@ Beyond the core mechanics, mathematical optimizations can further enhance Solana
 
 Explore various bonding curve models:
 
-*   Linear: P(S) = mS + b
-*   Quadratic: P(S) = aS<sup>2</sup> + bS + c
-*   Sigmoid: P(S) = K / (1 + e<sup>-k(S-S<sub>0</sub>)</sup>)
-*   Multi-Segment: Combine different curve types for various ICO phases.
+- Linear: $P(S) = mS + b$
+- Quadratic: $P(S) = aS^2 + bS + c$
+- Sigmoid: $P(S) = \frac{K}{1 + e^{-k(S-S_0)}}$
+- Multi-Segment: Combine different curve types for various ICO phases.
 
 ### 8.4. Cheaper ICOs
 
@@ -302,13 +337,23 @@ Reduce the cost barrier for launching ICOs through:
 
 ### 9.1. Basic Model
 
-*   **C = α * I**
-*   **E = α * I<sub>total</sub>**
+$$
+C = \alpha \cdot I
+$$
+
+$$
+E = \alpha \cdot I_{\text{total}}
+$$
 
 ### 9.2. Dynamic Commission Model (Formalized)
 
-*   **C<sub>j</sub> = α<sub>j</sub> * I<sub>j</sub>** (Commission for token *j*)
-*   **E = Σ<sub>j∈J</sub> Σ<sub>i=1</sub><sup>n<sub>j</sub></sup> α<sub>j</sub> * I<sub>j,i</sub>** (Total earnings across all tokens)
+$$
+C_j = \alpha_j \cdot I_j \quad (\text{Commission for token } j)
+$$
+
+$$
+E = \sum_{j \in J} \sum_{i=1}^{n_j} \alpha_j \cdot I_{j,i} \quad (\text{Total earnings across all tokens})
+$$
 
 ## 10. Conclusion: Building a Decentralized and Equitable Future
 

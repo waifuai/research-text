@@ -28,8 +28,8 @@ Where T<sub>1</sub> and T<sub>2</sub> are thresholds for different commission ti
 
 These models provide more dynamic incentives:
 
-* **Exponential:** α = a * e<sup>bx</sup> (rapidly increasing rewards)
-* **Logarithmic:** α = a + b * ln(x) (diminishing returns)
+* **Exponential:** $\alpha = a \times e^{bx}$ (rapidly increasing rewards)
+* **Logarithmic:** $\alpha = a + b \times \ln(x)$ (diminishing returns)
 
 **1.4. Multi-Variable Functions:**
 
@@ -43,7 +43,7 @@ Where x, y, and z could represent different performance indicators like sales vo
 
 Introduce a time decay factor (λ) to give more weight to recent performance:
 
-* **α = a + b * ∑<sub>t=1</sub><sup>n</sup> λ<sup>(n-t)</sup> * x<sub>t</sub> (Equation 3)**
+* **$\alpha = a + b \times \sum_{t=1}^{n} \lambda^{(n-t)} \times x_t$ (Equation 3)**
 
 Where x<sub>t</sub> is the performance metric at time t, and n is the current time period.
 

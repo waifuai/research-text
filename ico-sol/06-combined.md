@@ -42,20 +42,20 @@ The Tokenized Economy replaces traditional currency with tokenized bartering. Co
 
 Bonding curves define the relationship between token supply and price, playing a crucial role in token pricing and market behavior.
 
-* **Linear Bonding Curve:** *P*( *S* ) = *mS* + *b* (Predictable price changes)
-* **Exponential Bonding Curve:** *P*( *S* ) = *ae*<sup>(*kS*)</sup> (Dramatic price changes with increasing supply)
+* **Linear Bonding Curve:** $P(S) = mS + b$ (Predictable price changes)
+* **Exponential Bonding Curve:** $P(S) = ae^{kS}$ (Dramatic price changes with increasing supply)
 
 **Visual Representation:**
 
 [Insert Graph:  Comparing Linear and Exponential Bonding Curves, illustrating price changes with increasing supply.]
 
-**Example:** Consider a linear bonding curve with *m* = 0.1 (slope) and *b* = 1 (initial price). If the initial supply *S* = 100 tokens, the price *P*( *S* ) = 0.1 * 100 + 1 = 11. If 50 more tokens are issued ( *S* = 150), the new price *P*( *S* ) = 0.1 * 150 + 1 = 16.
+**Example:** Consider a linear bonding curve with $m = 0.1$ (slope) and $b = 1$ (initial price). If the initial supply $S = 100$ tokens, the price $P(S) = 0.1 \times 100 + 1 = 11$. If 50 more tokens are issued ($S = 150$), the new price $P(S) = 0.1 \times 150 + 1 = 16$.
 
 **3.2 Token Exchange:**
 
 Tokens are exchanged directly on bonding curves. The exchange rate between tokens is determined by the ratio of their prices on their respective curves:
 
-Exchange Rate (A/B) = *P*<sub>A</sub>( *S*<sub>A</sub> ) / *P*<sub>B</sub>( *S*<sub>B</sub> )
+Exchange Rate (A/B) = $P_A(S_A) / P_B(S_B)$
 
 **Example:** If Token A's price is 10 and Token B's price is 5, the exchange rate is 2:1 (2 units of Token B for 1 unit of Token A).
 
@@ -63,7 +63,7 @@ Exchange Rate (A/B) = *P*<sub>A</sub>( *S*<sub>A</sub> ) / *P*<sub>B</sub>( *S*<
 
 The value of SOL (Solana's native token) is determined by its purchasing power relative to the goods and services offered by participating companies. As token prices fluctuate on their bonding curves, the relative value of SOL changes.
 
-Relative Value (A/SOL) = *P*<sub>A</sub>( *S*<sub>A</sub> ) / *P*<sub>SOL</sub>
+Relative Value (A/SOL) = $P_A(S_A) / P_{SOL}$
 
 **3.4 Speculation Dynamics:**
 
@@ -101,8 +101,8 @@ TokenAffiliates enables individuals to promote ICOs within the Tokenized Economy
 
 **4.4 Mathematical Model:**
 
-* **Commission:** *C* = 0.10 * *I* (where *I* is the investment amount)
-* **Total Earnings:** *E* = 0.10 * *I<sub>total</sub>* (where *I<sub>total</sub>* is the total investment generated through the affiliate's link)
+* **Commission:** $C = 0.10 \times I$ (where $I$ is the investment amount)
+* **Total Earnings:** $E = 0.10 \times I_{\text{total}}$ (where $I_{\text{total}}$ is the total investment generated through the affiliate's link)
 
 **Visual Representation:**
 

@@ -188,7 +188,7 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
         *   `P_base(S)`:  A base bonding curve function (e.g., linear, exponential, sigmoid). For an illiquid asset, a sigmoid function might be suitable to reflect initial slow price discovery, followed by a steeper rise and then a plateau. We can represent a simple sigmoid function as:
             ```
-            P_base(S) = P_max / (1 + exp(-k * (S - S_mid)))
+            $P_base(S) = P_max / (1 + exp(-k * (S - S_mid)))$
             ```
             Where:
             *   `P_max` is the maximum price.
@@ -197,7 +197,7 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
         *   `A(t, v, e)`:  Adaptation factor based on time since last trade (`t`), volume of attempted trades (`v`), and external market indicators (`e`).
             ```
-            A(t, v, e) = (1 + α/t) * (1 + β * log(1+v)) * (1 + γ * (e/e_avg - 1))
+            $A(t, v, e) = (1 + α/t) * (1 + β * log(1+v)) * (1 + γ * (e/e_avg - 1))$
             ```
             Where:
             *   `α` is the time decay factor.
@@ -207,7 +207,7 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
         *   `M(v)`: Manipulation resistance factor based on trade volume (`v`).
             ```
-            M(v) = 1 + δ * v^2
+            $M(v) = 1 + δ * v^2$
             ```
             Where:
             *   `δ` is the manipulation resistance parameter.
@@ -441,7 +441,7 @@ These questions focus on the technical and financial aspects of AI agent simulat
         Let `V_synth` be the value of the synthetic asset.
 
         ```
-        V_synth = (Σ (w_i * P_i) * C_ratio) + F(endogenous_risk)
+        $V_synth = (Σ (w_i * P_i) * C_ratio) + F(endogenous_risk)$
         ```
 
         Where:

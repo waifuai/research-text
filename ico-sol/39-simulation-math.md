@@ -32,7 +32,7 @@ The user wants to translate the provided Python code, which simulates a token ec
 
 7. **Markdown Formatting:** Use appropriate Markdown syntax to structure the document, including headings, bullet points, and LaTeX for equations. Use `$` for inline equations and `$$` for displayed equations.
 
-8. **Review and Refine:** Check the mathematical formulation for accuracy and clarity. Ensure the notation is consistent and the explanations are easy to understand. For instance, initially, I might have just said "price is a function of supply." But refining this to  $P_i(t) = f_i(S_i(t), \theta_i(t))$ makes it clearer that the function *and* its parameters can change.
+8. **Review and Refine:** Check the mathematical formulation for accuracy and clarity. Ensure the notation is consistent and the explanations are easy to understand. For instance, initially, I might have just said "price is a function of supply." But refining this to $P_i(t) = f_i(S_i(t), \theta_i(t))$ makes it clearer that the function *and* its parameters can change.
 
 **Self-Correction/Improvements during the process:**
 

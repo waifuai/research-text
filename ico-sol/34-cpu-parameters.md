@@ -3,9 +3,9 @@ Here's a breakdown of the thought process to generate the Python code for optimi
 1. **Understand the Goal:** The core objective is to find the optimal commission rate (`alpha`) that maximizes affiliate earnings. This involves a dynamic commission model where `alpha` depends on a performance metric (`x`).
 
 2. **Identify Key Components:**  The whitepaper provides the essential elements for this optimization:
-    * **Dynamic Commission Formula:** `alpha = a + bx` or tiered structures. For simplicity in the first iteration, let's focus on the linear formula.
-    * **Earnings Function:** `E(alpha) = alpha * I(alpha)`, where `I(alpha)` is the investment volume influenced by the commission rate.
-    * **Optimization Goal:** Maximize `E(alpha)`.
+    * **Dynamic Commission Formula:** $\alpha = a + bx$ or tiered structures. For simplicity in the first iteration, let's focus on the linear formula.
+    * **Earnings Function:** $E(\alpha) = \alpha \times I(\alpha)$, where $I(\alpha)$ is the investment volume influenced by the commission rate.
+    * **Optimization Goal:** Maximize $E(\alpha)$.
     * **Potential Optimization Techniques:**  The whitepaper mentions gradient descent. However, for a Kaggle notebook with CPU constraints and a likely simpler function, grid search or a more basic optimization algorithm might be sufficient.
 
 3. **Translate Mathematical Concepts to Code:**
@@ -169,8 +169,8 @@ else:
     *   **Important:** In a real-world scenario, this would be a much more sophisticated model based on historical data, marketing effectiveness, and other factors. For this CPU-based Kaggle notebook, we use a simple linear relationship.
 
 6. **`calculate_commission_linear()` Function:**
-    *   Implements the linear dynamic commission formula: `alpha = a + b * performance_metric`.
-    *   Calculates the commission earned based on the `alpha` and the `investment`.
+    *   Implements the linear dynamic commission formula: $\alpha = a + b \times performance_metric$.
+    *   Calculates the commission earned based on the $\alpha$ and the $investment$.
 
 7. **`calculate_commission_tiered()` Function:**
     *   Implements the tiered commission structure.
