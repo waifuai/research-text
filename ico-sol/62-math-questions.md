@@ -180,49 +180,49 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
         Let's define the dynamic bonding curve price (P) as a function of supply (S):
 
-        ```
-        P(S) = P_base(S) * A(t, v, e) * M(v)
-        ```
+        $$
+        P(S) = P_\text{base}(S) \times A(t, v, e) \times M(v)
+        $$
 
         Where:
 
-        *   `P_base(S)`:  A base bonding curve function (e.g., linear, exponential, sigmoid). For an illiquid asset, a sigmoid function might be suitable to reflect initial slow price discovery, followed by a steeper rise and then a plateau. We can represent a simple sigmoid function as:
-            ```
-            $P_base(S) = P_max / (1 + exp(-k * (S - S_mid)))$
-            ```
+        *   $P\_base(S)$:  A base bonding curve function (e.g., linear, exponential, sigmoid). For an illiquid asset, a sigmoid function might be suitable to reflect initial slow price discovery, followed by a steeper rise and then a plateau. We can represent a simple sigmoid function as:
+            $$
+            P_\text{base}(S) = P_\text{max} / (1 + \exp(-k \times (S - S_{\text{mid}})))
+            $$
             Where:
-            *   `P_max` is the maximum price.
-            *   `k` is the steepness of the curve.
-            *   `S_mid` is the supply at the inflection point.
+            *   $P_max$ is the maximum price.
+            *   $k$ is the steepness of the curve.
+            *   $S_mid$ is the supply at the inflection point.
 
-        *   `A(t, v, e)`:  Adaptation factor based on time since last trade (`t`), volume of attempted trades (`v`), and external market indicators (`e`).
-            ```
-            $A(t, v, e) = (1 + α/t) * (1 + β * log(1+v)) * (1 + γ * (e/e_avg - 1))$
-            ```
+        *   $A(t, v, e)$:  Adaptation factor based on time since last trade ($t$), volume of attempted trades ($v$), and external market indicators ($e$).
+            $$
+            A(t, v, e) = (1 + \alpha / t) \times (1 + \beta \times \log(1 + v)) \times (1 + \gamma \times (e / e_{\text{avg}} - 1))
+            $$
             Where:
-            *   `α` is the time decay factor.
-            *   `β` is the attempted trade volume sensitivity.
-            *   `γ` is the external market sensitivity.
-            *   `e_avg` is the average value of the external market indicator.
+            *   $α$ is the time decay factor.
+            *   $\beta$ is the attempted trade volume sensitivity.
+            *   $\gamma$ is the external market sensitivity.
+            *   $e_{avg}$ is the average value of the external market indicator.
 
-        *   `M(v)`: Manipulation resistance factor based on trade volume (`v`).
-            ```
-            $M(v) = 1 + δ * v^2$
-            ```
+        *   $M(v)$: Manipulation resistance factor based on trade volume ($v$).
+            $$
+            M(v) = 1 + \delta \times v^{2}
+            $$
             Where:
-            *   `δ` is the manipulation resistance parameter.
+            *   $\delta$ is the manipulation resistance parameter.
 
     *   **Simulation and Analysis:**
 
-        *   **High Activity:** The model will show increased price sensitivity due to the `A(t, v, e)` factor increasing with higher `v` and lower `t`.
-        *   **Low Activity:** Prices will stabilize and potentially decrease slightly due to the `1/t` term in `A(t, v, e)`.
-        *   **Manipulation Attempt:**  A large `v` will trigger the `M(v)` factor, significantly increasing the price and making manipulation costly.
+        *   **High Activity:** The model will show increased price sensitivity due to the $A(t, v, e)$ factor increasing with higher $v$ and lower $t$.
+        *   **Low Activity:** Prices will stabilize and potentially decrease slightly due to the $1/t$ term in $A(t, v, e)$.
+        *   **Manipulation Attempt:**  A large $v$ will trigger the $M(v)$ factor, significantly increasing the price and making manipulation costly.
         *   **Comparison to Standard Bonding Curve:** The dynamic model will exhibit less volatility during low activity and greater resistance to manipulation compared to a standard curve.
 
     *   **AI Agent Training:**
         *   An AI agent could be trained using reinforcement learning to optimize its buy/sell decisions based on the dynamic bonding curve parameters, market conditions, and its own risk tolerance.
-        *   The agent would need to predict future values of `t`, `v`, and `e` to make informed decisions.
-        *   **External Market Model:** Yes, the AI agent would likely need to maintain its own model for external market indicators (`e`). This could involve techniques like regression analysis, time series forecasting, or even sentiment analysis of news related to the art market.
+        *   The agent would need to predict future values of $t$, $v$, and $e$ to make informed decisions.
+        *   **External Market Model:** Yes, the AI agent would likely need to maintain its own model for external market indicators ($e$). This could involve techniques like regression analysis, time series forecasting, or even sentiment analysis of news related to the art market.
 
 ## 2. Optimal Portfolio Allocation with RWA-Correlated Risks
 
@@ -234,30 +234,30 @@ These questions focus on the technical and financial aspects of AI agent simulat
     *   **Formalization of the Optimization Problem:**
 
         *   **Objective Function:** Maximize the risk-adjusted return of the portfolio. We can use the Sharpe Ratio, modified to include transaction costs:
-
-            ```
-            Maximize:  (R_p - R_f - C_p) / σ_p
-            ```
-
-            Where:
-
-            *   `R_p`: Expected portfolio return.
-            *   `R_f`: Risk-free rate.
-            *   `C_p`: Expected portfolio transaction costs.
-            *   `σ_p`: Portfolio standard deviation (risk).
+        
+                     $$
+                     \max : (R_p - R_f - C_p) / \sigma_p
+                     $$
+        
+                     Where:
+        
+                     *   $R_p$: Expected portfolio return.
+                     *   $R_f$: Risk-free rate.
+                     *   $C_p$: Expected portfolio transaction costs.
+                     *   $\sigma_p$: Portfolio standard deviation (risk).
 
         *   **Constraints:**
 
-            *   `Σ w_i = 1` (Weights sum to 100%).
-            *   `0 ≤ w_i ≤ 1` (No short selling, weights are non-negative).
-            *   `w_i`: Weight of asset `i` in the portfolio.
+            *   $\sum w_i = 1$ (Weights sum to 100%).
+            *   $0 \le w_i \le 1$ (No short selling, weights are non-negative).
+            *   $w_i$: Weight of asset `i` in the portfolio.
 
         *   **Calculations:**
 
-            *   `R_p = Σ (w_i * R_i)` (Weighted average of individual asset returns).
-            *   `C_p = Σ ( |w_i - w_i_prev| * C_i )` (Transaction costs based on rebalancing).
-            *   `σ_p = sqrt( ΣΣ w_i * w_j * Cov(i, j) )` (Portfolio standard deviation, considering covariances).
-            *   `Cov(i,j)` is the covariance between assets i and j.
+            *   $R_p = \sum (w_i \times R_i)$ (Weighted average of individual asset returns).
+            *   $C_p = \sum ( |w_i - w_{iprev}| \times C_i )$ (Transaction costs based on rebalancing).
+            *   $\sigma_p = \sqrt{ \sum\sum w_i \times w_j \times Cov(i, j) }$ (Portfolio standard deviation, considering covariances).
+            *   $Cov(i,j)$ is the covariance between assets i and j.
 
     *   **Algorithm:**
 
@@ -289,23 +289,23 @@ These questions focus on the technical and financial aspects of AI agent simulat
     *   **Mathematical Model/Simulation:**
 
         1. **Initialization:**
-            *   Create a set of `N` loans, each with a random loan-to-value (LTV) ratio drawn from a predefined distribution (e.g., normal distribution centered around 60% with a standard deviation of 10%).
-            *   Each loan has a collateral value `C_i` based on the initial RWA price `P_0` from the dynamic bonding curve.
-            *   Set a liquidation threshold `L_threshold` (e.g., 80%).
+            *   Create a set of $N$ loans, each with a random loan-to-value (LTV) ratio drawn from a predefined distribution (e.g., normal distribution centered around 60% with a standard deviation of 10%).
+            *   Each loan has a collateral value $C_i$ based on the initial RWA price $P_0$ from the dynamic bonding curve.
+            *   Set a liquidation threshold $L_{threshold}$ (e.g., 80%).
 
         2. **Market Downturn:**
-            *   Simulate a decrease in the base price of the RWA (`P_base(S)` in the bonding curve model) over time steps `t`. This could be a gradual decline or a sudden drop.
+            *   Simulate a decrease in the base price of the RWA ($P\_base(S)$ in the bonding curve model) over time steps $t$. This could be a gradual decline or a sudden drop.
 
         3. **Liquidation Check:**
-            *   At each time step, for each loan `i`:
-                *   Calculate the current collateral value: `C_i(t) = C_i * (P(t) / P_0)`.
-                *   Calculate the current LTV: `LTV_i(t) = Loan_i / C_i(t)`.
-                *   If `LTV_i(t) > L_threshold`, mark the loan for liquidation.
+            *   At each time step, for each loan $i$:
+                *   Calculate the current collateral value: $$C_i(t) = C_i \times (P(t) / P_0)$$
+                *   Calculate the current LTV: $$LTV_i(t) = \text{Loan}_i / C_i(t)$$
+                *   If $LTV_i(t) > L_{threshold}$, mark the loan for liquidation.
 
         4. **Liquidation and Price Impact:**
             *   When a loan is liquidated, the collateral is sold on the market.
-            *   This sale increases the supply `S` in the bonding curve model.
-            *   The new price `P(t+1)` is calculated based on the updated supply.
+            *   This sale increases the supply $S$ in the bonding curve model.
+            *   The new price $P(t+1)$ is calculated based on the updated supply.
             *   The decrease in price can trigger further liquidations in the next time step.
 
         5. **Cascading Effect:**
@@ -385,28 +385,28 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
         *   **Objective:** Maximize profit from price differences between RWAs on different blockchains, considering transaction costs and risks.
         *   **Variables:**
-            *   `P_A`: Price of the RWA on blockchain A.
-            *   `P_B`: Price of the RWA on blockchain B.
-            *   `C_A`: Transaction cost on blockchain A.
-            *   `C_B`: Transaction cost on blockchain B.
-            *   `C_bridge`: Cost to bridge the asset between A and B.
-            *   `T_bridge`: Time to bridge the asset between A and B.
-            *   `ΔP_risk`: Risk of price change during bridging.
+            *   $P_A$: Price of the RWA on blockchain A.
+            *   $P_B$: Price of the RWA on blockchain B.
+            *   $C_A$: Transaction cost on blockchain A.
+            *   $C_B$: Transaction cost on blockchain B.
+            *   $C_{bridge}$: Cost to bridge the asset between A and B.
+            *   $T_{bridge}$: Time to bridge the asset between A and B.
+            *   $\Delta P_{risk}$: Risk of price change during bridging.
 
         *   **Profit Calculation:**
 
-            ```
-            Profit = (P_B - P_A) * Q - C_A - C_B - C_bridge - ΔP_risk
-            ```
+            $$
+            Profit = (P_B - P_A) \times Q - C_A - C_B - C_bridge - \Delta P_{risk}
+            $$
 
-            Where `Q` is the quantity of the RWA being arbitraged.
+            Where $Q$ is the quantity of the RWA being arbitraged.
 
     *   **Algorithm:**
 
         1. **Monitor Prices:** Continuously monitor RWA prices on different blockchains.
         2. **Identify Arbitrage Opportunities:**  Calculate the potential profit for each possible arbitrage trade (buy on A, sell on B, or vice versa).
         3. **Assess Risks:**
-            *   Estimate the risk of price changes during the bridging process (`ΔP_risk`). This could involve analyzing historical price volatility and the time it takes to bridge assets.
+            *   Estimate the risk of price changes during the bridging process ($\Delta P_{risk}$). This could involve analyzing historical price volatility and the time it takes to bridge assets.
             *   Consider the risk of other arbitrageurs competing for the same opportunity, potentially reducing the profit margin.
         4. **Execute Trades:** If the expected profit exceeds a predefined threshold (considering risks and costs), execute the arbitrage trade:
             *   Buy the RWA on the cheaper blockchain.
@@ -438,37 +438,37 @@ These questions focus on the technical and financial aspects of AI agent simulat
 
     *   **Mathematical Framework:**
 
-        Let `V_synth` be the value of the synthetic asset.
+        Let $V_{synth}$ be the value of the synthetic asset.
 
-        ```
-        $V_synth = (Σ (w_i * P_i) * C_ratio) + F(endogenous_risk)$
-        ```
+        $$
+        V_{synth} = \left(\sum (w_i \times P_i) \times C_{ratio} \right) + F(\text{endogenous\_risk})
+        $$
 
         Where:
 
-        *   `w_i`: Weight of RWA `i` in the portfolio.
-        *   `P_i`: Price of RWA `i`.
-        *   `C_ratio`: Collateralization ratio.
-        *   `F(endogenous_risk)`: Adjustment factor for endogenous risk.
+        *   $w_i$: Weight of RWA $i$ in the portfolio.
+        *   $P_i$: Price of RWA $i$.
+        *   $C_{ratio}$: Collateralization ratio.
+        *   $F(\text{endogenous\_risk})$: Adjustment factor for endogenous risk.
 
         **Components:**
 
         1. **Underlying RWA Valuation:**
-            *   `P_i` is determined by the dynamic bonding curve model (from Question 1) or other appropriate valuation models for each RWA.
+            *   $P_i$ is determined by the dynamic bonding curve model (from Question 1) or other appropriate valuation models for each RWA.
 
         2. **Collateralization Ratio:**
-            *   `C_ratio` should be dynamically adjusted based on the risk profile of the underlying RWAs.
-            *   Higher volatility or correlation among RWAs would necessitate a higher `C_ratio`.
+            *   $C_{ratio}$ should be dynamically adjusted based on the risk profile of the underlying RWAs.
+            *   Higher volatility or correlation among RWAs would necessitate a higher $C_{ratio}$.
             *   A potential formula:
-                ```
-                C_ratio = C_base + α * Volatility + β * Correlation
-                ```
+                $$
+                C_{ratio} = C_{base} + \alpha \times Volatility + \beta \times Correlation
+                $$
                 Where:
-                *   `C_base` is the minimum collateralization ratio.
-                *   `α` and `β` are sensitivity parameters.
+                *   $C_{base}$ is the minimum collateralization ratio.
+                *   $\alpha$ and $\beta$ are sensitivity parameters.
 
         3. **Endogenous Risk Adjustment:**
-            *   `F(endogenous_risk)` is the most complex part. It needs to capture the feedback loops between the synthetic asset's trading activity and the underlying RWA prices.
+            *   $F(\text{endogenous\_risk})$ is the most complex part. It needs to capture the feedback loops between the synthetic asset's trading activity and the underlying RWA prices.
             *   This could involve:
                 *   **Modeling Market Impact:** Estimating how the synthetic asset's trades affect the supply and demand (and thus prices) of the underlying RWAs.
                 *   **Simulating Feedback Loops:** Running simulations to see how price changes in the RWAs affect the synthetic asset's value, which in turn affects trading activity, and so on.
@@ -480,7 +480,7 @@ These questions focus on the technical and financial aspects of AI agent simulat
             *   **Arbitrage:**  Arbitrageurs will buy the synthetic asset when it's below the index value and sell when it's above, helping to keep the price in line.
             *   **Rebalancing:** The portfolio of underlying RWAs can be rebalanced periodically to ensure it continues to track the index.
         *   **Extreme Volatility:** The model should be stress-tested under scenarios of extreme volatility in the underlying RWA market to see if the peg can hold.
-        *   **Dynamic `C_ratio` Adjustment:** The mechanism for adjusting `C_ratio` should be tested to ensure it responds appropriately to changes in market conditions.
+        *   **Dynamic $C_{ratio}$ Adjustment:** The mechanism for adjusting $C_{ratio}$ should be tested to ensure it responds appropriately to changes in market conditions.
 
     *   **AI Agent Training:**
 

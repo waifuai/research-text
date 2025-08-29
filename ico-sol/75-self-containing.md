@@ -47,7 +47,7 @@ W(t)
 t
  is:
    
-\mathbb{E}[P(S, t)] = \mathbb{E}[m S + b + \sigma W(t)] = m S + b + \sigma \cdot 0 = m S + b
+$ \mathbb{E}[P(S, t)] = \mathbb{E}[m S + b + \sigma W(t)] = m S + b + \sigma \cdot 0 = m S + b $
 
    Thus, the stochastic term does not shift the expected price from the deterministic linear model.
 b) Expected Cost:
