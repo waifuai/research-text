@@ -20,7 +20,7 @@ Step 1: Designing the Dynamic Bonding Curve Formula
 A bonding curve defines the price of a token as a function of its supply, but for an illiquid asset like rare art, we need a model that adjusts dynamically to trading patterns and external signals while deterring manipulation. Let’s build this step-by-step.
 Base Bonding Curve:
 Start with a standard logistic (sigmoid) curve, which is suitable for illiquid assets because it allows for gradual price increases at low supply, rapid growth during active trading, and a plateau as supply saturates:
-P_{\text{base}}(S) = \frac{P_{\text{max}}}{1 + e^{-k(S - S_0)}}
+$$P_{\text{base}}(S) = \frac{P_{\text{max}}}{1 + e^{-k(S - S_0)}}$$
 P_{\text{max}}
 : Maximum price the market can bear (e.g., determined by historical art sales).
 S
@@ -33,7 +33,7 @@ Dynamic Adjustments:
 We’ll multiply 
 P_{\text{base}}(S)
  by adaptive factors to account for the specified conditions:
-P(S, t, v, e) = P_{\text{base}}(S) \cdot A(t, v, e) \cdot R(v)
+$$P(S, t, v, e) = P_{\text{base}}(S) \cdot A(t, v, e) \cdot R(v)$$
 
 Where:
 A(t, v, e)
@@ -50,7 +50,7 @@ Adaptation Factor
 A(t, v, e)
 :
 This adjusts the price based on market inactivity, trade interest, and external benchmarks:
-A(t, v, e) = \left(1 + \frac{\alpha}{t + \epsilon}\right) \cdot (1 + \beta \cdot \ln(1 + v)) \cdot (1 + \gamma \cdot \frac{e - e_{\text{avg}}}{e_{\text{avg}}})
+$$A(t, v, e) = \left(1 + \frac{\alpha}{t + \epsilon}\right) \cdot (1 + \beta \cdot \ln(1 + v)) \cdot (1 + \gamma \cdot \frac{e - e_{\text{avg}}}{e_{\text{avg}}})$$
 t
 : Time since last trade (in days); 
 \epsilon = 0.1
@@ -75,12 +75,12 @@ Manipulation Resistance Factor
 R(v)
 :
 This penalizes rapid, large-volume trades to deter pump-and-dump schemes:
-R(v) = 1 + \delta \cdot v^2
+$$R(v) = 1 + \delta \cdot v^2$$
 \delta
 : Manipulation penalty coefficient (e.g., 0.01), making large trades exponentially costlier.
 The quadratic term ensures that small trades have minimal impact, while large, rapid trades significantly increase the price, discouraging manipulation.
 Final Formula:
-P(S, t, v, e) = \frac{P_{\text{max}}}{1 + e^{-k(S - S_0)}} \cdot \left(1 + \frac{\alpha}{t + \epsilon}\right) \cdot (1 + \beta \cdot \ln(1 + v)) \cdot (1 + \gamma \cdot \frac{e - e_{\text{avg}}}{e_{\text{avg}}}) \cdot (1 + \delta \cdot v^2)
+$$P(S, t, v, e) = \frac{P_{\text{max}}}{1 + e^{-k(S - S_0)}} \cdot \left(1 + \frac{\alpha}{t + \epsilon}\right) \cdot (1 + \beta \cdot \ln(1 + v)) \cdot (1 + \gamma \cdot \frac{e - e_{\text{avg}}}{e_{\text{avg}}}) \cdot (1 + \delta \cdot v^2)$$
 Step 2: Simulating Behavior
 Let’s simulate this model under three conditions: high activity, low activity, and attempted manipulation. Assume:
 P_{\text{max}} = 1,000,000
@@ -295,27 +295,27 @@ i
  = more risk-averse).
 Portfolio Metrics:
 Expected Return: 
-R_p = \sum_{i=1}^n w_i R_i
+$R_p = \sum_{i=1}^n w_i R_i$
 .
 Portfolio Variance: 
-\sigma_p^2 = \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij}
+$\sigma_p^2 = \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij}$
  (or in matrix form: 
 \mathbf{w}^T \mathbf{\Sigma} \mathbf{w}
 , where 
 \mathbf{\Sigma}
  is the covariance matrix).
 Transaction Costs: 
-C_p = \sum_{i=1}^n C_i |w_i - w_{i,\text{prev}}|
+$C_p = \sum_{i=1}^n C_i |w_i - w_{i,\text{prev}}|$
  (absolute change in weights).
 Objective Function:
 Maximize the utility function, balancing return, risk, and costs:
-U = R_p - \lambda \cdot \sigma_p^2 - C_p
+$U = R_p - \lambda \cdot \sigma_p^2 - C_p$
 
-U = \sum_{i=1}^n w_i R_i - \lambda \cdot \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij} - \sum_{i=1}^n C_i |w_i - w_{i,\text{prev}}|
+$U = \sum_{i=1}^n w_i R_i - \lambda \cdot \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij} - \sum_{i=1}^n C_i |w_i - w_{i,\text{prev}}|$
 Constraints:
 \sum_{i=1}^n w_i = 1
  (fully invested portfolio).
-0 \leq w_i \leq 1
+$0 \leq w_i \leq 1$
  (no short selling).
 Dynamic Risk Aversion (
 \lambda
@@ -360,7 +360,7 @@ U
  with respect to 
 w_i
 :
-\frac{\partial U}{\partial w_i} = R_i - 2\lambda \sum_{j=1}^n w_j \sigma_i \sigma_j \rho_{ij} - C_i \cdot \text{sign}(w_i - w_{i,\text{prev}})
+$\frac{\partial U}{\partial w_i} = R_i - 2\lambda \sum_{j=1}^n w_j \sigma_i \sigma_j \rho_{ij} - C_i \cdot \text{sign}(w_i - w_{i,\text{prev}})$
 The transaction cost term is non-differentiable, so approximate with a smooth function (e.g., soft absolute value) or use subgradient methods.
 Optimization:
 Use a constrained optimization solver like Sequential Quadratic Programming (SQP) or an interior-point method.
@@ -432,7 +432,7 @@ Portfolio Outcomes:
 For each scenario 
 m
 , compute 
-R_p^{(m)} = \sum w_i R_i^{(m)}
+$R_p^{(m)} = \sum w_i R_i^{(m)}$
  and 
 C_p^{(m)}
  based on rebalancing.
@@ -719,7 +719,7 @@ Since transaction costs involve absolute values (making the function non-smooth)
 , where 
 t_i \geq |w_i - w_{0i}|
 , to linearize the problem. The utility to maximize becomes:
-\text{Utility} = \mathbf{w}^T \mathbf{\mu} - \sum_{i=1}^n c_i t_i - \frac{\lambda}{2} \mathbf{w}^T \mathbf{\Sigma} \mathbf{w}
+$\text{Utility} = \mathbf{w}^T \mathbf{\mu} - \sum_{i=1}^n c_i t_i - \frac{\lambda}{2} \mathbf{w}^T \mathbf{\Sigma} \mathbf{w}$
 Here, 
 \mathbf{w}^T \mathbf{\mu}
  is the gross expected return, 
@@ -1042,7 +1042,7 @@ CR_{\text{min}}
 : Minimum acceptable collateralization ratio (e.g., 110%).
 Collateral Value
 The total value of the collateral portfolio is:
-V = \sum_{i=1}^n w_i V_i
+$V = \sum_{i=1}^n w_i V_i$
 Collateralization Ratio
 The collateralization ratio is:
 CR = \frac{V}{S} = \frac{\sum_{i=1}^n w_i V_i}{S}
@@ -1059,14 +1059,14 @@ E_i
 : Weighting coefficients (tuned via historical data or governance).
 Portfolio Risk
 The portfolio variance, incorporating correlations, is:
-\sigma_p^2 = \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij}
+$\sigma_p^2 = \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij}$
 Optimization Problem
 Adjust 
 w_i
  and 
 CR
  to maximize stability while maintaining sufficient collateral:
-\max_{\mathbf{w}, CR} \left[ \sum_{i=1}^n w_i \mu_i - \lambda \sigma_p^2 \right]
+$\max_{\mathbf{w}, CR} \left[ \sum_{i=1}^n w_i \mu_i - \lambda \sigma_p^2 \right]$
 
 Subject to:
 CR = \frac{\sum_{i=1}^n w_i V_i}{S} \geq CR_{\text{min}}
@@ -1338,7 +1338,7 @@ t_i \geq 0
 This is a quadratic programming (QP) problem with an added stability term.
 2. Dynamic Collateral and Risk Adjustments
 Collateralization Ratio
-CR = \frac{V}{S} = \frac{\sum_{i=1}^n w_i V_i}{S}
+$CR = \frac{V}{S} = \frac{\sum_{i=1}^n w_i V_i}{S}$
 Risk Score
 R_i = \alpha \sigma_i + \beta L_i^{-1} + \gamma E_i
 Adjusts 

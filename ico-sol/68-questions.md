@@ -163,9 +163,9 @@ $\text{depth}(t) = \sum_{\text{orders}} \text{volume}$
 where volume is the quantity of orders at each price level, obtained from the order book data.
 Adaptive Spreads:
 The spread, the difference between buy and sell prices, is adjusted dynamically based on market conditions. It is a function of volatility and depth:
-\text{spread}(t) = f(\text{volatility}(t), \text{depth}(t))
+$\text{spread}(t) = f(\text{volatility}(t), \text{depth}(t))$
 For example, a simple function could be:
-\text{spread}(t) = \text{volatility}(t) + \frac{1}{\text{depth}(t)}
+$\text{spread}(t) = \text{volatility}(t) + \frac{1}{\text{depth}(t)}$
 where volatility is the standard deviation of recent price returns, and a higher volatility or lower depth increases the spread to manage risk. During high volatility, wider spreads protect against adverse selection, while in stable, deep markets, narrower spreads encourage trading.
 Pricing Mechanism:
 The AI agent sets buy and sell prices around TWAP:
@@ -177,7 +177,7 @@ This ensures prices are centered on a stable reference, with spreads adjusting t
 AI Agent Optimization for Profit and Stability
 The AI agent's objective is to maximize profit while ensuring market stability, formulated as an optimization problem:
 Profit Maximization: Profit is defined as the spread captured minus inventory costs:
-\text{profit} = \text{spread}(t) \times \text{volume}_{\text{traded}} - \text{cost}_{\text{inventory}}
+$\text{profit} = \text{spread}(t) \times \text{volume}_{\text{traded}} - \text{cost}_{\text{inventory}}$
 where inventory costs include holding costs or risk from price changes, calculated as:
 $$
 \text{cost}_{\text{inventory}} = \text{holding\_cost} \times \text{inventory level} + \text{risk cost} \times \text{volatility}
@@ -283,7 +283,7 @@ i
 , and 
 v_i
  is the volume traded there.
-\text{cost}_{\text{bridging}} = b \cdot v \cdot d
+$\text{cost}_{\text{bridging}} = b \cdot v \cdot d$
 , where 
 b
  is the bridging cost per unit volume, and 
@@ -308,7 +308,7 @@ The agent uses dynamic programming to solve this, iteratively adjusting allocati
 Predicting and Mitigating Liquidity Fragmentation
 Liquidity fragmentation occurs when RWA liquidity is unevenly distributed across blockchains, leading to price discrepancies and reduced trading efficiency. The AI agent addresses this:
 Prediction: Analyzes cross-chain price correlations using a correlation matrix:
-\rho_{ij} = \frac{\text{Cov}(p_i, p_j)}{\sigma_{p_i} \cdot \sigma_{p_j}}
+$\rho_{ij} = \frac{\text{Cov}(p_i, p_j)}{\sigma_{p_i} \cdot \sigma_{p_j}}$
 High correlations indicate potential arbitrage opportunities, while low correlations signal fragmentation. The agent uses machine learning (e.g., LSTM models) to predict future price movements based on historical data, identifying fragmentation risks.
 Mitigation: Balances liquidity pools by reallocating assets to under-liquid chains, reducing price gaps. For example, if Solana has excess liquidity and Ethereum is thin, it shifts tokens via bridges, ensuring uniform market depth.
 Update Frequency
@@ -345,7 +345,7 @@ d
 , impacting profitability if prices change during transfer.
 Volatility Adjustment:
 Volatility, measured as 
-\sigma_{p_i} = \sqrt{\frac{1}{T} \sum (p_i - \bar{p}_i)^2}
+$\sigma_{p_i} = \sqrt{\frac{1}{T} \sum (p_i - \bar{p}_i)^2}$
 , influences allocations. High volatility on a chain prompts reduced exposure to limit risk.
 Mathematical Framework
 The optimization problem maximizes net profit:
@@ -421,7 +421,7 @@ L_i
  is the loan amount for loan 
 i
 .
-\text{cost}_{\text{default}} = \sum_i P(\text{default}_i) \cdot (L_i - C_i)
+$\text{cost}_{\text{default}} = \sum_i P(\text{default}_i) \cdot (L_i - C_i)$
 , where 
 P(\text{default}_i)
  is the default probability, and 
@@ -453,7 +453,7 @@ Handling Correlated RWA Price Movements and Systemic Risk
 Correlation Modeling: Uses a covariance matrix 
 \mathbf{\Sigma}
  to capture price correlations:
-\Sigma_{ij} = \rho_{ij} \cdot \sigma_i \cdot \sigma_j
+$\Sigma_{ij} = \rho_{ij} \cdot \sigma_i \cdot \sigma_j$
 where 
 \rho_{ij}
  is the correlation between RWAs 
@@ -464,7 +464,7 @@ j
 \sigma_i
  is volatility. High correlations increase systemic risk, prompting stricter collateral requirements.
 Systemic Risk Mitigation: The agent monitors portfolio volatility 
-\sigma_{\text{portfolio}} = \sqrt{\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}}
+$\sigma_{\text{portfolio}} = \sqrt{\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}}$
 , where 
 \mathbf{w}
  is the weight of each RWA in the portfolio. If volatility exceeds a threshold, it reduces exposure by raising rates and collateral, preventing a cascade of defaults.
@@ -485,7 +485,7 @@ Dynamic Parameters:
 Interest Rates (
 r_i
 ): Rise with volatility to compensate for risk:
-r_i = r_0 + \beta \cdot \sigma_i
+$r_i = r_0 + \beta \cdot \sigma_i$
 where 
 r_0
  is a base rate, 
@@ -496,7 +496,7 @@ r_0
 Collateral Requirements (
 CR_i
 ): Increase with volatility to maintain safety:
-CR_i = CR_{\text{min}} + \gamma \cdot \sigma_i
+$CR_i = CR_{\text{min}} + \gamma \cdot \sigma_i$
 where 
 \gamma
  adjusts collateral sensitivity.
@@ -504,13 +504,13 @@ Correlated Price Movements:
 Uses a covariance matrix 
 \mathbf{\Sigma}
  to model correlations, impacting portfolio risk:
-\sigma_{\text{portfolio}}^2 = \sum_i \sum_j w_i w_j \Sigma_{ij}
+$\sigma_{\text{portfolio}}^2 = \sum_i \sum_j w_i w_j \Sigma_{ij}$
 High correlations amplify risk, requiring dynamic adjustments.
 Optimization Algorithm
 Objective Function:
 $\max_{\mathbf{r}, \mathbf{CR}} \left[ \sum_i r_i L_i - \sum_i P(\text{default}_i) (L_i - C_i) \right]$
 Default probability: 
-P(\text{default}_i) = f(\frac{L_i}{C_i}, \sigma_i)
+$P(\text{default}_i) = f(\frac{L_i}{C_i}, \sigma_i)$
 , e.g., a logistic function based on LTV and volatility.
 Constraints:
 \frac{C_i}{L_i} \geq CR_{\text{min}}
@@ -592,7 +592,7 @@ Network Effects: Trading impacts ripple through correlated RWAs (e.g., real esta
 Reward Function: Balances individual profit with market health, incentivizing cooperation.
 Decentralized Consensus: Agents agree on trading rules via proof-of-stake voting, ensuring fairness and adaptability.
 Model Details
-Reward Function:  R_i = \alpha \text{profit}_i + (1 - \alpha) \text{market_stability}
+Reward Function:  $R_i = \alpha \text{profit}_i + (1 - \alpha) \text{market_stability}$
 \text{profit}_i
 : Individual agent 
 i
@@ -653,7 +653,7 @@ s_i
 , ensuring stable coordination.
 Reward Function:  
 R_i = \alpha \cdot (\text{profit}_i) + (1 - \alpha) \cdot \left(1 - \frac{\sigma_{\text{system}}}{\sigma_{\text{max}}}\right)
-\text{profit}_i = \sum_t (p_{\text{sell},t} - p_{\text{buy},t}) \cdot v_t
+$\text{profit}_i = \sum_t (p_{\text{sell},t} - p_{\text{buy},t}) \cdot v_t$
 , where 
 p
  and 
@@ -733,7 +733,7 @@ Feedback Mechanism: Model predictions affect market prices as traders act on the
 Model Details
 Valuation Function:  V(t) = f(\text{price_history}, \text{network_effect}, \text{demand_forecast})
 Price History: 
-P(t) = \{p_{t-1}, p_{t-2}, ..., p_{t-n}\}
+$P(t) = \{p_{t-1}, p_{t-2}, ..., p_{t-n}\}$
 , capturing past trends.
 Network Effect: N(t) = g(\text{adoption_rate}), where 
 g
@@ -742,7 +742,7 @@ Demand Forecast:
 D(t)
 , predicted by AI using market data (e.g., trading volume, policy signals).
 Functional Form:  
-V(t) = \beta_0 + \beta_1 \cdot \text{TWAP}(t) + \beta_2 \cdot N(t) + \beta_3 \cdot D(t)
+$V(t) = \beta_0 + \beta_1 \cdot \text{TWAP}(t) + \beta_2 \cdot N(t) + \beta_3 \cdot D(t)$
 where TWAP (time-weighted average price) stabilizes historical pricing, and coefficients 
 \beta_i
  are updated dynamically.
@@ -892,13 +892,13 @@ AI Correlation Forecasting: Uses time-series models to predict changing correlat
 Real-Time Adjustments: Incorporates transaction costs and liquidity constraints, adjusting weights dynamically to optimize risk-adjusted returns.
 Model Details
 Objective Function:  \min_{\mathbf{w}} \left[ \text{risk}_{\text{portfolio}} - \lambda \cdot \text{expected_return} \right]
-\mathbf{w} = [w_1, w_2, ..., w_n]
+$\mathbf{w} = [w_1, w_2, ..., w_n]$
 : Portfolio weights, 
 \sum w_i = 1
 , 
 w_i \geq 0
 .
-\text{risk}_{\text{portfolio}} = \sqrt{\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}}
+$\text{risk}_{\text{portfolio}} = \sqrt{\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}}$
 , where 
 \mathbf{\Sigma}
  is the covariance matrix.
@@ -909,9 +909,9 @@ w_i \geq 0
 : Risk-return trade-off parameter (e.g., 1 for balance).
 Risk Contribution:  
 Each asset’s risk contribution is 
-RC_i = w_i \cdot \frac{\partial \sigma_{\text{portfolio}}}{\partial w_i}
+$RC_i = w_i \cdot \frac{\partial \sigma_{\text{portfolio}}}{\partial w_i}$
 , where 
-\frac{\partial \sigma_{\text{portfolio}}}{\partial w_i} = \frac{(\mathbf{\Sigma} \mathbf{w})_i}{\sigma_{\text{portfolio}}}
+$\frac{\partial \sigma_{\text{portfolio}}}{\partial w_i} = \frac{(\mathbf{\Sigma} \mathbf{w})_i}{\sigma_{\text{portfolio}}}$
 .
 Goal: 
 RC_i = RC_j
@@ -920,7 +920,7 @@ i, j
 , equalizing risk.
 Constraints:  
 Transaction costs: 
-\text{cost} = \sum_i c_i \cdot |w_i - w_{i,0}|
+$\text{cost} = \sum_i c_i \cdot |w_i - w_{i,0}|$
 , where 
 c_i
  is the cost per unit change, and 

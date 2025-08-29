@@ -17,14 +17,8 @@ $\bar{P}$ could shift based on external factors like network usage or staking re
 The speed of reversion $(\theta)$ could vary by token type—faster for stablecoins, slower for speculative assets.
 Jump-Diffusion Processes
 Incorporating jumps is a brilliant way to model black swan events (e.g., regulatory news, hacks). A practical tweak:
-Tie the jump intensity (
-dN_t
-) to a Poisson process with a rate 
-\lambda
- that increases during periods of high market activity or agent coordination (e.g., detected via X posts or on-chain data).
-Use empirical jump sizes (
-J_t
-) derived from past crypto market shocks (e.g., 20-50% drops).
+Tie the jump intensity ($dN_t$) to a Poisson process with a rate $\lambda$ that increases during periods of high market activity or agent coordination (e.g., detected via X posts or on-chain data).
+Use empirical jump sizes ($J_t$) derived from past crypto market shocks (e.g., 20-50% drops).
 Stochastic Volatility (Heston Model)
 The Heston model’s ability to let volatility evolve stochastically is perfect for capturing crypto’s wild swings. A consideration:
 Correlate volatility with agent sentiment or on-chain metrics (e.g., staking volume, burn rates). For instance:
@@ -199,11 +193,7 @@ It’s a hybrid of an Ornstein-Uhlenbeck process (mean-reverting) and GBM (propo
 The drift ensures prices align with supply dynamics and agent incentives.
 The diffusion captures the speculative volatility typical of crypto markets.
 Step 6: Verify with Ito’s Lemma (Optional Check)
-To ensure consistency, let’s relate 
-P_t
- back to 
-S_t
-. If 
+To ensure consistency, let’s relate $P_t$ back to $S_t$. If
 $$P_t = m S_t$$
 , then:
 $$dP_t = m dS_t$$
@@ -234,7 +224,7 @@ $\bar{P}$
  is the target price,
 \sigma
  is the volatility,
-dW_t
+$dW_t$
  is the Wiener process increment.
 Practical Implementation
 For simulation (e.g., in Python), use the Euler-Maruyama method:
@@ -271,9 +261,7 @@ Stochastic Volatility: Replace
 \sigma
  with a process like Heston’s:
 d\sigma_t^2 = \kappa (\theta_\sigma - \sigma_t^2) dt + \xi \sigma_t dW_t^\sigma
-Jumps: Add a term 
-J_t dN_t
- for sudden events.
+Jumps: Add a term $J_t dN_t$ for sudden events.
 Agent-Driven Supply: Make 
 \theta
  or 
@@ -303,9 +291,7 @@ Jumps are discrete, random events that cause abrupt price changes. We’ll use a
 Jumps occur at random times, with frequency governed by a Poisson process with rate 
 \lambda
  (average number of jumps per unit time).
-When a jump occurs, the price changes by a random magnitude 
-J_t
-, drawn from a specified distribution.
+When a jump occurs, the price changes by a random magnitude $J_t$, drawn from a specified distribution.
 The jump term is:
 $$J_t dN_t$$
 
@@ -314,26 +300,18 @@ $dN_t$ is the increment of a Poisson process:
 $dN_t = 1$ if a jump occurs in $[t, t+dt)$, and $0$ otherwise, with $\mathbb{E}[dN_t] = \lambda dt$,
 $J_t$ is the jump size at time $t$, a random variable (e.g., positive for upward jumps, negative for downward jumps).
 Step 2: Choose a Jump Size Distribution
-The jump size 
-J_t
- should reflect the nature of shocks in a tokenized economy. Common choices include:
-Normal Distribution: 
-J_t \sim N(\mu_J, \sigma_J^2)
-, allowing both positive and negative jumps with a mean 
+The jump size $J_t$ should reflect the nature of shocks in a tokenized economy. Common choices include:
+Normal Distribution: $J_t \sim N(\mu_J, \sigma_J^2)$, allowing both positive and negative jumps with a mean
 \mu_J
  and variance 
 \sigma_J^2
 .
-Log-Normal Distribution: 
-J_t = e^Z - 1
- where 
+Log-Normal Distribution: $J_t = e^Z - 1$ where
 Z \sim N(\mu_J, \sigma_J^2)
 , ensuring positive jumps (e.g., for pumps), with relative size controlled by 
 \mu_J
 .
-Signed Mixture: A mix of positive and negative jumps, e.g., 
-J_t = Y \cdot |Z|
- where 
+Signed Mixture: A mix of positive and negative jumps, e.g., $J_t = Y \cdot |Z|$ where
 Y = \pm 1
  (with probabilities 
 p
@@ -342,25 +320,16 @@ p
 ) and 
 |Z| \sim \text{Exponential}(\beta)
 .
-For generality, let’s use a normal distribution:
-J_t \sim N(\mu_J, \sigma_J^2)
-\mu_J
- could be positive (e.g., 0.1 for a 10% average jump) or zero (neutral shocks),
-\sigma_J
- controls the variability of jump sizes.
-In a tokenized economy, jumps might be relative to the current price (e.g., a 20% drop), so we’ll scale 
-J_t
- by 
-P_t
-:
-\text{Jump effect} = P_{t^-} J_t
+For generality, let’s use a normal distribution: $J_t \sim N(\mu_J, \sigma_J^2)$ $\mu_J$ could be positive (e.g., 0.1 for a 10% average jump) or zero (neutral shocks), $\sigma_J$ controls the variability of jump sizes.
+In a tokenized economy, jumps might be relative to the current price (e.g., a 20% drop), so we’ll scale $J_t$ by $P_t$:
+$\text{Jump effect} = P_{t^-} J_t$
 
 where 
 P_{t^-}
  is the price just before the jump.
 Step 3: Combine into the Full SDE
 Adding the jump term to the original SDE, we get:
-dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t
+$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t$$
 
 where:
 \theta (\bar{P} - P_t) dt
@@ -381,13 +350,11 @@ Jumps: Sudden events occur at rate
 \lambda
 , with the price shifting by a percentage drawn from 
 N(\mu_J, \sigma_J^2)
-. For example, if 
-J_t = 0.2
-, the price jumps by 20% of its pre-jump value.
+. For example, if $J_t = 0.2$, the price jumps by 20% of its pre-jump value.
 The expected price change over a small interval 
 dt
 , accounting for jumps, is:
-\mathbb{E}[dP_t] = \theta (\bar{P} - P_t) dt + \lambda \mu_J P_t dt
+$$\mathbb{E}[dP_t] = \theta (\bar{P} - P_t) dt + \lambda \mu_J P_t dt$$
 
 The jump term contributes an additional drift (
 \lambda \mu_J P_t
@@ -396,11 +363,10 @@ Step 5: Simulation Considerations
 To simulate this SDE, we need to discretize it. The Euler-Maruyama method works for the continuous part, and we’ll add jumps by sampling the Poisson process. Here’s the discrete update over a time step 
 dt
 :
-Continuous update: 
-P_{t+dt}^* = P_t + \theta (\bar{P} - P_t) dt + \sigma P_t \Delta W_t
+Continuous update:
+$$P_{t+dt}^* = P_t + \theta (\bar{P} - P_t) dt + \sigma P_t \Delta W_t$$
 
-where 
-\Delta W_t \sim N(0, dt)
+where $$\Delta W_t \sim N(0, dt)$$
 .
 Jump update: 
 Sample the number of jumps 
@@ -419,7 +385,7 @@ N_{dt}
  is usually 0 or 1 in practice.
 Final SDE
 The jump-diffusion SDE for the token price is:
-dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t
+$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t$$
 
 with:
 \theta = m k
@@ -428,10 +394,8 @@ with:
  (target price),
 \sigma
  (continuous volatility),
-J_t \sim N(\mu_J, \sigma_J^2)
- (jump size),
-dN_t \sim \text{Poisson}(\lambda dt)
- (jump occurrence).
+$J_t \sim N(\mu_J, \sigma_J^2)$ (jump size),
+$dN_t \sim \text{Poisson}(\lambda dt)$ (jump occurrence).
 Python Implementation
 Here’s a simulation of the SDE with jumps:
 python
@@ -485,11 +449,7 @@ plt.title("Token Price with Jump-Diffusion")
 plt.legend()
 plt.show()
 Output Interpretation
-The plot will show a price path with smooth fluctuations (from 
-dW_t
-) punctuated by sharp jumps (from 
-dN_t
-).
+The plot will show a price path with smooth fluctuations (from $dW_t$) punctuated by sharp jumps (from $dN_t$).
 With 
 \mu_J = 0.1
  and 
@@ -502,18 +462,10 @@ State-Dependent Jumps: Make
 \lambda
  or 
 \mu_J
- depend on 
-P_t
- (e.g., more jumps when 
-P_t
- deviates far from 
+ depend on $P_t$ (e.g., more jumps when $P_t$ deviates far from
 \bar{P}
 ).
-Correlated Jumps: Introduce correlation between 
-dW_t
- and 
-J_t
- for more realistic event-driven volatility.
+Correlated Jumps: Introduce correlation between $dW_t$ and $J_t$ for more realistic event-driven volatility.
 Agent Triggers: Link jumps to aggregate agent actions (e.g., a threshold of buy/sell volume).
 This jump-diffusion SDE enriches your model with the ability to capture sudden shocks, making it more representative of tokenized economies. Let me know if you’d like to tweak the jump distribution, adjust parameters, or explore further refinements!
 
