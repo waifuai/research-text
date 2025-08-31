@@ -1,0 +1,5 @@
+{
+  "title": "Autonomous AI Agents in the Tokenized Economy: Learning, Adaptation, and Emergent Behavior",
+  "link": "./52-emergent.md",
+  "description": "This paper investigates autonomous AI agents in Project Genesis, focusing on their learning and adaptation via reinforcement learning. 🤖 It analyzes emergent behaviors like price discovery, market stability, and wealth distribution. 📊 Simulations demonstrate how agents use DQN to optimize trading strategies in dynamic environments. 🔄 Increasing intelligence leads to strategic interactions, exploiting efficiencies but risking instability. ⚠️ The framework highlights implications for AI-driven economies, balancing efficiency with fairness challenges. ⚖️"
+}

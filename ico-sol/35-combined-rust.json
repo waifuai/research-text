@@ -1,0 +1,5 @@
+{
+  "title": "Rust Weavings: Anchoring AbundanceCoin's ICO in Solana's Smart Tapestry with Affiliate Threads",
+  "link": "./35-combined-rust.md",
+  "description": "This document outlines the step-by-step blueprint for translating AbundanceCoin's ICO vision into robust Solana smart contracts using Rust 📜💻. It delves into core functionalities like initializing with bonding curves, buying and selling tokens dynamically, and integrating affiliate systems for commission-driven growth 📈👥. Detailed Rust code snippets showcase the Anchor framework in action, complete with program-derived addresses, error handling, and security considerations 🛡️🔧. Emphasizing testing and deployment on Solana, it sets the stage for a decentralized economy thriving on transparency and innovation 🚀🌐."
+}

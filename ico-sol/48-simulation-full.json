@@ -1,0 +1,5 @@
+{
+  "title": "🤖🔄 Full Spectrum Trader: Autonomous Agent Simulation in Volatile Markets 📈",
+  "link": "./48-simulation-full.md",
+  "description": "This paper introduces a comprehensive Python simulation for an autonomous trading agent utilizing reinforcement learning in a dynamic market with bonding curves. 🧠📊 Featuring stochastic fluctuations, dynamic parameters, and a partial order book, it creates realistic liquidity and price slippage scenarios. 🤖💹 The agent employs variable order sizes, enhanced state representation, and transaction history to make informed decisions through rewards and inventory penalties. 📉📈 Advanced visualizations and KPIs like Sharpe ratio provide in-depth analysis of performance and market evolution. 🚀🌐"
+}

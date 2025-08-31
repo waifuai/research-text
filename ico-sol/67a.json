@@ -1,0 +1,5 @@
+{
+  "title": "Adaptive Asset Bonding: Time-Warped Curves Defending Rare Art from Illiquidity and Manipulation 🎨⏳🛡️",
+  "link": "./67a.md",
+  "description": "This paper explores a dynamic bonding curve model designed for illiquid real-world assets like rare art, adapting to trade recency, volume, and external market signals. 🖼️💹📊 It incorporates manipulation resistance through quadratic penalties on large trades, ensuring fairness in decentralized markets. 🔒⚖️🚫 Simulations demonstrate superior stability compared to standard curves during both high activity and low liquidity periods. 📈🌀🔮 An AI agent trained via reinforcement learning optimally buys and sells, integrating its own external market predictor for strategic advantage. 🤖🧠📈"
+}

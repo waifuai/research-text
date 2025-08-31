@@ -1,0 +1,5 @@
+{
+  "title": "🤖💹 Market Mastery: AI Simulates Q-Learning in Bonding Curve Battles",
+  "link": "./47-simulation-simple.md",
+  "description": "This paper presents a Python simulation🤖 for training reinforcement learning agents in dynamic tokenized markets using Q-learning algorithms🧠. It models a simplified market environment📈 with bonding curves, where agents buy, sell, or hold tokens to maximize rewards💰. The simulation loop iterates through states and actions🔄, updating the agent's Q-table based on market trends and supply levels⚖️. Designed for Kaggle notebooks📓, it offers insights into learning strategies and parameter tuning for real-world blockchain applications🌐."
+}

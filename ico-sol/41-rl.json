@@ -1,0 +1,5 @@
+{
+  "title": "🤖💹 RL in Economic Agents: Mastering Assets, Actions, and Rewards 🎯🧠",
+  "link": "./41-rl.md",
+  "description": "🤖 This insightful paper unveils a comprehensive RL framework for agent-based economic systems with ever-shifting asset prices. 💰 Agent states include balances, holdings, and market observations, defining actions for strategic buying, selling, and holding of assets. 📈 Rewards derive from utility functions and risk adjustments, optimized via Q-learning, policy gradients, and neural networks for deep RL. 🎯 Equations for bonding curves, market clearing, price volatility, and wealth distribution metrics pave the way for innovative applications in DeFi and tokenized finance 🌐."
+}

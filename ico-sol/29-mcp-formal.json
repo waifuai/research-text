@@ -1,0 +1,5 @@
+{
+  "title": "Formal Essence of ContextCoin: Blueprint for Solana's Tokenized Trust ⚖️",
+  "link": "./29-mcp-formal.md",
+  "description": "This paper delivers a rigorous formal specification for ContextCoin (CTX), a Solana-based smart contract that integrates dynamic bonding curves with resource access mechanisms 🤖🔒. Through detailed state spaces, invariants, and secure instructions for token trading and resource monetization, it ensures robust decentralized operations 📊💱. Emphasizing security properties like double-spending prevention and fee control, it fosters trust and innovation in blockchain ecosystems 🚀🛡️. Paving the way for formal verification tools, this document advances the frontier of verifiable decentralized finance 🌐🔍. "
+}

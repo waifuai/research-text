@@ -1,0 +1,5 @@
+{
+  "title": "Enhanced Mathematical Framework for TokenAffiliates",
+  "link": "./72-affiliate-game-theory.md",
+  "description": "This document enhances the TokenAffiliates program with a rigorous mathematical framework using game theory, utility functions, and equations to optimize commissions and prevent abuse. 🧮 Affiliates, Investors, and Project Creators have defined utility functions that drive Nash Equilibrium for balanced strategies. 🏆 The framework includes fixed, tiered, and dynamic commission models with formulas to incentivize quality and adapt to market conditions. 📊 Abuse prevention features staking requirements and quality thresholds to deter Sybil attacks and spamming. 🛡️ Bonding curve integration adjusts rewards during price changes, while dispute resolution minimizes costs through weighted evidence. ⚖️ Equilibrium analysis ensures optimal effort, risk, and funding alignment, with novel insights for feedback loops and practical simplifications. 🚀"
+}

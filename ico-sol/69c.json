@@ -1,0 +1,5 @@
+{
+  "title": "Capturing Sudden Shocks: Jump-Diffusion in Token Pricing 📈",
+  "link": "./69c.md",
+  "description": "This piece extends the stochastic differential equation for token prices by adding jumps via a compound Poisson process to model discontinuous changes from events like news or regulatory shifts. 🚀 We define jump components, choose a normal distribution for sizes, and scale them by current price for realism. 📊 The full SDE combines mean-reversion drift, continuous diffusion, and discrete jumps for enriched dynamics. ⚡ A Python simulation illustrates price paths with smooth fluctuations punctuated by sharp jumps. 🐍 Expectations account for jump effects on price evolution. 🎲 Extensions propose state-dependent or correlated jumps, plus agent-triggered variations. 🔄 This approach makes token economy models more accurate and event-responsive. 💹"
+}

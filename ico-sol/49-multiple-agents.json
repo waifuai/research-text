@@ -1,0 +1,5 @@
+{
+  "title": "🤖⚔️ Agent Wars: Mastering Crypto Trades with RL Multiplayer Madness 🎲💹",
+  "link": "./49-multiple-agents.md",
+  "description": "🤖 Explore a fascinating multi-agent reinforcement learning setup where multiple virtual traders compete in a simulated crypto market. ⚔️ Agents utilize Q-learning to make intelligent buy, sell, and hold decisions amidst dynamic bonding curves and order book fluctuations. 🎲 Witness the emergence of trading strategies through performance visualizations and metrics across agents. 💹 Delve into advanced extensions like deep Q-networks to enhance decision-making in complex market scenarios."
+}
