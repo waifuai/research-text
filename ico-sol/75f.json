@@ -1,0 +1,5 @@
+{
+  "title": "Variational Inference: Bayesian Power in Tokenized Worlds",
+  "link": "./75f.md",
+  "description": "Dive into the world of Variational Inference (VI), a smart way to crack Bayesian mysteries in tokenized ecosystems using approximations 🌟. This exploration applies VI to AbundanceCoin bonding curves, estimating parameters like slopes and bases with mean-field tricks 📈. For tokenized economies, it predicts exchange rates between Token A and Token B, optimizing rates with iterative updates 🔄. In TokenAffiliates, VI fine-tunes commission parameters from exponential income data, ensuring positive constraints 💰. Efficient and faster than MCMC, VI brings scalable insights to complex models 🚀."
+}

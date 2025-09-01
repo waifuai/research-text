@@ -1,0 +1,5 @@
+{
+  "title": "Autonomous AI-Powered 100x Leveraged Trading on Intertoken Swaps",
+  "link": "./74-leverage.md",
+  "description": "🚀 This enhanced paper delves into autonomous AI agents employing 100x leverage for trading on intertoken swap platforms in DeFi ecosystems. 📈 It provides detailed mathematical equations for swap dynamics, leverage mechanics, and bonding curves to model prices and exchanges. 🤖 The AI agent framework uses reinforcement learning with state spaces, action spaces, and reward functions optimized for high-leverage scenarios. ⚡ Dynamic adjustments incorporate volatility-based leverage tuning and VaR to mitigate risks like liquidation cascades. 🛡️ Advanced risk management includes portfolio entropy metrics, adjustable liquidation thresholds, and ecosystem circuit breakers to promote stability. 🔮 The study highlights implications for capital amplification, AI-driven markets, and potential regulatory needs in DeFi."
+}

@@ -1,5 +1,5 @@
 {
-  "title": "🪙📈 Mathematical Framework for Simulating Token Economies with Dynamic Bonding Curves and Commission-Based Affiliates 🧮💰",
-  "link": "./39a.md",
-  "description": "🔍 This document presents a rigorous mathematical translation of a Python simulation modeling token economies where prices fluctuate via dynamic bonding curves 📊. 👥 Affiliates engage in buying/selling tokens, earning adjustable commissions that influence their behaviors over discrete time steps ⏳. ⚙️ The formulation includes equations for supply/demand dynamics, commission adjustments, and analysis of market stability 📉. 🌟 Researchers can leverage concrete examples of bonding curve functions like linear and exponential to probe decentralized systems 🏦."
+    "title": "Mathematical Formulation of Token Economy with Affiliates",
+    "link": "./39a.md",
+    "description": "Dive into the exciting process of transforming a Python-based token economy simulation with dynamic bonding curves into a precise mathematical formulation. 🔄 This guide breaks down core components like tokens, prices, and affiliates into clear mathematical symbols. 🧮 Explore the problem statement modeling interactions over time with buy/sell dynamics. 💹 Equations detail bonding curves, transactions, and commission adjustments for accurate representation. ➗ Learn about the simulation approach, from initialization to iterative updates across discrete steps. 🔄 Analyze bonding curve examples ranging from linear to exponential functions. 📊 Discover how commission rates dynamically adjust based on activity, keeping the model flexible. ⚡ This mathematical framework empowers deep analysis of market stability and affiliate performance. 📈"
 }

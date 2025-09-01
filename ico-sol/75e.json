@@ -1,0 +1,5 @@
+{
+  "title": "Hamiltonian Monte Carlo in Tokenized Ecosystems",
+  "link": "./75e.md",
+  "description": "Dive into the world of tokenized ecosystems with Hamiltonian Monte Carlo! 🔬 This advanced MCMC method supercharges Bayesian inference for models in AbundanceCoin, Tokenized Economy, and TokenAffiliates. 📈 By leveraging gradient information, HMC proposes samples more efficiently than Metropolis-Hastings. 🚀 The document details applying HMC to bonding curve parameters, ensuring each section is self-contained with tons of equations. 📚 Explore potential and kinetic energies, gradients, and the leapfrog integrator for precise sampling. ⚙️ Witness how HMC handles posterior distributions in token economics, making it a game-changer for convergence. 🌟 Tuning steps and steps in the integrator are crucial for optimal performance. 🔧 Get ready to enhance your understanding of probabilistic modeling in crypto! 💡"
+}
