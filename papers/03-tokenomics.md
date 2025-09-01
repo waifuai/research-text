@@ -68,13 +68,13 @@ S
  be the total token supply, and 
 P(S)
  the price per token:
-P(S) = k \cdot S
+$$ P(S) = k \cdot S $$
 k
 : Price slope constant (e.g., 0.0001 SOL per token unit), set to ensure gradual price growth.
 Initial condition: 
-S_0 = 0
+$$ S_0 = 0 $$
 , 
-P(0) = 0
+$$ P(0) = 0 $$
  (though a reserve price 
 P_{\text{min}}
  could be added).
@@ -107,7 +107,7 @@ Cost to mint
  tokens at supply 
 S
 :
-C(\Delta S, S) = \int_S^{S + \Delta S} P(s) \, ds = \int_S^{S + \Delta S} k(t) \cdot s \, ds = k(t) \cdot \frac{(S + \Delta S)^2 - S^2}{2}
+$$ C(\Delta S, S) = \int_S^{S + \Delta S} P(s) \, ds = \int_S^{S + \Delta S} k(t) \cdot s \, ds = k(t) \cdot \frac{(S + \Delta S)^2 - S^2}{2} $$
 
 This quadratic cost incentivizes early investment while scaling price with adoption.
 3. Belief Quantification: The Belief Index
@@ -119,7 +119,7 @@ b_i(t)
  across 
 N
  participants:
-B(t) = \frac{1}{N} \sum_{i=1}^N b_i(t)
+$$ B(t) = \frac{1}{N} \sum_{i=1}^N b_i(t) $$
 b_i(t)
 : Individual belief score for participant 
 i
@@ -130,7 +130,7 @@ E_i(t)
  (e.g., token purchases, invention interactions) and profit visibility 
 R(t)
  (total revenue from AI sales):
-\frac{db_i(t)}{dt} = \beta \cdot E_i(t) + \gamma \cdot R(t) - \delta \cdot b_i(t)
+$$ \frac{db_i(t)}{dt} = \beta \cdot E_i(t) + \gamma \cdot R(t) - \delta \cdot b_i(t) $$
 \beta
 : Engagement weighting (e.g., 0.1 per SOL spent).
 \gamma
@@ -179,7 +179,7 @@ L
 Each invention sells for price 
 P_I(t)
 , set dynamically via Helius real-time data:
-P_I(t) = P_{I0} \cdot \left(1 + \kappa \cdot \frac{D(t)}{D_{\text{max}}}\right)
+$$ P_I(t) = P_{I0} \cdot \left(1 + \kappa \cdot \frac{D(t)}{D_{\text{max}}}\right) $$
 P_{I0}
 : Base price (e.g., 10 SOL).
 \kappa
@@ -209,7 +209,7 @@ All
 5. System Dynamics and Stability
 5.1 Feedback Loop
 Belief, demand, and revenue form a feedback loop:
-\frac{dS(t)}{dt} = D(t), \quad \frac{dR(t)}{dt} = I(t) \cdot \frac{dP_I(t)}{dt} + P_I(t) \cdot \frac{dI(t)}{dt}
+$$ \frac{dS(t)}{dt} = D(t), \quad \frac{dR(t)}{dt} = I(t) \cdot \frac{dP_I(t)}{dt} + P_I(t) \cdot \frac{dI(t)}{dt} $$
 S(t)
  grows with 
 D(t)
@@ -228,7 +228,7 @@ D(t)
 To prevent runaway inflation or collapse, we impose a stability constraint on 
 k(t)
 :
-\frac{\partial P(S)}{\partial S} = k(t) < \frac{R(t)}{S(t)}
+$$ \frac{\partial P(S)}{\partial S} = k(t) < \frac{R(t)}{S(t)} $$
 
 This ensures price growth doesn’t outpace revenue, maintaining investor confidence.
 6. Implementation on Solana with Helius
