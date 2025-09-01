@@ -15,63 +15,63 @@ $$ \mathbf{R}_\alpha(t) = \mathbf{R}_{\alpha 0} + \mathbf{v}_\alpha t $$
 Projectile position: 
 $$ \mathbf{R}_\beta(t) = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t $$
 Interception occurs when 
-$$ \mathbf{R}_\alpha(t^*) = \mathbf{R}_\beta(t^*) $$
+$$ \mathbf{R}_\alpha($t^*$) = \mathbf{R}_\beta($t^*$) $$
 , yielding:
-$$ \mathbf{R}_{\alpha 0} + \mathbf{v}_\alpha t^* = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t^* $$
+$$ \mathbf{R}_{\alpha 0} + \mathbf{v}_\alpha $t^*$ = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta $t^*$ $$
 Rearranging for the projectile velocity:
-$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_\alpha $$
+$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{$t^*$} + \mathbf{v}_\alpha $$
 The speed constraint is:
-$$ \|\mathbf{v}_\beta\|^2 = s_\beta^2 $$
+$$ \|\mathbf{v}_\beta\|^2 = $s_\beta^2$ $$
 Substitute 
 $\mathbf{v}_\beta$
  into the magnitude equation:
-$$ \left\| \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_\alpha \right\|^2 = s_\beta^2 $$
+$$ \left\| \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{$t^*$} + \mathbf{v}_\alpha \right\|^2 = $s_\beta^2$ $$
 Define the relative initial displacement as 
 $$ \mathbf{r}_0 = \mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0} $$
 . Then:
-$$ \left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_\alpha \right\|^2 = s_\beta^2 $$
+$$ \left\| \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_\alpha \right\|^2 = $s_\beta^2$ $$
 Expanding the norm:
-$$ \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_\alpha \right) \cdot \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_\alpha \right) = \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_\alpha}{t^*} + \mathbf{v}_\alpha \cdot \mathbf{v}_\alpha = s_\beta^2 $$
-Multiply through by 
-t^{*2}
+$$ \left( \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_\alpha \right) \cdot \left( \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_\alpha \right) = \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{$t^{*2}$} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_\alpha}{$t^*$} + \mathbf{v}_\alpha \cdot \mathbf{v}_\alpha = $s_\beta^2$ $$
+Multiply through by
+$$t^{*2}$$
  to eliminate the denominator:
-$$ \mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) t^* + (\mathbf{v}_\alpha \cdot \mathbf{v}_\alpha) t^{*2} = s_\beta^2 t^{*2} $$
-Rearrange into a standard quadratic form in 
-t^*
-:
-$$ (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) t^{*2} - 2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) t^* - \|\mathbf{r}_0\|^2 = 0 $$
+$$ \mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) $t^*$ + (\mathbf{v}_\alpha \cdot \mathbf{v}_\alpha) $t^{*2}$ = $s_\beta^2$ $t^{*2}$ $$
+Rearrange into a standard quadratic form in
+$$t^*$$
+ :
+$$ ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) $t^{*2}$ - 2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) $t^*$ - \|\mathbf{r}_0\|^2 = 0 $$
 Let:
-$$ a = s_\beta^2 - \|\mathbf{v}_\alpha\|^2 $$
+$$ a = $s_\beta^2$ - \|\mathbf{v}_\alpha\|^2 $$
 $$ b = -2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) $$
 $$ c = -\|\mathbf{r}_0\|^2 $$
 The discriminant of this quadratic is:
-$$ \Delta_t = b^2 - 4ac = [2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)]^2 - 4 (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) (-\|\mathbf{r}_0\|^2) $$
-$$ \Delta_t = 4 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + 4 (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 $$
-$$ \Delta_t = 4 [ (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 ] $$
+$$ \Delta_t = b^2 - 4ac = [2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)]^2 - 4 ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) (-\|\mathbf{r}_0\|^2) $$
+$$ \Delta_t = 4 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + 4 ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 $$
+$$ \Delta_t = 4 [ (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 ] $$
 The solutions for 
-t^*
+$t^*$
  are:
-$$ t^* = \frac{-b \pm \sqrt{\Delta_t}}{2a} = \frac{2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{4 [ (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 ]}}{2 (s_\beta^2 - \|\mathbf{v}_\alpha\|^2)} $$
-$$ t^* = \frac{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2}}{s_\beta^2 - \|\mathbf{v}_\alpha\|^2} $$
+$$ $t^*$ = \frac{-b \pm \sqrt{\Delta_t}}{2a} = \frac{2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{4 [ (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 ]}}{2 ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2)} $$
+$$ $t^*$ = \frac{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + ($s_\beta^2$ - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2}}{$s_\beta^2$ - \|\mathbf{v}_\alpha\|^2} $$
 For 
-$t^* > 0$
+$$t^*$ > 0$
 , we select physically meaningful roots based on initial conditions and directionality.
 ### 2.2 Velocity Components
 Once 
-t^*
+$t^*$
  is determined, the velocity becomes:
-$$ \mathbf{v}_\beta = \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_\alpha $$
+$$ \mathbf{v}_\beta = \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_\alpha $$
 This matches the structure of the original 
 $\mathbf{v}$
 , where the 
 $\pm \sqrt{\Delta}$
  term corresponds to the two possible interception times. To align with the original notation, note that:
-$$ D = \|\mathbf{r}_0\|^2, \quad \Delta = s_\beta^2 \|\mathbf{r}_0\|^2 - (\mathbf{v}_\alpha \cdot \mathbf{r}_0)^2 $$
+$$ D = \|\mathbf{r}_0\|^2, \quad \Delta = $s_\beta^2$ \|\mathbf{r}_0\|^2 - (\mathbf{v}_\alpha \cdot \mathbf{r}_0)^2 $$
 Thus, the velocity components can be expressed as:
 $$ \mathbf{v}_\beta^\pm = \mathbf{v}_\alpha \pm \frac{\mathbf{r}_0 \sqrt{\Delta}}{D} $$
 This form highlights the symmetry of the two solutions, differing only by the sign of the correction term.
-3. Extension to Constant Acceleration
-3.1 Kinematic Equations
+## 3. Extension to Constant Acceleration
+### 3.1 Kinematic Equations
 When the target accelerates with constant 
 $\mathbf{a}_\alpha$
 , its position becomes:
@@ -79,32 +79,32 @@ $$ \mathbf{R}_\alpha(t) = \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t + \fra
 The projectile, assumed to have zero acceleration, follows:
 $$ \mathbf{R}_\beta(t) = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t $$
 At interception time 
-$t^*$
+$$t^*$$
 :
-$$ \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t^* + \frac{1}{2} \mathbf{a}_\alpha t^{*2} = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t^* $$
+$$ \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} $t^*$ + \frac{1}{2} \mathbf{a}_\alpha $t^{*2}$ = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta $t^*$ $$
 Solve for 
 $\mathbf{v}_\beta$
 :
-$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* $$
+$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{$t^*$} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha $t^*$ $$
 Apply the speed constraint:
-$$ \left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right\|^2 = s_\beta^2 $$
+$$ \left\| \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha $t^*$ \right\|^2 = $s_\beta^2$ $$
 Expand the expression:
-$$ \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) \cdot \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) = s_\beta^2 $$
-$$ \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{t^*} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha t^* + \frac{1}{4} \mathbf{a}_\alpha \cdot \mathbf{a}_\alpha t^{*2} = s_\beta^2 $$
+$$ \left( \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha $t^*$ \right) \cdot \left( \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha $t^*$ \right) = $s_\beta^2$ $$
+$$ \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{$t^{*2}$} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{$t^*$} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha $t^*$ + \frac{1}{4} \mathbf{a}_\alpha \cdot \mathbf{a}_\alpha $t^{*2}$ = $s_\beta^2$ $$
 Multiply through by 
-t^{*2}
+$t^{*2}$
 :
-$$ \mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + (\mathbf{r}_0 \cdot \mathbf{a}_\alpha) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0}) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} = s_\beta^2 t^{*2} $$
+$$ \mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) $t^*$ + (\mathbf{r}_0 \cdot \mathbf{a}_\alpha) $t^{*2}$ + (\mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0}) $t^{*2}$ + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} = $s_\beta^2$ $t^{*2}$ $$
 Rearrange:
-$$ \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + [(\mathbf{r}_0 \cdot \mathbf{a}_\alpha) + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} - s_\beta^2] t^{*2} + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + \mathbf{r}_0 \cdot \mathbf{r}_0 = 0 $$
+$$ \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + [(\mathbf{r}_0 \cdot \mathbf{a}_\alpha) + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} - $s_\beta^2$] $t^{*2}$ + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) $t^*$ + \mathbf{r}_0 \cdot \mathbf{r}_0 = 0 $$
 This is a quartic equation in 
-t^*
+$t^*$
 :
-$$ p_4 t^{*4} + p_3 t^{*3} + p_2 t^{*2} + p_1 t^* + p_0 = 0 $$
+$$ p_4 t^{*4} + p_3 t^{*3} + p_2 $t^{*2}$ + p_1 $t^*$ + p_0 = 0 $$
 Where:
-p_4 = \frac{1}{4} \|\mathbf{a}_\alpha\|^2
+p_4 = $\frac{1}{4} \|\mathbf{a}_\alpha\|^2$
 p_3 = \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha
-p_2 = \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \|\mathbf{v}_{\alpha 0}\|^2 - s_\beta^2
+p_2 = \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \|\mathbf{v}_{\alpha 0}\|^2 - $s_\beta^2$
 p_1 = 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0})
 p_0 = \|\mathbf{r}_0\|^2
 ### 3.2 Solving the Quartic
@@ -121,21 +121,21 @@ Root Bracketing: Identify intervals where
 $f(t)$
  changes sign, then refine using bisection.
 Once 
-t^*
+$t^*$
  is found, compute:
-$$ \mathbf{v}_\beta = \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* $$
-### 4. Special Cases and Validation
+$$ \mathbf{v}_\beta = \frac{\mathbf{r}_0}{$t^*$} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha $t^*$ $$
+## 4. Special Cases and Validation
 ### 4.1 Zero Acceleration
 If 
 $\mathbf{a}_\alpha = 0$
 , the quartic reduces to the quadratic from Section 2:
-$$ (\|\mathbf{v}_{\alpha 0}\|^2 - s_\beta^2) t^{*2} - 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* - \|\mathbf{r}_0\|^2 = 0 $$
+$$ (\|\mathbf{v}_{\alpha 0}\|^2 - $s_\beta^2$) $t^{*2}$ - 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) $t^*$ - \|\mathbf{r}_0\|^2 = 0 $$
 This confirms consistency with the original solution.
 ### 4.2 Parallel Motion
 If 
 $\mathbf{r}_0 \parallel \mathbf{v}_{\alpha 0} \parallel \mathbf{a}_\alpha$
 , the equations simplify significantly, potentially reducing the degree of the polynomial.
-### 5. Conclusion
+## 5. Conclusion
 This paper has enriched the original analysis by providing a time-based quadratic solution for constant velocity and a quartic formulation for constant acceleration. The wealth of equations—spanning vector manipulations, quadratic and quartic forms, and numerical strategies—offers a comprehensive toolkit for projectile interception problems. Future work could incorporate variable acceleration or external forces like gravity.
 Final Answer: The generalized velocity is 
 $\boxed{\mathbf{v}_\beta}$

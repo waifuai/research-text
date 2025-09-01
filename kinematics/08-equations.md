@@ -13,20 +13,20 @@ $\mathbf{v}_\alpha = (v_{\alpha x}, v_{\alpha y}, v_{\alpha z})$
  aligns with the x-axis. Define the rotation matrix 
 $\mathbf{R}$
  based on $\mathbf{v}_\alpha$’s direction cosines:
-$\cos \theta_x = \frac{v_{\alpha x}}{\|\mathbf{v}_\alpha\|}, \quad \cos \theta_y = \frac{v_{\alpha y}}{\|\mathbf{v}_\alpha\|}, \quad \cos \theta_z = \frac{v_{\alpha z}}{\|\mathbf{v}_\alpha\|}$
+$$\cos \theta_x = \frac{v_{\alpha x}}{\|\mathbf{v}_\alpha\|}, \quad \cos \theta_y = \frac{v_{\alpha y}}{\|\mathbf{v}_\alpha\|}, \quad \cos \theta_z = \frac{v_{\alpha z}}{\|\mathbf{v}_\alpha\|}$$
 For simplicity, assume 
-$\mathbf{v}_\alpha = (v_\alpha, 0, 0)$
+$$\mathbf{v}_\alpha = (v_\alpha, 0, 0)$$
  after rotation (adjusting 
 $\mathbf{R}$
  accordingly). The transformed positions are:
-$\mathbf{R}'_{\alpha 0} = \mathbf{R} \mathbf{R}_{\alpha 0}, \quad \mathbf{R}'_{\beta 0} = \mathbf{R} \mathbf{R}_{\beta 0}, \quad \mathbf{v}'_\alpha = \mathbf{R} \mathbf{v}_\alpha = (v_\alpha, 0, 0)$
+$\mathbf{R}'_{\alpha 0} = \mathbf{R} \mathbf{R}_{\alpha 0}, \quad \mathbf{R}'_{\beta 0} = \mathbf{R} \mathbf{R}_{\beta 0}, \quad \mathbf{v}'_\alpha = \mathbf{R} $\mathbf{v}_\alpha = (v_\alpha, 0, 0)$$
 Interception condition in the new frame:
-$\mathbf{R}'_{\alpha 0} + \mathbf{v}'_\alpha t^* = \mathbf{R}'_{\beta 0} + \mathbf{v}'_\beta t^*$
-$\mathbf{v}'_\beta = \frac{\mathbf{R}'_{\alpha 0} - \mathbf{R}'_{\beta 0}}{t^*} + \mathbf{v}'_\alpha$
+$$\mathbf{R}'_{\alpha 0} + \mathbf{v}'_\alpha t^* = \mathbf{R}'_{\beta 0} + \mathbf{v}'_\beta t^*$$
+$$\mathbf{v}'_\beta = \frac{\mathbf{R}'_{\alpha 0} - \mathbf{R}'_{\beta 0}}{t^*} + \mathbf{v}'_\alpha$$
 Let 
-$\mathbf{r}'_0 = \mathbf{R}'_{\alpha 0} - \mathbf{R}'_{\beta 0} = (r'_{0x}, r'_{0y}, r'_{0z})$
+$$\mathbf{r}'_0 = \mathbf{R}'_{\alpha 0} - \mathbf{R}'_{\beta 0} = (r'_{0x}, r'_{0y}, r'_{0z})$$
 :
-$\mathbf{v}'_\beta = \left( \frac{r'_{0x}}{t^*} + v_\alpha, \frac{r'_{0y}}{t^*}, \frac{r'_{0z}}{t^*} \right)$
+$$\mathbf{v}'_\beta = \left( \frac{r'_{0x}}{t^*} + v_\alpha, \frac{r'_{0y}}{t^*}, \frac{r'_{0z}}{t^*} \right)$$
 Speed constraint:
 $\left( \frac{r'_{0x}}{t^*} + v_\alpha \right)^2 + \left( \frac{r'_{0y}}{t^*} \right)^2 + \left( \frac{r'_{0z}}{t^*} \right)^2 = s_\beta^2$
 Expand:
