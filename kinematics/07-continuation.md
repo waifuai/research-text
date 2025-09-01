@@ -54,7 +54,7 @@ t^*
 $$ t^* = \frac{-b \pm \sqrt{\Delta_t}}{2a} = \frac{2 (\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{4 [ (\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2 ]}}{2 (s_\beta^2 - \|\mathbf{v}_\alpha\|^2)} $$
 $$ t^* = \frac{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha) \pm \sqrt{(\mathbf{r}_0 \cdot \mathbf{v}_\alpha)^2 + (s_\beta^2 - \|\mathbf{v}_\alpha\|^2) \|\mathbf{r}_0\|^2}}{s_\beta^2 - \|\mathbf{v}_\alpha\|^2} $$
 For 
-t^* > 0
+$t^* > 0$
 , we select physically meaningful roots based on initial conditions and directionality.
 ### 2.2 Velocity Components
 Once 
@@ -79,28 +79,28 @@ $$ \mathbf{R}_\alpha(t) = \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t + \fra
 The projectile, assumed to have zero acceleration, follows:
 $$ \mathbf{R}_\beta(t) = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t $$
 At interception time 
-t^*
+$t^*$
 :
 $$ \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t^* + \frac{1}{2} \mathbf{a}_\alpha t^{*2} = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t^* $$
 Solve for 
-\mathbf{v}_\beta
+$\mathbf{v}_\beta$
 :
-\mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^*
+$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* $$
 Apply the speed constraint:
-\left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right\|^2 = s_\beta^2
+$$ \left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right\|^2 = s_\beta^2 $$
 Expand the expression:
-\left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) \cdot \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) = s_\beta^2
-\frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{t^*} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha t^* + \frac{1}{4} \mathbf{a}_\alpha \cdot \mathbf{a}_\alpha t^{*2} = s_\beta^2
+$$ \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) \cdot \left( \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right) = s_\beta^2 $$
+$$ \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{t^*} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha t^* + \frac{1}{4} \mathbf{a}_\alpha \cdot \mathbf{a}_\alpha t^{*2} = s_\beta^2 $$
 Multiply through by 
 t^{*2}
 :
-\mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + (\mathbf{r}_0 \cdot \mathbf{a}_\alpha) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0}) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} = s_\beta^2 t^{*2}
+$$ \mathbf{r}_0 \cdot \mathbf{r}_0 + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + (\mathbf{r}_0 \cdot \mathbf{a}_\alpha) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0}) t^{*2} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} = s_\beta^2 t^{*2} $$
 Rearrange:
-\frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + [(\mathbf{r}_0 \cdot \mathbf{a}_\alpha) + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} - s_\beta^2] t^{*2} + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + \mathbf{r}_0 \cdot \mathbf{r}_0 = 0
+$$ \frac{1}{4} (\mathbf{a}_\alpha \cdot \mathbf{a}_\alpha) t^{*4} + (\mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha) t^{*3} + [(\mathbf{r}_0 \cdot \mathbf{a}_\alpha) + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} - s_\beta^2] t^{*2} + 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* + \mathbf{r}_0 \cdot \mathbf{r}_0 = 0 $$
 This is a quartic equation in 
 t^*
 :
-p_4 t^{*4} + p_3 t^{*3} + p_2 t^{*2} + p_1 t^* + p_0 = 0
+$$ p_4 t^{*4} + p_3 t^{*3} + p_2 t^{*2} + p_1 t^* + p_0 = 0 $$
 Where:
 p_4 = \frac{1}{4} \|\mathbf{a}_\alpha\|^2
 p_3 = \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha
@@ -111,11 +111,11 @@ p_0 = \|\mathbf{r}_0\|^2
 The quartic equation admits up to four real roots, corresponding to potential interception times. Analytical solutions exist (e.g., Ferrari’s method), but they are cumbersome. For practical purposes, we recommend numerical methods:
 Newton-Raphson Iteration:
 Define 
-f(t) = p_4 t^4 + p_3 t^3 + p_2 t^2 + p_1 t + p_0
+$$ f(t) = p_4 t^4 + p_3 t^3 + p_2 t^2 + p_1 t + p_0 $$
 . The derivative is:
-f'(t) = 4 p_4 t^3 + 3 p_3 t^2 + 2 p_2 t + p_1
+$$ f'(t) = 4 p_4 t^3 + 3 p_3 t^2 + 2 p_2 t + p_1 $$
 Iterate: 
-t_{n+1} = t_n - \frac{f(t_n)}{f'(t_n)}
+$$ t_{n+1} = t_n - \frac{f(t_n)}{f'(t_n)} $$
 .
 Root Bracketing: Identify intervals where 
 $f(t)$
@@ -123,13 +123,13 @@ $f(t)$
 Once 
 t^*
  is found, compute:
-\mathbf{v}_\beta = \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^*
+$$ \mathbf{v}_\beta = \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* $$
 ### 4. Special Cases and Validation
 ### 4.1 Zero Acceleration
 If 
 $\mathbf{a}_\alpha = 0$
 , the quartic reduces to the quadratic from Section 2:
-(\|\mathbf{v}_{\alpha 0}\|^2 - s_\beta^2) t^{*2} - 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* - \|\mathbf{r}_0\|^2 = 0
+$$ (\|\mathbf{v}_{\alpha 0}\|^2 - s_\beta^2) t^{*2} - 2 (\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}) t^* - \|\mathbf{r}_0\|^2 = 0 $$
 This confirms consistency with the original solution.
 ### 4.2 Parallel Motion
 If 

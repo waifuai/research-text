@@ -1,20 +1,8 @@
-Below is a continuation paper that explores the application of Monte Carlo methods to solve the projectile interception problem, specifically for determining the interception time 
-t^*
- and the projectile velocity 
-\mathbf{v}_\beta
- in the constant acceleration case. This approach introduces a probabilistic framework, contrasting with the deterministic numerical methods previously discussed. The paper is saturated with equations as requested, detailing the Monte Carlo process, statistical formulations, and error analysis, while building on the prior kinematic foundation without excessive repetition.
-Monte Carlo Methods for Projectile Interception: A Probabilistic Approach
-Abstract:
-This paper introduces Monte Carlo methods to address the projectile interception problem for a target moving with constant acceleration, where solving the quartic equation for interception time 
-t^*
- is required. By leveraging random sampling, we estimate 
-t^*
- and compute 
-\mathbf{v}_\beta
- under the speed constraint 
-s_\beta
-. The analysis is rich with equations, covering probability distributions, sample generation, acceptance criteria, and statistical convergence, offering a novel probabilistic complement to deterministic numerical techniques.
-1. Introduction
+# Monte Carlo Methods for Projectile Interception: A Probabilistic Approach
+Below is a continuation paper that explores the application of Monte Carlo methods to solve the projectile interception problem, specifically for determining the interception time $t^*$ and the projectile velocity $\mathbf{v}_\beta$ in the constant acceleration case. This approach introduces a probabilistic framework, contrasting with the deterministic numerical methods previously discussed. The paper is saturated with equations as requested, detailing the Monte Carlo process, statistical formulations, and error analysis, while building on the prior kinematic foundation without excessive repetition.
+## Abstract
+This paper introduces Monte Carlo methods to address the projectile interception problem for a target moving with constant acceleration, where solving the quartic equation for interception time $t^*$ is required. By leveraging random sampling, we estimate $t^*$ and compute $\mathbf{v}_\beta$ under the speed constraint $s_\beta$. The analysis is rich with equations, covering probability distributions, sample generation, acceptance criteria, and statistical convergence, offering a novel probabilistic complement to deterministic numerical techniques.
+## 1. Introduction
 The projectile interception problem with a target under constant acceleration yields a quartic equation that is computationally intensive to solve analytically. Previous papers explored deterministic methods like Bisection and Newton-Raphson, but here we adopt a Monte Carlo approach, using random sampling to estimate the interception time 
 t^*
  and corresponding velocity 
