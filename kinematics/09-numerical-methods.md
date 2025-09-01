@@ -2,36 +2,36 @@ Below is an extended continuation paper that focuses on exploring numerical meth
 Numerical Methods for Projectile Interception: Solving the Quartic Equation
 Abstract:
 This paper investigates numerical methods to determine the interception time 
-t^*
+$t^*$
  and projectile velocity 
-\mathbf{v}_\beta
+$\mathbf{v}_\beta$
  for a target moving with constant acceleration, as formulated in prior kinematic analyses. We focus on solving the resulting quartic equation using the Bisection Method, Newton-Raphson Method, and Secant Method, providing detailed equations for each approach. Additional considerations include error analysis, convergence rates, and practical implementation strategies, all supported by a wealth of mathematical formulations.
 1. Introduction
 In the projectile interception problem with a target under constant acceleration 
-\mathbf{a}_\alpha
+$\mathbf{a}_\alpha$
 , the key challenge is solving a quartic equation to find the time of interception 
-t^*
+$t^*$
 . Analytical solutions are impractical due to their complexity, necessitating numerical methods. This paper explores three robust techniques—Bisection, Newton-Raphson, and Secant—each accompanied by extensive equations to compute 
-t^*
+$t^*$
 , followed by the derivation of 
-\mathbf{v}_\beta
+$\mathbf{v}_\beta$
 . We aim to provide a comprehensive, equation-driven toolkit for numerical resolution.
 2. Problem Recap: The Quartic Equation
 For a target at 
-\mathbf{R}_\alpha(t) = \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t + \frac{1}{2} \mathbf{a}_\alpha t^2
+$$ \mathbf{R}_\alpha(t) = \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t + \frac{1}{2} \mathbf{a}_\alpha t^2 $$
  and a projectile at 
-\mathbf{R}_\beta(t) = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t
+$$ \mathbf{R}_\beta(t) = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t $$
 , interception occurs when:
-\mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t^* + \frac{1}{2} \mathbf{a}_\alpha t^{*2} = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t^*
-\mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^*
+$$ \mathbf{R}_{\alpha 0} + \mathbf{v}_{\alpha 0} t^* + \frac{1}{2} \mathbf{a}_\alpha t^{*2} = \mathbf{R}_{\beta 0} + \mathbf{v}_\beta t^* $$
+$$ \mathbf{v}_\beta = \frac{\mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* $$
 With 
-\mathbf{r}_0 = \mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0}
+$ \mathbf{r}_0 = \mathbf{R}_{\alpha 0} - \mathbf{R}_{\beta 0} $
  and speed constraint 
-\|\mathbf{v}_\beta\|^2 = s_\beta^2
+$\|\mathbf{v}_\beta\|^2 = s_\beta^2$
 :
-\left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right\|^2 = s_\beta^2
+$$ \left\| \frac{\mathbf{r}_0}{t^*} + \mathbf{v}_{\alpha 0} + \frac{1}{2} \mathbf{a}_\alpha t^* \right\|^2 = s_\beta^2 $$
 Expanding:
-\frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{t^*} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha t^* + \frac{1}{4} \mathbf{a}_\alpha \cdot \mathbf{a}_\alpha t^{*2} = s_\beta^2
+$$ \frac{\mathbf{r}_0 \cdot \mathbf{r}_0}{t^{*2}} + 2 \frac{\mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}}{t^*} + \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \mathbf{v}_{\alpha 0} \cdot \mathbf{v}_{\alpha 0} + \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha t^* + \frac{1}{4} \mathbf{a}_\alpha \ительные \cdot \mathbf{a}_\alpha t^{*2} = s_\beta^2 $$
 Multiply by 
 t^{*2}
 :
@@ -39,7 +39,7 @@ t^{*2}
 Define coefficients:
 p_4 = \frac{1}{4} \|\mathbf{a}_\alpha\|^2, \quad p_3 = \mathbf{v}_{\alpha 0} \cdot \mathbf{a}_\alpha, \quad p_2 = \mathbf{r}_0 \cdot \mathbf{a}_\alpha + \|\mathbf{v}_{\alpha 0}\|^2 - s_\beta^2, \quad p_1 = 2 \mathbf{r}_0 \cdot \mathbf{v}_{\alpha 0}, \quad p_0 = \|\mathbf{r}_0\|^2
 The quartic equation is:
-f(t) = p_4 t^4 + p_3 t^3 + p_2 t^2 + p_1 t + p_0 = 0
+$$ f(t) = p_4 t^4 + p_3 t^3 + p_2 t^2 + p_1 t + p_0 = 0 $$
 We seek 
 t^* > 0
  numerically.
