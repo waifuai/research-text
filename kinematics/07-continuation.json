@@ -1,0 +1,5 @@
+{
+  "title": "Extended Kinematic Analysis of Projectile Interception: Constant Velocity and Beyond",
+  "link": "./07-continuation.md",
+  "description": "This paper extends kinematic interception analysis from constant velocity targets to constant acceleration scenarios 🚀. It reinterprets geometric interpretations and introduces time-centric approaches with abundant mathematical equations 📐. Derivations cover vector formulations, quadratic solutions, and quartic equations for advanced cases 🔄. Numerical methods like Newton-Raphson are recommended for solving complex cases 🧮. The conclusion emphasizes the comprehensive toolkit provided and hints at future extensions 🌌."
+}

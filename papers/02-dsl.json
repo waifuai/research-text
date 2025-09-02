@@ -1,0 +1,5 @@
+{
+  "title": "Macro Sorcery in Lisp: Conquering OS and Quantum Realms 🧙‍♂️",
+  "link": "./02-dsl.md",
+  "description": "Common Lisp macros revolutionize OS development 🚀 by enabling hot reloading and self-healing code 🔄. They power quantum computing DSLs ⚛️ for efficient gate definitions and hardware integration 🛠️. Compared to C, Lisp offers unparalleled flexibility in creating abstractions 🧠, making it ideal for complex domains. 🌐"
+}

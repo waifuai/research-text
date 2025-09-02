@@ -1,0 +1,5 @@
+{
+  "title": "Accelerated Target Kinematics: Projectile Aiming with Motion Equations",
+  "link": "./04-math.md",
+  "description": "🤔 This document adapts projectile aiming calculations for targets that accelerate, using constant acceleration equations to match positions over time. 📐 It formulates three position-matching equations for coordinates x, y, z plus a speed constraint, incorporating initial positions, velocities, and accelerations. 🔢 Solving results in a complex quartic equation in time t, resolved numerically via iterative methods like Newton-Raphson or bisection. ⚡ Practical considerations include multiple solutions, computational intensity, real-time recalculation, and the possibility of no feasible hit. 🎯 Overall, it enables precise kinematic calculations in dynamic environments for accurate projectile targeting despite increased complexity."
+}

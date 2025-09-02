@@ -1,0 +1,5 @@
+{
+  "title": "Advanced Kinematic Formulations for Projectile Interception",
+  "link": "./08-equations.md",
+  "description": "📐 This document expands on kinematic frameworks for projectile interception by introducing new equations through coordinate transformations, parametric approaches, and energy principles. 🚀 For constant velocity scenarios, it uses rotated coordinate systems and parametric elimination to solve for interception times and velocities. 🔢 The constant acceleration case is analyzed with matrix formulations and detailed polynomial expansions for a comprehensive solution. ⚡ Energy-based constraints add a physical interpretation to the velocity calculations, enriching the mathematical exploration."
+}

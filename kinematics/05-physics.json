@@ -1,0 +1,5 @@
+{
+  "title": "Kinematic Analysis of Projectile Target Interception",
+  "link": "./05-physics.md",
+  "description": "This white paper explores kinematic principles for intercepting moving targets with projectiles 🚀. It details mathematical frameworks for constant velocity scenarios, providing analytical solutions 🧮. The analysis extends to constant acceleration cases, necessitating numerical methods 🔢. Practical considerations and limitations in real-world applications are thoroughly discussed ⚠️. Appendices include explicit formulas for projectile velocities 📈."
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Entangled Minds: Quantum Equations for Multimodal LLMs",
+  "link": "./06-quantum-llm.md",
+  "description": "This paper delves into quantum equations for multimodal LLMs blending vision 📸, audio 🔊, and text 📝. It covers feature encoding, entanglement-based fusion 🔗, and quantum neural layers 🧠. Implemented in Qiskit, it includes optimization techniques for training ⚙️. A gateway to advanced AI harnessing quantum computing 🌌."
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Numerical Methods for Projectile Interception: Solving the Quartic Equation",
+  "link": "./09-numerical-methods.md",
+  "description": "This extended paper delves into numerical techniques for resolving the quartic equation arising from projectile interception under constant acceleration. 🚀 It comprehensively covers the Bisection Method with iterative midpoint calculations and error bounds. 📏 Next, the Newton-Raphson Method is explained with quadratic convergence formulas and derivative computations. 📈 The Secant Method is presented as an efficient alternative approximating derivatives via two-point slopes. 🔄 Emphasis is placed on computing interception time t* and projectile velocity v_β using detailed mathematical equations. ⏱️ Practical aspects include initial guess selection, convergence criteria, and handling multiple roots for stable solutions. ⚖️ This equation-rich approach enhances the kinematic framework for real-world applications. 🌍"
+}

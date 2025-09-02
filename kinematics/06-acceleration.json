@@ -1,0 +1,5 @@
+{
+  "title": "Determining Initial Velocity and Coincidence Time for Particles with Constant Acceleration",
+  "link": "./06-acceleration.md",
+  "description": "The problem explores two particles A and B moving in 3D space with constant acceleration vectors. 🔭 It formulates their position vectors using kinematic equations with initial conditions. 📐 The goal is to find particle B's initial velocity components and the coincidence time t*, subject to a velocity magnitude constraint. ⏱️ This requires solving a system of equations for the coincidence condition across three dimensions. 🧮 Component-wise derivations are provided for x, y, and z coordinates. ◰ Assumptions include known accelerations and initial states for both particles. 📋 If analytical solutions prove challenging, numerical approximation methods are suggested. 🔢"
+}

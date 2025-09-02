@@ -1,0 +1,5 @@
+{
+  "title": "Hitting Moving Targets in Games: Kinematic Projectile Interception Guide",
+  "link": "./03-math.md",
+  "description": "🎯 This comprehensive guide demystifies the calculations needed to make projectiles hit moving targets in your game. 🚀 It introduces key variables like positions, velocities, and speeds that are essential for accurate targeting. 📊 The core math involves aligning coordinates at the time of impact using three primary equations. 💡 Solving these equations yields two potential velocity solutions for the projectile, giving flexibility in trajectory choices. 🛠️ Step-by-step implementation advice helps integrate this into game engines effectively. ⚠️ Assumptions about constant target motion are highlighted, emphasizing the need for real-time recalculations in varied scenarios."
+}
