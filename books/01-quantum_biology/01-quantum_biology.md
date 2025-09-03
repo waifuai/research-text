@@ -1,4 +1,4 @@
-# Quantum Biology 2
+# Quantum Biology
 
 [
   {
