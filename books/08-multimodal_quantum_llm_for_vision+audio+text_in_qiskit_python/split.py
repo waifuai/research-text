@@ -16,22 +16,31 @@ def split_md_file(file_path, output_dir):
     for i, line in enumerate(lines):
         match = header_pattern.match(line)
         if match:
-            # new section
-            if current_section:
-                if 'content' not in current_section:
-                    current_section['content'] = ''
-                current_section['end_line'] = i
-                sections.append(current_section)
-
             level = len(match.group(1))
             title = match.group(2).strip()
-            current_section = {
-                'level': level,
-                'title': title,
-                'start_line': i,
-                'content': '',
-                'lines': [line]
-            }
+            if current_section:
+                if level <= current_section['level']:
+                    # new section at same or higher level
+                    sections.append(current_section)
+                    current_section = {
+                        'level': level,
+                        'title': title,
+                        'start_line': i,
+                        'content': '',
+                        'lines': [line]
+                    }
+                else:
+                    # this is a lower level header, treat as content
+                    current_section['lines'].append(line)
+                    current_section['content'] += line + '\n'
+            else:
+                current_section = {
+                    'level': level,
+                    'title': title,
+                    'start_line': i,
+                    'content': '',
+                    'lines': [line]
+                }
             continue
         else:
             if current_section:
@@ -71,25 +80,38 @@ def split_md_file(file_path, output_dir):
     subsection_num = {}
 
     for sec in sections:
-        if sec['level'] in [2, 3]:
+        if sec['level'] == 2:
             title = sec['title']
             if title in chapter_titles:
                 chap_num = chapter_titles.index(title) + 1
                 chapter_num = chap_num
                 subsection_num[chap_num] = 0
 
-            # create file
+                # create file for the chapter
+                filename = f"chapter_{chapter_num}_subsection_0.md"
+                filepath = os.path.join(output_dir, filename)
+
+                # adjust headers based on level
+                content = '\n'.join(sec['lines'])
+                # demote ## to #
+                content = re.sub(r'^##', '#', content, flags=re.MULTILINE)
+                # adjust any deeper
+                content = re.sub(r'^####', '###', content, flags=re.MULTILINE)
+                content = re.sub(r'^#####', '####', content, flags=re.MULTILINE)
+
+                with open(filepath, 'w') as f:
+                    f.write(content)
+
+                subsection_num[chapter_num] = 1
+        elif sec['level'] == 3:
+            # create file for subsection
             filename = f"chapter_{chapter_num}_subsection_{subsection_num.get(chapter_num, 0)}.md"
             filepath = os.path.join(output_dir, filename)
 
             # adjust headers based on level
             content = '\n'.join(sec['lines'])
-            if sec['level'] == 2:
-                # demote ## to #
-                content = re.sub(r'^##', '#', content, flags=re.MULTILINE)
-            elif sec['level'] == 3:
-                # demote ### to ##
-                content = re.sub(r'^###', '##', content, flags=re.MULTILINE)
+            # demote ### to ##
+            content = re.sub(r'^###', '##', content, flags=re.MULTILINE)
             # adjust any deeper
             content = re.sub(r'^####', '###', content, flags=re.MULTILINE)
             content = re.sub(r'^#####', '####', content, flags=re.MULTILINE)
