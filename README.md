@@ -8,7 +8,7 @@ This repository captures the evolution of research from foundational concepts th
 
 ## Core Research Domains
 
-### 🗨️ [Agent Chats](./agent-chats/)
+### 🗨️ [Agent Chats](./consolidated-research/agent-chats/)
 **Focus:** Collaborative AI-generated research discussions on transformatory technologies.
 
 Research areas:
@@ -29,7 +29,7 @@ Current publications:
 - Using multimodal LLM for interactive 3D AI characters in WebVR
 - String Theory Industries and Qiskit quantum implementations
 
-### 🚀 [ICO-Solana Research](./ico-sol/)
+### 🚀 [ICO-Solana Research](./consolidated-research/ico-sol/)
 **Focus:** Project Genesis - Complete decentralized autonomous economic system.
 
 Key innovations:
@@ -41,7 +41,7 @@ Key innovations:
 - MCP-enabled resource monetization and API protocols
 - Cross-chain interoperability and planetary-scale governance
 
-### 📝 [Papers](./papers/)
+### 📝 [Papers](./consolidated-research/papers/)
 **Focus:** Technical research papers on emerging technological paradigms.
 
 Specializations:
@@ -53,7 +53,7 @@ Specializations:
 - Multimodal LLM architectures
 - AI reinforcement learning enhancements
 
-### 🧠 [Kinematics](./kinematics/)
+### 🧠 [Kinematics](./consolidated-research/kinematics/)
 **Focus:** Kinematic projectile interception mathematics and implementations.
 
 Conceptual foundations:
@@ -208,7 +208,7 @@ This research represents the culmination of extensive AI-assisted investigation,
 
 **Research Status:** Active Development
 **Primary Domains:** AI, Blockchain, Quantum Computing
-**Total Subfolders:** 6
+**Total Subfolders:** 3
 **Languages:** English, Python, Rust, Markdown, Qiskit
 
 *This repository embodies the convergence of advanced technologies into a coherent research ecosystem, pushing the boundaries of what computational systems can achieve.*
