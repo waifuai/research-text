@@ -1,1 +1,0 @@
-# Chapter 1: Introduction to WebVR and Multimodal LLMs

@@ -1,1 +1,0 @@
-# Chapter 2: Building the Foundation - 3D Character Creation
