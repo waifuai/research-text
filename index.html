@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Text Library</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    border-bottom: 1px solid #21262d;
+  }
+  .hero h1 { font-size: 2.4em; color: #f0f6fc; margin-bottom: 8px; }
+  .hero .tagline { color: #8b949e; font-size: 1.15em; max-width: 600px; margin: 0 auto; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  .intro {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    color: #8b949e;
+    font-size: 0.95em;
+  }
+  .intro strong { color: #c9d1d9; }
+
+  .section {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .section:hover { border-color: #58a6ff; transform: translateY(-2px); }
+
+  .section h2 { margin-bottom: 4px; }
+  .section h2 a {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 1.3em;
+  }
+  .section h2 a:hover { text-decoration: underline; }
+
+  .section .meta {
+    color: #8b949e;
+    font-size: 0.85em;
+    margin-bottom: 12px;
+  }
+  .section .desc { color: #c9d1d9; font-size: 0.95em; }
+
+  .section .tags { margin-top: 12px; }
+  .tag {
+    display: inline-block;
+    background: #1f6feb22;
+    color: #58a6ff;
+    border: 1px solid #1f6feb44;
+    border-radius: 20px;
+    padding: 2px 12px;
+    font-size: 0.8em;
+    margin-right: 6px;
+  }
+
+  .footer {
+    text-align: center;
+    color: #484f58;
+    font-size: 0.8em;
+    padding: 20px;
+    border-top: 1px solid #21262d;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 50px 16px 40px; }
+    .hero h1 { font-size: 1.6em; }
+    .section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Research Text Library</h1>
+  <p class="tagline">A consolidated archive of AI-assisted research, exploratory chats, technical papers, and math-heavy deep dives.</p>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <strong>What is this?</strong> This repository contains research generated through AI agent conversations &mdash;
+    structured papers, freeform exploratory chats, token economics analysis, and kinematics/math derivations.
+    Each section below links to its own browsable index with full content, search, and navigation.
+    <br><br>
+    Built as part of the <strong>Waifu AI</strong> project toolkit. Most content was produced
+    collaboratively between human researchers and language models, then consolidated and organized here.
+  </div>
+
+  <div class="section">
+    <h2><a href="consolidated-research/ico-sol/index.html">&#x1F4DC; ICO-SOL Research</a></h2>
+    <div class="meta">120 papers &middot; 246 internal links</div>
+    <div class="desc">
+      Deep research into ICOs and token launches on Solana. Covers tokenomics models, barter-based
+      token swaps, fundraising mechanics, liquidity strategies, and on-chain economics.
+      Each paper is self-contained with mathematical models and analysis.
+    </div>
+    <div class="tags">
+      <span class="tag">tokenomics</span>
+      <span class="tag">solana</span>
+      <span class="tag">economics</span>
+      <span class="tag">defi</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><a href="consolidated-research/papers/index.html">&#x1F4DA; Research Papers</a></h2>
+    <div class="meta">32 internal links &middot; sidebar navigation</div>
+    <div class="desc">
+      A portal of technical research papers spanning string theory applications, theoretical physics,
+      and speculative technology. Features filterable table of contents and individual paper sections.
+      The flagship piece explores infinite possibilities in string theory technologies.
+    </div>
+    <div class="tags">
+      <span class="tag">physics</span>
+      <span class="tag">string theory</span>
+      <span class="tag">theoretical</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><a href="consolidated-research/kinematics/index.html">&#x19E0; Kinematics &amp; Math Notes</a></h2>
+    <div class="meta">39 internal links &middot; multi-page format</div>
+    <div class="desc">
+      Detailed mathematical derivations and physics notes. Covers core math foundations,
+      acceleration equations, kinematic relationships, and step-by-step equation walkthroughs.
+      Organized as a sequential notebook with cross-linked pages.
+    </div>
+    <div class="tags">
+      <span class="tag">mathematics</span>
+      <span class="tag">physics</span>
+      <span class="tag">kinematics</span>
+      <span class="tag">derivations</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><a href="consolidated-research/agent-chats/index.html">&#x1F4AC; Agent Research Chats</a></h2>
+    <div class="meta">3 topic areas &middot; tabbed navigation</div>
+    <div class="desc">
+      Exploratory conversations between researchers and AI agents. Covers quantum computing
+      frontiers (3 papers), the CryptoChat framework (math-focused), and tokenomics on
+      Solana with AI+crypto crossover topics. More freeform and conversational than the
+      structured papers above.
+    </div>
+    <div class="tags">
+      <span class="tag">quantum</span>
+      <span class="tag">crypto</span>
+      <span class="tag">AI chat</span>
+      <span class="tag">exploratory</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  research-text &middot; Waifu AI project &middot; consolidated via combine_research.py
+</div>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Notes</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    background: #1a1a2e;
+  }
+  h1 { color: #e94560; border-bottom: 2px solid #e94560; padding-bottom: 0.3em; }
+  h2 { color: #0f3460; border-bottom: 1px solid #533483; padding-bottom: 0.2em; }
+  h3 { color: #533483; }
+  a { color: #4fc3f7; }
+  code { background: #16213e; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre { background: #16213e; padding: 1em; border-radius: 6px; overflow-x: auto; }
+  pre code { padding: 0; }
+  blockquote { border-left: 3px solid #533483; margin-left: 0; padding-left: 1em; color: #aaa; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.5em 0; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #333; padding: 0.5em; text-align: left; }
+  th { background: #16213e; }
+  .nav { margin-bottom: 2rem; padding: 1rem; background: #16213e; border-radius: 6px; }
+  .nav a { margin-right: 1em; }
+</style>
+</head>
+<body>
+<div class="nav"><a href="00-index.html">00 index</a> | <a href="01-math.html">01 math</a> | <a href="02-math.html">02 math</a> | <a href="03-math.html">03 math</a> | <a href="04-math.html">04 math</a> | <a href="05-physics.html">05 physics</a> | <a href="06-acceleration.html">06 acceleration</a> | <a href="07-continuation.html">07 continuation</a> | <a href="08-equations.html">08 equations</a> | <a href="09-numerical-methods.html">09 numerical methods</a> | <a href="10-monte-carlo.html">10 monte carlo</a> | <a href="README.html">README</a></div>
+<h2 id="hitting-a-moving-target-the-math-of-projectile-motion">Hitting a Moving Target: The Math of Projectile Motion</h2>
+<p>Let's say you're building a computer game where you need to program a projectile to hit a moving target. Here's how you can figure out the right speed and direction to fire the projectile.</p>
+<p><strong>The Setup</strong></p>
+<p>Imagine we have two things in our 3D game world:</p>
+<ol>
+<li><strong>Target 'a':</strong>  This is the object we want to hit. It's moving at a constant speed in a straight line.</li>
+<li><strong>Projectile 'b':</strong> This is what we're going to fire at the target. We know how fast it can travel (its speed), but we need to figure out which direction to shoot it.</li>
+</ol>
+<p>We know the following information:</p>
+<ul>
+<li><strong>(xa, ya, za):</strong> The initial position of the target 'a' in the game world.</li>
+<li><strong>(xb, yb, zb):</strong> The initial position of the projectile 'b'.</li>
+<li><strong>(vax, vay, vaz):</strong> The velocity (speed and direction) of the target 'a'. This is constant.</li>
+<li><strong>sb:</strong> The speed of the projectile 'b'. We don't know its direction yet.</li>
+</ul>
+<p><strong>The Goal</strong></p>
+<p>Our goal is to find the velocity of the projectile 'b', specifically its velocity components <strong>(vbx, vby, vbz)</strong>, so that it hits the target 'a'.</p>
+<p><strong>The Equations</strong></p>
+<p>To achieve this, we can use a set of three equations:</p>
+<p><strong>(1)  ya + vay * t = yb + vby * t</strong> </p>
+<p><strong>(2)  za + vaz * t = zb + vbz * t</strong></p>
+<p><strong>(3)  vbx² + vby² + vbz² = sb²</strong> </p>
+<p>Let's break down what these equations mean:</p>
+<ul>
+<li><strong>'t' : The Time to Hit</strong> 
+   There's a special time 't' in the future when the projectile 'b' will hit the target 'a'. We don't know what 't' is yet, but it's important for our calculations. 
+   We can actually calculate 't' with this formula: </li>
+</ul>
+<p><strong>t = (xb - xa) / (vax - vbx)</strong> </p>
+<p>This represents the time it takes for the x-coordinates of 'a' and 'b' to become the same. Basically, it's the moment when the projectile and target are aligned along the x-axis.</p>
+<ul>
+<li>
+<p><strong>Equations (1) and (2): Matching Positions</strong>
+   These equations say that at time 't', the y-coordinate (Equation 1) and the z-coordinate (Equation 2) of the target 'a' must be equal to the y-coordinate and z-coordinate of the projectile 'b'. In other words, they must be in the same place in those dimensions.</p>
+</li>
+<li>
+<p><strong>Equation (3): The Speed Limit</strong>
+   This equation tells us that the projectile must travel at its given speed 'sb'. We use the Pythagorean theorem here because speed is the magnitude of the velocity vector (vbx, vby, vbz).</p>
+</li>
+</ul>
+<p><strong>Putting it Together</strong></p>
+<p>We have three equations and three unknowns (vbx, vby, vbz). This means we can solve this system of equations to find the velocity components of the projectile. </p>
+<p><strong>What Solving the Equations Means</strong></p>
+<p>Finding the values of vbx, vby, and vbz that satisfy these equations means finding a projectile velocity such that:</p>
+<ol>
+<li><strong>Alignment in Time:</strong> At some point in the future ('t'), the projectile will be horizontally aligned with the target (same x-coordinate).</li>
+<li><strong>Collision:</strong> At that same time 't', the projectile and target will also have the same y and z coordinates, meaning they will occupy the same point in space – a collision!</li>
+<li><strong>Speed Consistency:</strong> The projectile's velocity will match its known speed.</li>
+</ol>
+<p><strong>Using the Solution</strong></p>
+<p>Once you solve these equations (which can involve some algebra), you'll get the velocity components (vbx, vby, vbz) for the projectile. You can then use these values in your game to set the projectile's direction and speed, ensuring it hits the moving target.</p>
+<p><strong>Important Notes</strong></p>
+<ul>
+<li>This method assumes the target moves with a constant velocity (no changes in speed or direction).</li>
+<li>In reality, you might get multiple possible solutions, meaning there could be different firing angles that would lead to a hit. You'll need to consider factors like the shortest travel time or other game constraints to choose the best solution.</li>
+<li>In a real game, you'll likely recalculate these values every frame to account for any changes in the target's movement or the projectile's position. </li>
+</ul>
+<h3 id="the-output-equation">the output equation</h3>
+<p>That large, complex solution you provided is the result of symbolically solving the three equations for <code>vbx</code>, <code>vby</code>, and <code>vbz</code>. Let's break down how it relates to the original problem and equations:</p>
+<p><strong>1. Two Solutions for Each Component:</strong> Notice the solution has two sets of values, each enclosed in large parentheses <code>{}</code>. This is because the equations involve squares (like <code>vbx²</code>), which typically lead to two possible solutions (positive and negative roots of a quadratic equation). This means there are generally <em>two possible trajectories</em> for the projectile to hit the target. One trajectory corresponds to a more direct intercept, and the other often represents a more curved path.</p>
+<p><strong>2. The Components (vbx, vby, vbz):</strong>  Each set of solutions contains expressions for <code>vbx</code>, <code>vby</code>, and <code>vbz</code>. These expressions are complicated because they account for all the possible positions and velocities of 'a' and 'b' in 3D space. </p>
+<p><strong>3. Relating the Solution to the Equations:</strong></p>
+<ul>
+<li>
+<p><strong>Equation (3): vbx² + vby² + vbz² = sb²:</strong> The large square root term in the solutions for <code>vbx</code>, <code>vby</code>, and <code>vbz</code> comes directly from trying to solve this equation for the velocity components, taking into account the other equations and ensuring the projectile speed matches <code>sb</code>. The term inside the square root ensures the overall velocity's magnitude is correct.</p>
+</li>
+<li>
+<p><strong>Equations (1) and (2): The Position Matching and Time 't':</strong>  The rest of the terms outside the square root in the solutions represent the interplay of matching positions at the collision time <code>t</code>. These parts essentially embed the logic of "when the x-coordinates align, the y and z coordinates must also align" after taking 't' into account. You can see the initial positions and target velocities (<code>xα</code>, <code>yα</code>, <code>vαx</code>, etc.) woven within these expressions.</p>
+</li>
+</ul>
+<p><strong>4. The Set Notation ( \setminus ):</strong> The <code>\setminus {vαx}</code> and <code>\setminus {vαy}</code> notation means that if the calculated solution for vbx equals vax or vby equals vay, respectively, that particular solution is discarded. This is necessary to avoid division by zero in the calculation of the time variable 't'. This is the special case I mentioned before, where if any velocity components are equal between projectile and target, it requires separate consideration.</p>
+<p><strong>Simplified Explanation of the Meaning:</strong></p>
+<p>The complex solution set is simply a way to say: "Given the target's position, velocity, and the projectile's speed and starting point, these are the two possible sets of velocity components (vbx, vby, vbz) you can give the projectile to guarantee a hit." Each set of velocity components represents a specific firing direction and maintains the projectile's speed to exactly <code>sb</code>.</p>
+<p><strong>Practical Application in Your Game:</strong></p>
+<ol>
+<li>
+<p><strong>Input Values:</strong>  Plug in your game's current values for the initial positions and target velocity into the solutions.</p>
+</li>
+<li>
+<p><strong>Calculate Two Solutions:</strong> Evaluate the two solution sets given by the equations.</p>
+</li>
+<li>
+<p><strong>Select a Solution:</strong> Choose the solution that is most relevant to your game. For example, if you want the most direct hit, choose the solution that gives the smallest time <code>t</code> (calculated using the formula for <code>t</code>).</p>
+</li>
+<li>
+<p><strong>Set Projectile Velocity:</strong> Apply the chosen (vbx, vby, vbz) velocity to your projectile in the game.</p>
+</li>
+</ol>
+<p>By doing this, you will have successfully calculated the projectile launch parameters for a guaranteed hit (assuming constant target velocity).</p>
+</body>
+</html>

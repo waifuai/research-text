@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Notes</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+    background: #1a1a2e;
+  }
+  h1 { color: #e94560; border-bottom: 2px solid #e94560; padding-bottom: 0.3em; }
+  h2 { color: #0f3460; border-bottom: 1px solid #533483; padding-bottom: 0.2em; }
+  h3 { color: #533483; }
+  a { color: #4fc3f7; }
+  code { background: #16213e; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre { background: #16213e; padding: 1em; border-radius: 6px; overflow-x: auto; }
+  pre code { padding: 0; }
+  blockquote { border-left: 3px solid #533483; margin-left: 0; padding-left: 1em; color: #aaa; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.5em 0; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #333; padding: 0.5em; text-align: left; }
+  th { background: #16213e; }
+  .nav { margin-bottom: 2rem; padding: 1rem; background: #16213e; border-radius: 6px; }
+  .nav a { margin-right: 1em; }
+</style>
+</head>
+<body>
+<div class="nav"><a href="00-index.html">00 index</a> | <a href="01-math.html">01 math</a> | <a href="02-math.html">02 math</a> | <a href="03-math.html">03 math</a> | <a href="04-math.html">04 math</a> | <a href="05-physics.html">05 physics</a> | <a href="06-acceleration.html">06 acceleration</a> | <a href="07-continuation.html">07 continuation</a> | <a href="08-equations.html">08 equations</a> | <a href="09-numerical-methods.html">09 numerical methods</a> | <a href="10-monte-carlo.html">10 monte carlo</a> | <a href="README.html">README</a></div>
+<h1 id="white-paper-projectile-interception-of-moving-targets-a-kinematic-analysis">White Paper: Projectile Interception of Moving Targets: A Kinematic Analysis</h1>
+<p><strong>Abstract:</strong></p>
+<p>This paper explores the problem of determining the launch parameters of a projectile designed to intercept a moving target, both under conditions of constant velocity and constant acceleration. We employ a kinematic analysis, utilizing differential equations to model the motion of both the projectile and the target. We develop systems of equations describing the intersection conditions and provide closed-form solutions for the constant velocity case, while highlighting the need for numerical approaches for the acceleration scenario. Practical considerations and limitations in real-world applications are also discussed.</p>
+<p><strong>1. Introduction</strong></p>
+<p>The interception of moving targets by projectiles is a fundamental problem in classical mechanics with applications ranging from ballistic trajectory calculations to the design of automated interception systems. While simplifying assumptions, such as neglecting drag and other external forces, are common for initial analysis, a deep understanding of the kinematic principles governing the projectile-target interaction is essential. This paper presents a detailed mathematical framework for this interception problem, first addressing the case of targets with constant velocity and then extending it to targets undergoing constant acceleration.</p>
+<p><strong>2. Theoretical Framework: Constant Target Velocity</strong></p>
+<p>Consider a projectile ('b') launched to intercept a target ('a'). We define the following position vectors:</p>
+<ul>
+<li>$\mathbf{r_a}(t) = \mathbf{r_{a0}} + \mathbf{v_a} t$ : Target's position as a function of time.</li>
+<li>$\mathbf{r_b}(t) = \mathbf{r_{b0}} + \mathbf{v_b} t$: Projectile's position as a function of time.</li>
+</ul>
+<p>Where:
+* $\mathbf{r_{a0}} = (x_a, y_a, z_a)$ is the initial position of target 'a'.
+*  $\mathbf{v_a} = (v_{ax}, v_{ay}, v_{az})$ is the constant velocity of target 'a'.
+* $\mathbf{r_{b0}} = (x_b, y_b, z_b)$ is the initial position of projectile 'b'.
+* $\mathbf{v_b} = (v_{bx}, v_{by}, v_{bz})$ is the initial velocity of projectile 'b', which we seek to determine.
+* $t$ is the time elapsed from the start.</p>
+<p>The projectile has a fixed speed $s_b$ such that
+$$\|\mathbf{v_b}\|^2 =  v_{bx}^2 + v_{by}^2 + v_{bz}^2 = s_b^2$$</p>
+<p>The interception occurs at some time $t^*$ when the projectile and target occupy the same position:
+$$\mathbf{r_a}(t^*) = \mathbf{r_b}(t^*)$$
+This leads to three equations:</p>
+<p>$x_a + v_{ax}t^* = x_b + v_{bx}t^*$  (1)</p>
+<p>$y_a + v_{ay}t^* = y_b + v_{by}t^*$  (2)</p>
+<p>$z_a + v_{az}t^* = z_b + v_{bz}t^*$  (3)</p>
+<p>From equation (1) we obtain the time of intersection:
+$$t^* = \frac{x_b - x_a}{v_{ax} - v_{bx}}$$</p>
+<p>Substituting the time of intersection to the remaining two equations we obtain:</p>
+<p>$y_a + v_{ay} \frac{x_b - x_a}{v_{ax} - v_{bx}} = y_b + v_{by} \frac{x_b - x_a}{v_{ax} - v_{bx}}$</p>
+<p>$z_a + v_{az} \frac{x_b - x_a}{v_{ax} - v_{bx}} = z_b + v_{bz} \frac{x_b - x_a}{v_{ax} - v_{bx}}$</p>
+<p>These, in conjunction with the speed constraint, form a system of three non-linear equations for three unknowns, $v_{bx}, v_{by}, v_{bz}$. By solving this system, the projectile's velocity vector can be explicitly determined. The solution often contains two possible sets of $v_b$, and therefore two potential launch trajectories. A detailed analysis of the closed-form solution can be found in the Appendix.</p>
+<p><strong>3. Theoretical Framework: Constant Target Acceleration</strong></p>
+<p>Now, let's consider the more complex scenario where the target undergoes constant acceleration. We define the following:</p>
+<ul>
+<li>$\mathbf{r_a}(t) = \mathbf{r_{a0}} + \mathbf{v_{a0}} t + \frac{1}{2}\mathbf{a_a} t^2$: Target's position vector with constant acceleration.</li>
+<li>$\mathbf{r_b}(t) = \mathbf{r_{b0}} + \mathbf{v_b} t$: Projectile's position vector.</li>
+</ul>
+<p>Here, $\mathbf{a_a} = (a_{ax}, a_{ay}, a_{az})$ represents the constant acceleration of the target. The interception condition remains that the projectile and target are at the same location at time $t^*$:
+$$\mathbf{r_a}(t^*) = \mathbf{r_b}(t^*)$$</p>
+<p>This yields the following system of equations:</p>
+<p>$x_a + v_{ax}t^* + 1/2*a_{ax}t^{*2} = x_b + v_{bx}t^*$    (4)</p>
+<p>$y_a + v_{ay}t^* + 1/2*a_{ay}t^{*2} = y_b + v_{by}t^*$    (5)</p>
+<p>$z_a + v_{az}t^* + 1/2*a_{az}t^{*2} = z_b + v_{bz}t^*$    (6)</p>
+<p>$v_{bx}^2 + v_{by}^2 + v_{bz}^2 = s_b^2$   (7)</p>
+<p>Unlike the constant velocity case, these four equations, though mathematically well-posed, cannot be solved analytically for a closed-form solution of $\mathbf{v_b}$ and $t^*$. However, we can reduce the equations by isolating the velocity components to the left-hand side:</p>
+<p>$v_{bx}t^* = x_a - x_b + v_{ax}t^* + 1/2*a_{ax}t^{*2}$</p>
+<p>$v_{by}t^* = y_a - y_b + v_{ay}t^* + 1/2*a_{ay}t^{*2}$</p>
+<p>$v_{bz}t^* = z_a - z_b + v_{az}t^* + 1/2*a_{az}t^{*2}$</p>
+<p>Then, substituting these into equation (7), the velocity components can be removed and we arrive at a single equation on the unknown $t^*$:</p>
+<p>$$(x_a - x_b + v_{ax}t^* + 1/2*a_{ax}t^{*2})^2 + (y_a - y_b + v_{ay}t^* + 1/2*a_{ay}t^{*2})^2 + (z_a - z_b + v_{az}t^* + 1/2*a_{az}t^{*2})^2 = s_b^2 t^{*2}$$</p>
+<p>This is a quartic equation in $t^*$ and is difficult to solve analytically.</p>
+<p><strong>4. Numerical Methods</strong></p>
+<p>Due to the complexity of the quartic equation in the acceleration case, numerical methods are needed to find the time of intersection $t^*$. Suitable methods include:</p>
+<ul>
+<li><strong>Newton-Raphson Method:</strong> An iterative technique that uses the derivative of the equation to refine an initial estimate for $t^*$.</li>
+<li><strong>Bisection Method:</strong> A method that repeatedly halves an interval containing a solution, guaranteeing convergence to a root.</li>
+</ul>
+<p>Once a suitable $t^*$ is found, it can be substituted back into equations (4), (5) and (6)  to determine the corresponding velocity components of the projectile.</p>
+<p><strong>5. Practical Considerations and Limitations</strong></p>
+<ul>
+<li><strong>Multiple Solutions:</strong> In both constant velocity and acceleration cases, multiple solutions may exist. Physical considerations, such as minimizing travel time or required launch energy, can be used to select the appropriate solution.</li>
+<li><strong>Computational Cost:</strong> Numerical methods can be computationally expensive, especially when high accuracy is required. This needs to be balanced against real-time constraints in dynamic applications.</li>
+<li><strong>External Forces:</strong> In real-world scenarios, drag and other forces can significantly influence projectile trajectories. These forces must be accounted for when high precision is required, potentially requiring more complex modeling and simulations.</li>
+<li><strong>Target Maneuvers:</strong> This analysis assumes the target’s acceleration is constant. If a target’s acceleration changes dynamically, real-time recalculations are necessary for successful interception.</li>
+<li><strong>No Solution:</strong> It is possible that there is no solution for 't' that satisfies the equation. This would mean that it is impossible for the projectile to hit the target.</li>
+</ul>
+<p><strong>6. Conclusion</strong></p>
+<p>This paper presents a detailed kinematic analysis for the projectile interception of moving targets. Analytical solutions can be found in the constant target velocity case; however, a numerical approach is required when the target is under constant acceleration. While real-world scenarios introduce complexities such as drag and target maneuvers, this framework provides a strong foundation for understanding and developing practical interception strategies.</p>
+<p><strong>Appendix: Explicit Solution for Constant Target Velocity</strong></p>
+<p>The solution for the projectile velocity components with a constant target velocity is complex but can be solved analytically. The explicit forms for $v_{bx}$, $v_{by}$ and $v_{bz}$ are:</p>
+<p>$v_{bx} = (v_{ax} (y_{a} - y_{b})^2 + v_{ax} (z_{a} - z_{b})^2 - v_{ay} (x_{a} - x_{b})(y_{a} - y_{b}) - v_{az} (x_{a} - x_{b})(z_{a} - z_{b}) \pm (x_{a} - x_{b}) sqrt(Δ))/D$</p>
+<p>$v_{by} = (-v_{ax} (x_{a} - x_{b})(y_{a} - y_{b}) + v_{ay} (x_{a} - x_{b})^2 + v_{ay} (z_{a} - z_{b})^2 - v_{az} (y_{a} - y_{b})(z_{a} - z_{b}) \pm (y_{a} - y_{b}) sqrt(Δ))/D$</p>
+<p>$v_{bz} = (- v_{ax} (x_{a} - x_{b})(z_{a} - z_{b}) - v_{ay} (y_{a} - y_{b})(z_{a} - z_{b}) + v_{az} (x_{a} - x_{b})^2 + v_{az} (y_{a} - y_{b})^2 \pm (z_{a} - z_{b}) sqrt(Δ))/D$</p>
+<p>where
+$$ \Delta = s_{b}^{2} ((x_{a} - x_{b})^2 + (y_{a} - y_{b})^2 + (z_{a} - z_{b})^2) - (v_{ax} (y_{a} - y_{b}) + v_{ay} (x_{a} - x_{b}) + v_{az} (z_{a} - z_{b}))^2 $$
+and
+$$ D = (x_{a} - x_{b})^2 + (y_{a} - y_{b})^2 + (z_{a} - z_{b})^2 $$</p>
+<p>This solution corresponds to the two possible trajectories for hitting the target, as given by the $\pm$ sign.</p>
+</body>
+</html>
