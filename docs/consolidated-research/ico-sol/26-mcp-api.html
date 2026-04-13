@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContextCoin (CTX) Program API Reference</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Okay, let's craft a detailed API Reference for your ContextCoin (CTX) program on Solana. This will be a markdown document (<code>API.md</code>) that provides developers with all the necessary information to interact with your smart contracts.</p>
+<h1>ContextCoin (CTX) Program API Reference</h1>
+<p>This document provides a detailed API reference for the ContextCoin (CTX) program on the Solana blockchain. It outlines all available instructions, account structures, error codes, and other essential information for developers who wish to interact with the program.</p>
+<h2>Program ID</h2>
+<p>The program's deployed address is: <code>&lt;YourProgramIdHere&gt;</code> <em>(Replace this with your actual program ID)</em></p>
+<h2>Program-Derived Addresses (PDAs)</h2>
+<p>This program uses Program-Derived Addresses (PDAs) to securely store program state. The following PDAs are used:</p>
+<ul>
+<li><strong>ICO State Account:</strong><ul>
+<li><strong>Seed:</strong> <code>b"ico_state"</code> + <code>owner_public_key</code></li>
+<li><strong>Purpose:</strong> Holds the current state of the ICO, including the token mint, supply, and bonding curve information.</li>
+</ul>
+</li>
+<li><strong>Escrow Account:</strong><ul>
+<li><strong>Seed:</strong> <code>b"escrow_account"</code> + <code>owner_public_key</code></li>
+<li><strong>Purpose:</strong> Holds SOL raised during the ICO.</li>
+</ul>
+</li>
+<li><strong>Resource Access State Account:</strong><ul>
+<li><strong>Seed:</strong> <code>b"resource_state"</code> + <code>server_public_key</code></li>
+<li><strong>Purpose:</strong> Stores information about a particular resource and its access fee.</li>
+</ul>
+</li>
+</ul>
+<h2>Instructions</h2>
+<p>This section details each instruction that can be sent to the ContextCoin program. Each instruction is accompanied by a description, input parameters, and account requirements.</p>
+<h3>1. <code>InitializeIco</code></h3>
+<ul>
+<li><strong>Description:</strong> Initializes the ICO state. This instruction must be called before any other ICO-related instructions.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>token_mint</code>: <code>Pubkey</code> - The address of the SPL token mint.</li>
+<li><code>total_supply</code>: <code>u64</code> - The total supply of the token.</li>
+<li><code>base_price</code>: <code>u64</code> - The initial price of the token in lamports.</li>
+<li><code>scaling_factor</code>: <code>u64</code> - The scaling factor used for the bonding curve.</li>
+</ul>
+</li>
+<li>
+<p><strong>Accounts:</strong></p>
+<ol>
+<li><code>ico_state_account</code> (writable): The program-derived address for the ICO state account.<ul>
+<li><strong>Owner:</strong> Program ID</li>
+</ul>
+</li>
+<li><code>owner_account</code> (signer): The public key of the account that owns this ICO, usually the deploying authority.</li>
+<li><code>escrow_account</code> (writable): The program-derived address of the escrow account.<ul>
+<li><strong>Owner:</strong> Program ID</li>
+</ul>
+</li>
+<li><code>rent_account</code> : The Solana rent sysvar account.<ul>
+<li><strong>Owner:</strong> Sysvar ID</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;InitializeIco&quot;,
+  &quot;data&quot;: {
+    &quot;token_mint&quot;: &quot;Fgc9gT1Jq9b76T6H9q2YxRj8f9n3k8p7f4s5d6e7c&quot;,
+    &quot;total_supply&quot;: 1000000000,
+     &quot;base_price&quot;: 10000,
+    &quot;scaling_factor&quot;: 1000000,
+  },
+  &quot;accounts&quot;: [
+    {&quot;account&quot;: &quot;4p2aK9W1x1Q9aT5s6d7e8f9g0h1j2k3l4m5n6o7p&quot;, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true},
+       {&quot;account&quot;: &quot;8o9i7j6k5l4m3n2o1p0q9a8b7c6d5e4f3g2h1&quot;, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;SysvarRent111111111111111111111111111111111&quot;, &quot;isSigner&quot;: true}
+  ]
+}
+</code></pre>
+<h3>2. <code>BuyTokens</code></h3>
+<ul>
+<li><strong>Description:</strong> Allows a user to buy CTX tokens during the ICO.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>amount</code>: <code>u64</code> - The amount of SOL (in lamports) the user wishes to spend.</li>
+</ul>
+</li>
+<li>
+<p><strong>Accounts:</strong></p>
+<ol>
+<li><code>ico_state_account</code> (readonly): The program-derived address of the ICO state account.</li>
+<li><code>buyer_account</code> (signer, writable): The account of the buyer, who pays SOL.</li>
+<li><code>token_mint_account</code> (readonly): The account of the CTX token mint.<ul>
+<li><strong>Owner:</strong> Token program ID.</li>
+</ul>
+</li>
+<li><code>buyer_token_account</code> (writable): The associated token account of the buyer where CTX tokens will be minted to.</li>
+<li><code>escrow_account</code> (writable): The program-derived address of the escrow account.</li>
+<li><code>system_program_account</code> (readonly): The system program account.<ul>
+<li><strong>Owner:</strong> System Program ID.</li>
+</ul>
+</li>
+<li><code>rent_account</code> (readonly): The rent sysvar account.
+        * <strong>Owner:</strong> Sysvar ID.</li>
+</ol>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;BuyTokens&quot;,
+  &quot;data&quot;: {
+    &quot;amount&quot;: 100000,
+  },
+  &quot;accounts&quot;: [
+       {&quot;account&quot;: &quot;4p2aK9W1x1Q9aT5s6d7e8f9g0h1j2k3l4m5n6o7p&quot;, &quot;isWritable&quot;: false},
+    {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;Fgc9gT1Jq9b76T6H9q2YxRj8f9n3k8p7f4s5d6e7c&quot;, &quot;isWritable&quot;: false},
+    {&quot;account&quot;: &quot;1s2d3f4g5h6j7k8l9m0n1o2p3q4r5s6t&quot;, &quot;isWritable&quot;: true},
+       {&quot;account&quot;: &quot;8o9i7j6k5l4m3n2o1p0q9a8b7c6d5e4f3g2h1&quot;, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;11111111111111111111111111111111&quot;, &quot;isWritable&quot;: false},
+       {&quot;account&quot;: &quot;SysvarRent111111111111111111111111111111111&quot;, &quot;isSigner&quot;: false},
+  ]
+}
+</code></pre>
+<h3>3. <code>SellTokens</code></h3>
+<ul>
+<li><strong>Description:</strong> Allows a user to sell their CTX tokens during the ICO.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>amount</code>: <code>u64</code> - The amount of CTX tokens the user wishes to sell.</li>
+</ul>
+</li>
+<li>
+<p><strong>Accounts:</strong></p>
+<ol>
+<li><code>ico_state_account</code> (readonly, writable): The program-derived address of the ICO state account.</li>
+<li><code>seller_account</code> (signer, writable): The account of the seller, who receives SOL.</li>
+<li><code>token_mint_account</code> (readonly): The account of the CTX token mint.<ul>
+<li><strong>Owner:</strong> Token program ID.</li>
+</ul>
+</li>
+<li><code>seller_token_account</code> (writable): The associated token account of the seller where CTX tokens will be burned from.</li>
+<li><code>escrow_account</code> (writable): The program-derived address of the escrow account.</li>
+<li><code>system_program_account</code> (readonly): The system program account.
+          * <strong>Owner:</strong> System Program ID.</li>
+<li><code>rent_account</code> (readonly): The rent sysvar account.
+        * <strong>Owner:</strong> Sysvar ID.</li>
+</ol>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;SellTokens&quot;,
+  &quot;data&quot;: {
+    &quot;amount&quot;: 100,
+  },
+  &quot;accounts&quot;: [
+       {&quot;account&quot;: &quot;4p2aK9W1x1Q9aT5s6d7e8f9g0h1j2k3l4m5n6o7p&quot;, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;Fgc9gT1Jq9b76T6H9q2YxRj8f9n3k8p7f4s5d6e7c&quot;, &quot;isWritable&quot;: false},
+     {&quot;account&quot;: &quot;1s2d3f4g5h6j7k8l9m0n1o2p3q4r5s6t&quot;, &quot;isWritable&quot;: true},
+        {&quot;account&quot;: &quot;8o9i7j6k5l4m3n2o1p0q9a8b7c6d5e4f3g2h1&quot;, &quot;isWritable&quot;: true},
+    {&quot;account&quot;: &quot;11111111111111111111111111111111&quot;, &quot;isWritable&quot;: false},
+         {&quot;account&quot;: &quot;SysvarRent111111111111111111111111111111111&quot;, &quot;isSigner&quot;: false},
+
+  ]
+}
+</code></pre>
+<h3>4. <code>WithdrawFromEscrow</code></h3>
+<ul>
+<li><strong>Description:</strong> Allows the owner to withdraw SOL from the escrow account after the ICO.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>amount</code>: <code>u64</code> - The amount of SOL (in lamports) the owner wishes to withdraw.</li>
+</ul>
+</li>
+<li><strong>Accounts:</strong><ol>
+<li><code>ico_state_account</code> (readonly): The program-derived address of the ICO state account.</li>
+<li><code>owner_account</code> (signer, writable): The public key of the ICO owner who receives the SOL.</li>
+<li><code>escrow_account</code> (writable): The program-derived address of the escrow account where the SOL is withdrawn from.</li>
+<li><code>system_program_account</code> (readonly): The system program account.
+         * <strong>Owner:</strong> System Program ID.</li>
+</ol>
+</li>
+<li><strong>Example:</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;WithdrawFromEscrow&quot;,
+  &quot;data&quot;: {
+    &quot;amount&quot;: 1000,
+  },
+  &quot;accounts&quot;: [
+    {&quot;account&quot;: &quot;4p2aK9W1x1Q9aT5s6d7e8f9g0h1j2k3l4m5n6o7p&quot;, &quot;isWritable&quot;: false},
+    {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true, &quot;isWritable&quot;: true},
+        {&quot;account&quot;: &quot;8o9i7j6k5l4m3n2o1p0q9a8b7c6d5e4f3g2h1&quot;, &quot;isWritable&quot;: true},
+      {&quot;account&quot;: &quot;11111111111111111111111111111111&quot;, &quot;isWritable&quot;: false},
+  ]
+}
+</code></pre>
+<h3>5. <code>CreateResourceAccess</code></h3>
+<ul>
+<li><strong>Description:</strong> Creates or updates the access information for a resource.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>resource_id</code>: <code>String</code> - The unique identifier of the resource.</li>
+<li><code>access_fee</code>: <code>u64</code> - The fee in lamports required to access the resource.</li>
+</ul>
+</li>
+<li><strong>Accounts:</strong><ol>
+<li><code>resource_state_account</code> (writable): The program-derived address for the resource access state.<ul>
+<li><strong>Owner:</strong> Program ID</li>
+</ul>
+</li>
+<li><code>server_account</code> (signer): The public key of the server providing the resource.</li>
+<li><code>rent_account</code> : The Solana rent sysvar account.<ul>
+<li><strong>Owner:</strong> Sysvar ID</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>Example:</strong></li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;CreateResourceAccess&quot;,
+  &quot;data&quot;: {
+      &quot;resource_id&quot;: &quot;MyResource1&quot;,
+    &quot;access_fee&quot;: 1,
+  },
+  &quot;accounts&quot;: [
+    {&quot;account&quot;: &quot;2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q&quot;, &quot;isWritable&quot;: true},
+      {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true},
+    {&quot;account&quot;: &quot;SysvarRent111111111111111111111111111111111&quot;, &quot;isSigner&quot;: true}
+  ]
+}
+</code></pre>
+<h3>6. <code>AccessResource</code></h3>
+<ul>
+<li><strong>Description:</strong> Pays to access a registered resource.</li>
+<li><strong>Instruction Data:</strong><ul>
+<li><code>resource_id</code>: <code>String</code> - The unique identifier of the resource to access.</li>
+<li><code>amount</code>: <code>u64</code> - The amount of SOL (in lamports) the user wishes to spend.</li>
+</ul>
+</li>
+<li>
+<p><strong>Accounts:</strong></p>
+<ol>
+<li><code>resource_state_account</code> (readonly): The program-derived address of the resource state.</li>
+<li><code>user_account</code> (signer, writable): The account of the user who wishes to access the resource.</li>
+<li><code>server_account</code> (writable): The account of the server which provides the resource and receives payment.</li>
+<li><code>system_program_account</code> (readonly): The system program account.<ul>
+<li><strong>Owner:</strong> System Program ID.</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+</li>
+</ul>
+<pre><code class="language-json">{
+  &quot;instruction&quot;: &quot;AccessResource&quot;,
+    &quot;data&quot;: {
+     &quot;resource_id&quot;: &quot;MyResource1&quot;,
+    &quot;amount&quot;: 2,
+  },
+  &quot;accounts&quot;: [
+        {&quot;account&quot;: &quot;2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q&quot;, &quot;isWritable&quot;: false},
+    {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isSigner&quot;: true, &quot;isWritable&quot;: true},
+        {&quot;account&quot;: &quot;D3G8a76b5c4d3e2f1g0h9i8j7k6l5m4n3o2p1q&quot;, &quot;isWritable&quot;: true},
+      {&quot;account&quot;: &quot;11111111111111111111111111111111&quot;, &quot;isWritable&quot;: false},
+  ]
+}
+</code></pre>
+<h2>Account Structures</h2>
+<p>This section describes the data structures of each account used by the ContextCoin program.</p>
+<h3>1. <code>ICOState</code></h3>
+<ul>
+<li><strong>Purpose:</strong> Stores the overall state of the ICO.</li>
+<li><strong>Fields:</strong><ul>
+<li><code>owner</code>: <code>Pubkey</code> - The public key of the ICO owner.</li>
+<li><code>token_mint</code>: <code>Pubkey</code> - The public key of the SPL token mint account.</li>
+<li><code>total_supply</code>: <code>u64</code> - The total supply of the token in circulation.</li>
+<li><code>tokens_sold</code>: <code>u64</code> - The number of CTX tokens that have been sold during the ICO.</li>
+<li><code>base_price</code>: <code>u64</code> - The starting price of CTX tokens (in lamports).</li>
+<li><code>scaling_factor</code>: <code>u64</code> - The scaling factor for the bonding curve.</li>
+<li><code>escrow_account</code>: <code>Pubkey</code> - The program-derived address of the escrow account.</li>
+<li><code>bump</code>: <code>u8</code> - The bump seed for the program-derived addresses</li>
+<li><code>is_initialized</code>: <code>bool</code> - Indicates whether the ICO state has been initialized.</li>
+</ul>
+</li>
+</ul>
+<h3>2. <code>ResourceAccessState</code></h3>
+<ul>
+<li><strong>Purpose:</strong> Stores information about a specific resource and its access details.</li>
+<li><strong>Fields:</strong><ul>
+<li><code>resource_id</code>: <code>String</code> - The identifier of the resource.</li>
+<li><code>server_address</code>: <code>Pubkey</code> -  The public key of the server providing the resource.</li>
+<li><code>access_fee</code>: <code>u64</code> - The fee in lamports required to access the resource.</li>
+</ul>
+</li>
+<li><code>bump</code>: <code>u8</code> - The bump seed for the program-derived addresses</li>
+<li><code>is_initialized</code>: <code>bool</code> - Indicates whether the resource state has been initialized.</li>
+</ul>
+<h2>Error Codes</h2>
+<p>This section provides a list of custom error codes that the ContextCoin program may return.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Error Code</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>InsufficientFunds</code></td>
+<td style="text-align: left;">The user does not have enough funds to perform the operation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidAccountOwner</code></td>
+<td style="text-align: left;">The account owner is not authorized to perform the action.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidInstruction</code></td>
+<td style="text-align: left;">The instruction is not recognized or has invalid data.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidEscrowAccount</code></td>
+<td style="text-align: left;">The escrow account provided does not match the expected address.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidTokenMint</code></td>
+<td style="text-align: left;">The token mint provided is not valid for this operation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidStateAccount</code></td>
+<td style="text-align: left;">The state account does not match the expected account.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>InvalidResource</code></td>
+<td style="text-align: left;">The resource account is invalid or does not match the request.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>CalculationOverflow</code></td>
+<td style="text-align: left;">A calculation resulted in an overflow.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>EscrowMismatch</code></td>
+<td style="text-align: left;">The escrow account did not match the stored escrow address</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>NotInitialized</code></td>
+<td style="text-align: left;">The state account has not been initialized</td>
+</tr>
+</tbody>
+</table>
+<h2>Data Serialization</h2>
+<p>All instruction data and account state is serialized/deserialized using the <a href="https://borsh.io/">Borsh</a> serialization format.</p>
+<h2>Additional Notes</h2>
+<ul>
+<li>All amounts are in lamports (1 SOL = 1,000,000,000 lamports).</li>
+<li>The program uses the System Program (<code>11111111111111111111111111111111</code>) for SOL transfers and the SPL Token program.</li>
+<li>This API is subject to change; always refer to the latest version of this document.</li>
+</ul>
+<hr />
+<p><strong>Key takeaways from this API Reference:</strong></p>
+<ul>
+<li><strong>Clarity:</strong> It clearly explains each instruction, the required parameters, and the corresponding accounts.</li>
+<li><strong>Specificity:</strong> It details data types, PDAs, and error codes, which are essential for developers.</li>
+<li><strong>Examples:</strong> The JSON examples make it easy to understand how to construct a valid transaction.</li>
+<li><strong>Completeness:</strong> It covers all critical parts of your program's interface.</li>
+<li><strong>Format:</strong> It is written in a markdown format for ease of use and accessibility.</li>
+</ul>
+<p>Remember to:</p>
+<ol>
+<li><strong>Replace Placeholders:</strong> Fill in the actual program ID (<code>&lt;YourProgramIdHere&gt;</code>), token mint addresses, and any other relevant placeholders.</li>
+<li><strong>Keep Up-to-Date:</strong> As you update your program, be sure to update the API reference accordingly.</li>
+<li><strong>Host this Document:</strong> Place this <code>API.md</code> in your project repository or documentation website.</li>
+</ol>
+<p>This API reference should greatly help developers to interact with your ContextCoin program! Let me know if you need any further assistance.</p>
+</body>
+</html>

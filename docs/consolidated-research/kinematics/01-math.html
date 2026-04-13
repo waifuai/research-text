@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>-math</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Let the given vector be denoted by $\mathbf{v}$:
+$$ \mathbf{v} = \begin{pmatrix} v_1 \ v_2 \ v_3 \ v_4 \ v_5 \ v_6 \end{pmatrix} $$
+where
+$v_1 = \frac{v_{\alpha x} (y_{\alpha} - y_{\beta})^2 + v_{\alpha x} (z_{\alpha} - z_{\beta})^2 - v_{\alpha y} (x_{\alpha} - x_{\beta})(y_{\alpha} - y_{\beta}) - v_{\alpha z} (x_{\alpha} - x_{\beta})(z_{\alpha} - z_{\beta}) - x_{\alpha} \sqrt{\Delta} + x_{\beta} \sqrt{\Delta}}{D}$</p>
+<p>$v_2 = \frac{-v_{\alpha x} (x_{\alpha} - x_{\beta})(y_{\alpha} - y_{\beta}) + v_{\alpha y} (x_{\alpha} - x_{\beta})^2 + v_{\alpha y} (z_{\alpha} - z_{\beta})^2 - v_{\alpha z} (y_{\alpha} - y_{\beta})(z_{\alpha} - z_{\beta}) - y_{\alpha} \sqrt{\Delta} + y_{\beta} \sqrt{\Delta}}{D}$</p>
+<p>$v_3 = \frac{- v_{\alpha x} (x_{\alpha} - x_{\beta})(z_{\alpha} - z_{\beta}) - v_{\alpha y} (y_{\alpha} - y_{\beta})(z_{\alpha} - z_{\beta}) + v_{\alpha z} (x_{\alpha} - x_{\beta})^2 + v_{\alpha z} (y_{\alpha} - y_{\beta})^2 - (z_{\alpha} - z_{\beta})\sqrt{\Delta}}{D}$</p>
+<p>$v_4 = \frac{v_{\alpha x} (y_{\alpha} - y_{\beta})^2 + v_{\alpha x} (z_{\alpha} - z_{\beta})^2 - v_{\alpha y} (x_{\alpha} - x_{\beta})(y_{\alpha} - y_{\beta}) - v_{\alpha z} (x_{\alpha} - x_{\beta})(z_{\alpha} - z_{\beta}) + x_{\alpha} \sqrt{\Delta} - x_{\beta} \sqrt{\Delta}}{D}$</p>
+<p>$v_5 = \frac{-v_{\alpha x} (x_{\alpha} - x_{\beta})(y_{\alpha} - y_{\beta}) + v_{\alpha y} (x_{\alpha} - x_{\beta})^2 + v_{\alpha y} (z_{\alpha} - z_{\beta})^2 - v_{\alpha z} (y_{\alpha} - y_{\beta})(z_{\alpha} - z_{\beta}) + y_{\alpha} \sqrt{\Delta} - y_{\beta} \sqrt{\Delta}}{D}$</p>
+<p>$v_6 = \frac{- v_{\alpha x} (x_{\alpha} - x_{\beta})(z_{\alpha} - z_{\beta}) - v_{\alpha y} (y_{\alpha} - y_{\beta})(z_{\alpha} - z_{\beta}) + v_{\alpha z} (x_{\alpha} - x_{\beta})^2 + v_{\alpha z} (y_{\alpha} - y_{\beta})^2 + (z_{\alpha} - z_{\beta}) \sqrt{\Delta}}{D}$</p>
+<p>where
+$$ \Delta = s_{\beta}^{2} ((x_{\alpha} - x_{\beta})^2 + (y_{\alpha} - y_{\beta})^2 + (z_{\alpha} - z_{\beta})^2) - (v_{\alpha x} (y_{\alpha} - y_{\beta}) + v_{\alpha y} (x_{\alpha} - x_{\beta}) + v_{\alpha z} (z_{\alpha} - z_{\beta}))^2 $$
+and
+$$ D = (x_{\alpha} - x_{\beta})^2 + (y_{\alpha} - y_{\beta})^2 + (z_{\alpha} - z_{\beta})^2 $$</p>
+<p>We can simplify this further. Let $\mathbf{r} = (x_{\alpha} - x_{\beta}, y_{\alpha} - y_{\beta}, z_{\alpha} - z_{\beta})$ and $\mathbf{v}<em>{\alpha} = (v</em>{\alpha x}, v_{\alpha y}, v_{\alpha z})$. Then, 
+$$ D = |\mathbf{r}|^2 = r_x^2 + r_y^2 + r_z^2 $$
+$$ \Delta = s_{\beta}^2 |\mathbf{r}|^2 - (\mathbf{v}_{\alpha} \cdot (\mathbf{r} \times \mathbf{e}))^2 $$
+where $\mathbf{e} = (1,1,1)$.</p>
+<p>Let $\mathbf{R}<em>{\alpha} = (x</em>{\alpha}, y_{\alpha}, z_{\alpha})$ and $\mathbf{R}<em>{\beta} = (x</em>{\beta}, y_{\beta}, z_{\beta})$.</p>
+<p>Then, we can write:
+$$ \mathbf{v} = \begin{pmatrix} \frac{\mathbf{v}<em>{\alpha} \times (\mathbf{r} \times \mathbf{r}) + (\mathbf{R}</em>{\beta} - \mathbf{R}<em>{\alpha}) \sqrt{\Delta}}{D} \ \frac{\mathbf{v}</em>{\alpha} \times (\mathbf{r} \times \mathbf{r}) - (\mathbf{R}<em>{\beta} - \mathbf{R}</em>{\alpha}) \sqrt{\Delta}}{D} \end{pmatrix} $$
+Since $\mathbf{r} \times \mathbf{r} = \mathbf{0}$,
+$$ \mathbf{v} = \begin{pmatrix} (\mathbf{R}<em>{\beta} - \mathbf{R}</em>{\alpha}) \frac{\sqrt{\Delta}}{D} \ - (\mathbf{R}<em>{\beta} - \mathbf{R}</em>{\alpha}) \frac{\sqrt{\Delta}}{D} \end{pmatrix} $$
+Thus, we have
+$$ \mathbf{v} = \begin{pmatrix} -\mathbf{r} \frac{\sqrt{\Delta}}{D} \ \mathbf{r} \frac{\sqrt{\Delta}}{D} \end{pmatrix} = \begin{pmatrix} -\mathbf{r} \frac{\sqrt{\Delta}}{|\mathbf{r}|^2} \ \mathbf{r} \frac{\sqrt{\Delta}}{|\mathbf{r}|^2} \end{pmatrix} $$</p>
+<p>Final Answer: The final answer is $\boxed{\mathbf{v}}$</p>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sde</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>2: sde</h1>
+<p>Let's derive a stochastic differential equation (SDE) tailored for Project Genesis, focusing on the token price dynamics in an AI-driven Tokenized Economy with bonding curves. Since you've emphasized integrating stochastic calculus into this system, I'll build an SDE that combines the deterministic mechanics of a bonding curve with stochastic fluctuations, capturing both market randomness and economic incentives. I'll walk through the derivation step-by-step, ensuring it's practical for simulation and aligned with your vision.</p>
+<h2>Objective</h2>
+<p>We want an SDE to model the token price $P_t$ over time, where:</p>
+<ul>
+<li>The price is influenced by a bonding curve (deterministic component).</li>
+<li>Random market fluctuations are introduced via stochastic processes (e.g., Brownian motion).</li>
+<li>The model reflects supply dynamics and agent behavior in a tokenized economy.</li>
+</ul>
+<h2>Step 1: Define the Bonding Curve (Deterministic Base)</h2>
+<p>A bonding curve defines the token price as a function of its supply $S_t$. For simplicity, let's use a linear bonding curve:</p>
+<p>$$P_t = m S_t$$</p>
+<p>where:
+$m &gt; 0$ is the slope (price per unit of supply),
+$S_t$ is the total supply at time $t$.</p>
+<p>In a dynamic system, supply changes over time due to agent actions (e.g., minting or burning tokens). Let's model the supply change as:</p>
+<p>$$dS_t = \alpha dt$$</p>
+<p>where $\alpha$ represents the net rate of supply change (positive for minting, negative for burning), assumed constant for now but could later be stochastic or agent-driven.</p>
+<p>Using the chain rule, the deterministic change in price due to supply growth is:</p>
+<p>$$dP_t = \frac{dP}{dS} \cdot dS_t = m \cdot \alpha dt$$</p>
+<p>This gives us the drift term—the expected price increase (or decrease) based on the bonding curve alone.</p>
+<h2>Step 2: Introduce Stochastic Fluctuations</h2>
+<p>Markets aren't purely deterministic; prices fluctuate due to randomness (e.g., speculation, external events). We'll model this using Geometric Brownian Motion (GBM), a common choice for asset prices, which ensures prices remain positive and captures percentage-based volatility.</p>
+<p>The stochastic component is:</p>
+<p>$$\sigma P_t dW_t$$</p>
+<p>where:
+$\sigma &gt; 0$ is the volatility coefficient (randomness intensity),
+$P_t$ is the current price (making volatility proportional to price),
+$dW_t$ is the increment of a Wiener process (standard Brownian motion), with $dW_t \sim N(0, dt)$.</p>
+<h2>Step 3: Combine Deterministic and Stochastic Terms</h2>
+<p>The full SDE for the token price combines the drift (from the bonding curve) and diffusion (from market randomness):</p>
+<p>$$dP_t = m \alpha dt + \sigma P_t dW_t$$</p>
+<p>Here:
+$m \alpha dt$ is the deterministic drift, driven by supply changes along the bonding curve,
+$\sigma P_t dW_t$ is the stochastic term, introducing random price shocks.
+This SDE resembles GBM but with a drift term tied to the bonding curve rather than a constant growth rate $(\mu P_t dt)$ in standard GBM. It's a hybrid that respects the tokenized economy's mechanics while adding market realism.</p>
+<h2>Step 4: Refine the Drift Term</h2>
+<p>The drift $m \alpha$ assumes a constant supply change rate, which might oversimplify things. In Project Genesis, supply changes depend on agent actions (e.g., buying/minting or selling/burning), which are influenced by the current price and market conditions. Let's make $\alpha$ price-dependent:</p>
+<p>When $P_t$ is high, agents might sell or burn tokens (reducing supply, $\alpha &lt; 0$).
+When $P_t$ is low, agents might buy or mint tokens (increasing supply, $\alpha &gt; 0$).</p>
+<p>A simple feedback mechanism could be:</p>
+<p>$$\alpha_t = k (\bar{P} - P_t)$$</p>
+<p>where:
+$k &gt; 0$ is a sensitivity parameter (how strongly agents react to price deviations),
+$\bar{P}$ is a "target" or equilibrium price (e.g., a long-term average or external benchmark).</p>
+<p>This introduces mean-reversion: if $P_t &gt; \bar{P}$, supply decreases (pushing price down); if $P_t &lt; \bar{P}$, supply increases (pushing price up). Substituting:</p>
+<p>$$dS_t = k (\bar{P} - P_t) dt$$</p>
+<p>$$dP_t = m \cdot k (\bar{P} - P_t) dt$$</p>
+<p>Now the SDE becomes:</p>
+<p>$$dP_t = m k (\bar{P} - P_t) dt + \sigma P_t dW_t$$</p>
+<h2>Step 5: Interpretation</h2>
+<p>This SDE blends:
+- Mean-reversion from the bonding curve and agent behavior $(m k (\bar{P} - P_t))$, pulling the price toward $\bar{P}$,
+- Stochastic volatility $(\sigma P_t dW_t)$, reflecting market noise.</p>
+<p>It's a hybrid of an Ornstein-Uhlenbeck process (mean-reverting) and GBM (proportional volatility), tailored for a tokenized economy:</p>
+<ul>
+<li>The drift ensures prices align with supply dynamics and agent incentives.</li>
+<li>The diffusion captures the speculative volatility typical of crypto markets.</li>
+</ul>
+<h2>Step 6: Verify with Ito's Lemma (Optional Check)</h2>
+<p>To ensure consistency, let's relate $P_t$ back to $S_t$. If $$P_t = m S_t$$, then:</p>
+<p>$$dP_t = m dS_t$$</p>
+<p>Suppose supply follows its own SDE:</p>
+<p>$$dS_t = k' (\bar{S} - S_t) dt + \sigma_S S_t dW_t$$</p>
+<p>where $$\bar{S} = \bar{P} / m$$ is the equilibrium supply. Then:</p>
+<p>$$dP_t = m \left[ k' (\bar{S} - S_t) dt + \sigma_S S_t dW_t \right] = m k' (\bar{P} - P_t) dt + m \sigma_S (P_t / m) dW_t$$</p>
+<p>$$dP_t = m k' (\bar{P} - P_t) dt + \sigma_S P_t dW_t$$</p>
+<p>This matches our derived SDE, with $m k = m k'$ and $\sigma = \sigma_S$, confirming the price dynamics are consistent with a stochastic supply process.</p>
+<h2>Final SDE</h2>
+<p>The derived SDE for the token price in Project Genesis is:</p>
+<p>$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t$$</p>
+<p>where:
+$\theta = m k$ is the speed of mean reversion (combining bonding curve slope and agent sensitivity),
+$\bar{P}$ is the target price,
+$\sigma$ is the volatility,
+$dW_t$ is the Wiener process increment.</p>
+<h2>Practical Implementation</h2>
+<p>For simulation (e.g., in Python), use the Euler-Maruyama method:
+python
+import numpy as np</p>
+<p>def simulate_price(P0, theta, P_bar, sigma, dt=0.01, T=1.0):
+    N = int(T / dt)
+    t = np.linspace(0, T, N+1)
+    P = np.zeros(N+1)
+    P[0] = P0
+    for i in range(N):
+        dW = np.random.normal(0, np.sqrt(dt))
+        drift = theta * (P_bar - P[i]) * dt
+        diffusion = sigma * P[i] * dW
+        P[i+1] = P[i] + drift + diffusion
+        P[i+1] = max(P[i+1], 0)  # Prevent negative prices
+    return t, P</p>
+<h2>Example</h2>
+<p>P0 = 1.0  # Initial price
+theta = 0.5  # Reversion speed
+P_bar = 2.0  # Target price
+sigma = 0.3  # Volatility
+t, P = simulate_price(P0, theta, P_bar, sigma)
+import matplotlib.pyplot as plt
+plt.plot(t, P)
+plt.xlabel("Time")
+plt.ylabel("Price")
+plt.title("Token Price SDE Simulation")
+plt.show()</p>
+<h2>Extensions</h2>
+<ul>
+<li><strong>Stochastic Volatility:</strong> Replace $\sigma$ with a process like Heston's: $$d\sigma_t^2 = \kappa (\theta_\sigma - \sigma_t^2) dt + \xi \sigma_t dW_t^\sigma$$</li>
+<li><strong>Jumps:</strong> Add a term $J_t dN_t$ for sudden events.</li>
+<li><strong>Agent-Driven Supply:</strong> Make $\theta$ or $\bar{P}$ depend on aggregate agent actions, computed in real-time.</li>
+</ul>
+<p>This SDE provides a flexible foundation for Project Genesis, balancing deterministic economic rules with stochastic market behavior. Does this meet your needs, or would you like to adjust it further—e.g., add jumps, tweak the drift, or explore a different bonding curve?</p>
+</body>
+</html>

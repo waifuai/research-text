@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenAffiliates: Dynamic Commission Model - A Mathematical Extension</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h2>TokenAffiliates: Dynamic Commission Model - A Mathematical Extension</h2>
+<p>This paper extends the previous formal mathematical model of TokenAffiliates by introducing the ability for affiliates to set custom commission rates for each token they promote. This dynamic commission structure adds complexity and strategic depth to the affiliate program, requiring a refined mathematical analysis to understand its implications on token dynamics and affiliate behavior.</p>
+<p><strong>1. Definitions and Updated Notation:</strong></p>
+<p>We retain the notation from the original model, introducing the following additions:</p>
+<ul>
+<li><strong>α<sub>j</sub>:</strong> Commission rate set by the affiliate for token <em>j</em>, where 0 ≤ α<sub>j</sub> ≤ 1. </li>
+<li><strong>I<sub>j</sub>:</strong> Investment amount in token <em>j</em> made through an affiliate's referral link.</li>
+<li><strong>C<sub>j</sub>:</strong> Commission earned by the affiliate for token <em>j</em>, denominated in the invested token <em>j</em>.</li>
+<li><strong>J:</strong> The set of tokens available in the TokenAffiliates program.</li>
+</ul>
+<p><strong>2. Dynamic Commission Structure:</strong></p>
+<p>Unlike the fixed commission rate in the original model, affiliates now have the flexibility to set individual commission rates for each token they promote. The commission earned for a single investment in token <em>j</em> is now defined as:</p>
+<ul>
+<li><strong>$C_j = \alpha_j \times I_j$ (Equation 1')</strong></li>
+</ul>
+<p>Where α<sub>j</sub> is the custom commission rate set by the affiliate for token <em>j</em>.</p>
+<p><strong>3. Payout Mechanism (Dynamic):</strong></p>
+<p>The payout mechanism remains similar to the original model, but now accounts for the varying commission rates.</p>
+<ul>
+<li><strong>T<sub>1</sub> (Investment in Token j):</strong> User invests <em>I<sub>j</sub></em> tokens of type <em>j</em> through an affiliate link with identifier <em>A<sub>ID</sub></em>. The smart contract registers <em>A<sub>ID</sub></em> and the token type <em>j</em>.</li>
+<li><strong>T<sub>2</sub> (Commission Calculation):</strong> The smart contract retrieves the commission rate α<sub>j</sub> set by the affiliate for token <em>j</em> and calculates the commission <em>C<sub>j</sub></em> using Equation 1'.</li>
+<li><strong>T<sub>3</sub> (Payout in Token j):</strong> The smart contract transfers <em>C<sub>j</sub></em> tokens of type <em>j</em> from the ICO's designated address for token <em>j</em> to the affiliate's wallet associated with <em>A<sub>ID</sub></em>.</li>
+</ul>
+<p><strong>4. Impact on Token Dynamics:</strong></p>
+<p><strong>4.1 Differentiated Demand Influence:</strong></p>
+<p>The ability to set individual commission rates allows affiliates to tailor their incentives for different tokens. This can lead to varied demand impacts across tokens. Let <strong>D<sub>j</sub>(x<sub>j</sub>)</strong> represent the demand function for token <em>j</em>, where <em>x<sub>j</sub></em> represents factors influencing its demand. The affiliate can influence demand by adjusting α<sub>j</sub>, which may indirectly affect <em>x<sub>j</sub></em>.</p>
+<ul>
+<li><strong>ΔD<sub>j</sub> = D<sub>j</sub>(x<sub>j</sub> + Δx<sub>j</sub>(α<sub>j</sub>)) - D<sub>j</sub>(x<sub>j</sub>) (Equation 2')</strong></li>
+</ul>
+<p>This highlights that the change in demand for token <em>j</em> is influenced by the affiliate's choice of α<sub>j</sub>, which in turn affects the demand factors <em>x<sub>j</sub></em>.</p>
+<p><strong>4.2 Token Distribution Heterogeneity:</strong></p>
+<p>With variable commission rates, the distribution of tokens becomes more heterogeneous. The total tokens distributed for token <em>j</em> are:</p>
+<ul>
+<li><strong>$\sum_{i=1}^{N_A} C_{j,i} = \sum_{i=1}^{N_A} \alpha_{j,i} \times I_{j,i}$ (Equation 3')</strong></li>
+</ul>
+<p>Where C<sub>j,i</sub> is the commission earned by the i-th affiliate for token <em>j</em>, and α<sub>j,i</sub> is the commission rate set by the i-th affiliate for token <em>j</em>. This introduces a weighted distribution based on individual affiliate strategies.</p>
+<p><strong>4.3 Bonding Curve Effects with Multiple Tokens:</strong></p>
+<p>Each token <em>j</em> might have its own bonding curve equation <em>P<sub>j</sub>(S<sub>j</sub>)</em>. The effect of investments on the price of each token will be determined by the specific bonding curve and the investment amount influenced by the commission rate.</p>
+<ul>
+<li><strong>ΔP<sub>j</sub> = P<sub>j</sub>(S<sub>j</sub> + I<sub>j</sub>) - P<sub>j</sub>(S<sub>j</sub>) (Equation 4')</strong></li>
+</ul>
+<p><strong>5. Affiliate Earnings (Dynamic):</strong></p>
+<p>An affiliate's total earnings are now calculated as the sum of commissions earned across all tokens:</p>
+<ul>
+<li><strong>$E = \sum_{j\in J} \sum_{i=1}^{n_j} \alpha_j \times I_{j,i}$ (Equation 5')</strong></li>
+</ul>
+<p>Where <em>n<sub>j</sub></em> is the number of investments made in token <em>j</em> through the affiliate's link and I<sub>j,i</sub> is the i-th investment in token <em>j</em>.</p>
+<p><strong>6. Strategic Considerations and Optimization:</strong></p>
+<p>The dynamic commission model introduces strategic considerations for affiliates:</p>
+<ul>
+<li><strong>Competition and Market Share:</strong> Affiliates must consider the commission rates set by competitors to attract investors.</li>
+<li><strong>Token Volatility and Risk:</strong>  Affiliates may adjust α<sub>j</sub> based on the volatility and perceived risk associated with token <em>j</em>.</li>
+<li><strong>Optimization Problem:</strong> Affiliates face an optimization problem: maximizing their earnings <em>E</em> by choosing the optimal commission rates α<sub>j</sub> for each token <em>j</em>, considering factors like demand elasticity, competition, and risk tolerance.</li>
+</ul>
+<p><strong>7. Sensitivity Analysis and Future Directions:</strong></p>
+<p>Sensitivity analysis can be performed to study the impact of varying α<sub>j</sub> on demand, token distribution, and affiliate earnings. Future research directions include:</p>
+<ul>
+<li><strong>Algorithmic Commission Setting:</strong> Exploring algorithms that help affiliates dynamically adjust commission rates based on market conditions and performance metrics.</li>
+<li><strong>Game Theory with Differentiated Products:</strong> Developing game-theoretic models to analyze the strategic interactions between affiliates with different commission structures for various tokens.</li>
+<li><strong>Empirical Analysis:</strong> Conducting empirical studies to analyze real-world data from TokenAffiliates implementations with dynamic commissions.</li>
+<li><strong>Mechanism Design:</strong> Designing mechanisms to ensure fairness, transparency, and efficiency in the dynamic commission ecosystem.</li>
+</ul>
+<p><strong>8. Conclusion:</strong></p>
+<p>The extension of the TokenAffiliates model to incorporate dynamic commission rates adds significant complexity and strategic depth. This refined model provides a framework for understanding the intricate relationships between affiliate choices, token dynamics, and market behavior in a more flexible and nuanced setting. Further research into the strategic aspects and optimization challenges presented by this model will be crucial for developing robust and efficient TokenAffiliate systems in the evolving landscape of tokenized economies.</p>
+</body>
+</html>

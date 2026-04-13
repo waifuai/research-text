@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>airdrop</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>airdrop</h1>
+<p>The user wants to transform the provided Python code into an unsolved mathematical problem statement and its solution in GitHub Markdown format.</p>
+<p>Here's a breakdown of the steps:</p>
+<ol>
+<li><strong>Understand the Code:</strong> The Python code simulates a token economy with different airdrop strategies. The goal is to analyze the impact of these strategies on the token price.</li>
+<li><strong>Identify Key Variables and Relationships:</strong>  Extract the core mathematical elements: token supply, price, user behavior (buy/sell probabilities), airdrop parameters, and the simulation dynamics.</li>
+<li><strong>Formulate the Problem Statement:</strong> Express the simulation as a mathematical model. Define the state variables, parameters, and the objective (e.g., predicting the token price under different airdrop schemes).</li>
+<li><strong>Develop the Solution:</strong> Translate the Python code's logic into mathematical equations. Represent user behavior, price dynamics, and airdrop mechanics mathematically.</li>
+<li><strong>Structure the Solution in Markdown:</strong> Use GitHub Markdown syntax, especially LaTeX for equations, to present the problem and solution clearly. of $P_0$. The economy consists of $N$ users, each characterized by a set of behavioral parameters influencing their buy and sell decisions. These parameters include a base buy probability ($b$), a base sell probability ($s$), a price sensitivity ($\sigma$), and a market influence ($\mu$). Users are categorized into archetypes, each with a distinct set of these parameters.</li>
+</ol>
+<p>The token economy undergoes discrete time steps. At each step, users make buy or sell decisions based on probabilistic models influenced by the current token price ($P_t$), the initial price, a market sentiment factor ($M_t$), and a specific airdrop strategy implemented.</p>
+<p>Several airdrop strategies can be employed, each defined by a set of parameters including:</p>
+<ul>
+<li><strong>Type:</strong>  (e.g., lottery, uniform, tiered, none)</li>
+<li><strong>Percentage:</strong> The fraction of the initial token supply allocated for the airdrop.</li>
+<li><strong>Vesting:</strong> The method by which airdropped tokens become available to users (e.g., none, linear, dynamic based on price or activity).</li>
+<li><strong>Vesting Periods:</strong> The number of periods over which vesting occurs.</li>
+<li><strong>Criteria:</strong> The metric used for eligibility or allocation (e.g., holdings, activity).</li>
+<li><strong>Thresholds:</strong>  Levels of the criteria used for tiered airdrops.</li>
+<li><strong>Weights:</strong>  Factors applied to different tiers in a tiered airdrop.</li>
+<li><strong>Winners Fraction:</strong> The proportion of users selected in a lottery airdrop.</li>
+<li><strong>Price Threshold:</strong> A price level used in dynamic price vesting.</li>
+<li><strong>Activity Threshold:</strong> An activity level used in dynamic activity vesting.</li>
+</ul>
+<p>The probability of a user $i$ buying at time $t$ ($P_{buy, i, t}$) and selling ($P_{sell, i, t}$) are modeled as sigmoid functions:</p>
+<p>$P_{buy, i, t} = \frac{1}{1 + e^{-(\beta_{buy, i} + \sigma_i (P_0 - P_t) + \mu_i M_t - \Delta P_t \cdot \omega_{buy})}}$</p>
+<p>$P_{sell, i, t} = \frac{1}{1 + e^{-(\beta_{sell, i} - \sigma_i (P_t - P_{airdrop}) + \mu_i M_t + \Delta P_t \cdot \omega_{sell})}}$</p>
+<p>where:</p>
+<ul>
+<li>$\beta_{buy, i}$ and $\beta_{sell, i}$ are base probabilities for user $i$, potentially modified by the airdrop strategy.</li>
+<li>$P_{airdrop}$ is a reference price, potentially the initial price or a specific price target of the airdrop.</li>
+<li>$\Delta P_t = \frac{P_t - P_0}{P_0}$ represents the relative price change.</li>
+<li>$\omega_{buy}$ and $\omega_{sell}$ are weighting factors for the price change influence.</li>
+</ul>
+<p>The quantity of tokens bought or sold by user $i$ is influenced by their decision and the available supply or their holdings. The token price at the next time step ($P_{t+1}$) is determined by the aggregate buy and sell orders, assuming a simplified market clearing mechanism where the price adjusts based on the difference between demand and supply relative to the total supply ($S_t$). A burn mechanism is also in place, reducing the total supply based on transaction volume.</p>
+<p><strong>The Problem:</strong></p>
+<p>Given the initial conditions, user archetypes and their parameters, and a defined set of airdrop strategies (characterized by the parameters listed above), mathematically model and predict the evolution of the token price ($P_t$) and total token supply ($S_t$) over a finite number of time steps ($T_{max}$) for each airdrop strategy. Analyze and compare the impact of different airdrop strategies on the final token price and supply.</p>
+<h2>Solution:</h2>
+<p>Let:</p>
+<ul>
+<li>$T_t$ be the total token supply at time $t$.</li>
+<li>$P_t$ be the token price at time $t$.</li>
+<li>$H_{i,t}$ be the holdings of user $i$ at time $t$.</li>
+<li>$\mathcal{A}$ be the set of user archetypes.</li>
+<li>$\theta_a = (b_a, s_a, \sigma_a, \mu_a)$ be the parameters for archetype $a \in \mathcal{A}$.</li>
+<li>$U$ be the set of users, $|U| = N$.</li>
+<li>$A_i \in \mathcal{A}$ be the archetype of user $i$.</li>
+<li>$\theta_i = \theta_{A_i}$ be the parameters of user $i$.</li>
+<li>$\mathcal{S}$ be the set of airdrop strategies.</li>
+<li>$s \in \mathcal{S}$ be a specific airdrop strategy with parameters $\Pi_s$.</li>
+<li>$E_{i,s}$ be the eligibility of user $i$ for airdrop strategy $s$.</li>
+<li>$\Gamma_{i,s}$ be the amount of tokens airdropped to user $i$ under strategy $s$.</li>
+<li>$V_{i,s,t}$ be the amount of vested tokens for user $i$ under strategy $s$ at time $t$.</li>
+<li>$\mathbb{I}(\cdot)$ be the indicator function.</li>
+</ul>
+<p><strong>1. User Behavior Model:</strong></p>
+<p>The probability of user $i$ buying at time $t$ under airdrop strategy $s$ is:</p>
+<p>$P_{buy, i, t}^{(s)} = \frac{1}{1 + e^{-(\theta_{i,buy} + \sigma_i (P_0 - P_t) + \mu_i M_t - \frac{P_t - P_0}{P_0} \cdot 0.5)}}$</p>
+<p>where $\theta_{i,buy}$ is the base buy probability of user $i$.</p>
+<p>The probability of user $i$ selling at time $t$ under airdrop strategy $s$ is:</p>
+<p>$P_{sell, i, t}^{(s)} = \frac{1}{1 + e^{-(\theta_{i,sell} - \sigma_i (P_t - P_{0}) + \mu_i M_t + \frac{P_t - P_0}{P_0} \cdot 0.3)}} \cdot (1 + \ln(H_{i,t} + 1)) \cdot \mathbb{I}(H_{i,t} &gt; 0)$</p>
+<p>where $\theta_{i,sell}$ is the base sell probability of user $i$, potentially modified by the airdrop strategy (e.g., halved for holding-based tiered airdrops).</p>
+<p><strong>2. Airdrop Mechanics:</strong></p>
+<p>The total amount of tokens allocated for airdrop strategy $s$ is $A^{(s)} = T_0 \cdot \text{percentage}^{(s)}$.</p>
+<ul>
+<li><strong>Uniform Airdrop:</strong>  $\Gamma_{i,s} = \frac{A^{(s)}}{N}$.</li>
+<li><strong>Lottery Airdrop:</strong>  Select $\lfloor N \cdot \text{winners_fraction}^{(s)} \rfloor$ winners randomly. Airdrop amount per winner is $\frac{A^{(s)}}{\lfloor N \cdot \text{winners_fraction}^{(s)} \rfloor}$.</li>
+<li><strong>Tiered Airdrop:</strong> Eligibility is based on <code>criteria</code> (holdings or activity) and <code>thresholds</code> with corresponding <code>weights</code>. For holdings: $E_{i,s} = \sum_{j} \text{weight}<em>j^{(s)} \cdot \mathbb{I}(H</em>{i,0} \ge \text{threshold}<em>j^{(s)})$. The airdrop amount is proportional to eligibility: $\Gamma</em>{i,s} = A^{(s)} \cdot \frac{E_{i,s}}{\sum_{k \in U} E_{k,s}}$.</li>
+<li><strong>No Airdrop:</strong> $\Gamma_{i,s} = 0$.</li>
+</ul>
+<p><strong>3. Vesting:</strong></p>
+<ul>
+<li><strong>No Vesting:</strong> $V_{i,s,t} = \Gamma_{i,s}$.</li>
+<li><strong>Linear Vesting:</strong> $V_{i,s,t} = \Gamma_{i,s} \cdot \frac{\lfloor \frac{t}{\lfloor T_{max} / \text{vesting_periods}^{(s)} \rfloor} \rfloor}{\text{vesting_periods}^{(s)}}$.</li>
+</ul>
+</body>
+</html>

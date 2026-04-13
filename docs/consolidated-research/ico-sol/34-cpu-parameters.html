@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>--- Simulation Parameters (You can adjust these) ---</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Here's a breakdown of the thought process to generate the Python code for optimizing the dynamic commission rate:</p>
+<ol>
+<li>
+<p><strong>Understand the Goal:</strong> The core objective is to find the optimal commission rate (<code>alpha</code>) that maximizes affiliate earnings. This involves a dynamic commission model where <code>alpha</code> depends on a performance metric (<code>x</code>).</p>
+</li>
+<li>
+<p><strong>Identify Key Components:</strong>  The whitepaper provides the essential elements for this optimization:</p>
+<ul>
+<li><strong>Dynamic Commission Formula:</strong> $\alpha = a + bx$ or tiered structures. For simplicity in the first iteration, let's focus on the linear formula.</li>
+<li><strong>Earnings Function:</strong> $E(\alpha) = \alpha \times I(\alpha)$, where $I(\alpha)$ is the investment volume influenced by the commission rate.</li>
+<li><strong>Optimization Goal:</strong> Maximize $E(\alpha)$.</li>
+<li><strong>Potential Optimization Techniques:</strong>  The whitepaper mentions gradient descent. However, for a Kaggle notebook with CPU constraints and a likely simpler function, grid search or a more basic optimization algorithm might be sufficient.</li>
+</ul>
+</li>
+<li>
+<p><strong>Translate Mathematical Concepts to Code:</strong></p>
+<ul>
+<li><strong>Variables:</strong>  Represent the parameters (<code>a</code>, <code>b</code>), the performance metric (<code>x</code>), and the commission rate (<code>alpha</code>) as Python variables.</li>
+<li><strong>Functions:</strong> Create functions to calculate <code>alpha</code> based on the linear formula and to estimate the investment volume <code>I(alpha)</code>. The <code>estimate_investment_volume</code> function will be the most complex and will require some assumptions or a simplified model since we don't have real-world data within this notebook context.</li>
+<li><strong>Earnings Calculation:</strong>  Implement the <code>E(alpha)</code> calculation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose an Optimization Strategy (Initial Thought):</strong> Gradient descent is mentioned, but given the constraints and likely simpler function, a simpler approach like a grid search over possible values of <code>a</code> and <code>b</code> seems more practical for a CPU-bound Kaggle notebook.</p>
+</li>
+<li>
+<p><strong>Implement Grid Search:</strong></p>
+<ul>
+<li><strong>Define Search Space:</strong>  Determine the range of values to test for <code>a</code> and <code>b</code>. This requires some domain knowledge or making reasonable assumptions.</li>
+<li><strong>Iterate:</strong> Loop through all combinations of <code>a</code> and <code>b</code> within the defined ranges.</li>
+<li><strong>Evaluate:</strong> For each combination, calculate the commission rate, estimate the investment volume, and calculate the earnings.</li>
+<li><strong>Track Best Parameters:</strong> Keep track of the <code>a</code> and <code>b</code> values that yield the highest earnings.</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle the Tiered Commission Structure:</strong>  Implement a separate function to calculate <code>alpha</code> for the tiered model, and then potentially run another optimization (or modify the existing one) for this structure.</p>
+</li>
+<li>
+<p><strong>Consider Data and Assumptions:</strong> Recognize that the <code>estimate_investment_volume</code> function is a placeholder. In a real-world scenario, this would be based on historical data, marketing models, etc. For this notebook, we need to make a simplifying assumption (e.g., higher commission leads to higher investment, perhaps with diminishing returns).</p>
+</li>
+<li>
+<p><strong>Structure the Kaggle Notebook:</strong></p>
+<ul>
+<li><strong>Import Libraries:</strong>  Necessary libraries (e.g., <code>numpy</code>, <code>matplotlib</code>).</li>
+<li><strong>Define Functions:</strong> Encapsulate the logic for commission calculation, investment estimation, and earnings calculation.</li>
+<li><strong>Optimization Loop:</strong> Implement the chosen optimization strategy (grid search).</li>
+<li><strong>Visualization (Optional but helpful):</strong> Plot the earnings as a function of the commission rate (or parameters) to visualize the optimization landscape.</li>
+<li><strong>Present Results:</strong> Display the optimal parameters and the corresponding maximum earnings.</li>
+</ul>
+</li>
+<li>
+<p><strong>Refine and Add Detail:</strong></p>
+<ul>
+<li><strong>Comments:</strong> Add comments to explain the code.</li>
+<li><strong>Flexibility:</strong> Make the code somewhat flexible by allowing the user to adjust the search ranges and other parameters.</li>
+<li><strong>Explanation:</strong> Provide clear explanations of the assumptions made and the limitations of the approach.</li>
+<li><strong>Consider Edge Cases:</strong>  Think about potential edge cases or scenarios that might affect the optimization.</li>
+</ul>
+</li>
+<li>
+<p><strong>Review and Test:</strong>  Mentally walk through the code and ensure it makes sense and performs the intended calculations.</p>
+</li>
+</ol>
+<p>This iterative process, starting with understanding the core goal and breaking it down into smaller, manageable components, allows for the development of a functional and understandable solution within the constraints of the prompt. The decision to start with grid search rather than immediately implementing gradient descent is a pragmatic one for a CPU-bound Kaggle notebook, prioritizing simplicity and ease of implementation.
+import matplotlib.pyplot as plt
+import seaborn as sns</p>
+<h1>--- Simulation Parameters (You can adjust these) ---</h1>
+<p>NUM_SIMULATIONS = 1000
+INVESTORS_PER_SIMULATION = 100
+BASE_INVESTMENT_AMOUNT = 100  # Example base investment</p>
+<h1>--- Parameters for the Dynamic Commission Model (Linear) ---</h1>
+<h1>alpha = a + bx</h1>
+<p>A_RANGE = np.linspace(0.05, 0.15, 5)  # Range of base commission rates
+B_RANGE = np.linspace(0.0001, 0.001, 5) # Range of sensitivity factors</p>
+<h1>--- Parameters for the Tiered Commission Model ---</h1>
+<p>TIER_THRESHOLDS = [50, 100]  # Performance metric thresholds
+TIER_RATES = [0.08, 0.12, 0.15] # Corresponding commission rates</p>
+<h1>--- Function to Estimate Investment Volume (Simplified) ---</h1>
+<h1>In a real scenario, this would be a more complex model based on data</h1>
+<p>def estimate_investment_volume(commission_rate, performance_metric):
+    """A simplified model: higher commission, slightly higher volume (with diminishing returns)."""
+    return BASE_INVESTMENT_AMOUNT * (INVESTORS_PER_SIMULATION + int(performance_metric * commission_rate * 100))</p>
+<h1>--- Function to Calculate Commission (Linear Model) ---</h1>
+<p>def calculate_commission_linear(a, b, performance_metric, investment):
+    alpha = a + b * performance_metric
+    return alpha * investment</p>
+<h1>--- Function to Calculate Commission (Tiered Model) ---</h1>
+<p>def calculate_commission_tiered(thresholds, rates, performance_metric, investment):
+    if performance_metric &lt; thresholds[0]:
+        alpha = rates[0]
+    elif performance_metric &lt; thresholds[1]:
+        alpha = rates[1]
+    else:
+        alpha = rates[2]
+    return alpha * investment</p>
+<h1>--- Function to Simulate Affiliate Performance ---</h1>
+<p>def simulate_affiliate_performance():
+    """Simulates a single affiliate's performance, returning a performance metric."""
+    # This is a simplified simulation. In reality, this would depend on marketing efforts, reach, etc.
+    return np.random.randint(0, 150) # Example performance metric (e.g., number of referrals)</p>
+<h1>--- Function to Run Simulation and Evaluate Linear Model ---</h1>
+<p>def evaluate_linear_model(a, b):
+    total_earnings = 0
+    for _ in range(NUM_SIMULATIONS):
+        performance_metric = simulate_affiliate_performance()
+        investment = estimate_investment_volume(a + b * performance_metric, performance_metric)
+        commission = calculate_commission_linear(a, b, performance_metric, investment)
+        total_earnings += commission
+    return total_earnings / NUM_SIMULATIONS  # Average earnings</p>
+<h1>--- Function to Run Simulation and Evaluate Tiered Model ---</h1>
+<p>def evaluate_tiered_model(thresholds, rates):
+    total_earnings = 0
+    for _ in range(NUM_SIMULATIONS):
+        performance_metric = simulate_affiliate_performance()
+        investment = estimate_investment_volume(rates[-1, performance_metric) # Using highest rate for volume est.
+        commission = calculate_commission_tiered(thresholds, rates, performance_metric, investment)
+        total_earnings += commission
+    return total_earnings / NUM_SIMULATIONS  # Average earnings</p>
+<h1>--- Optimization for Linear Model (Grid Search) ---</h1>
+<p>print("Optimizing Linear Commission Model...")
+linear_results = []
+best_linear_earnings = -1
+best_linear_params = None</p>
+<p>for a, b in product(A_RANGE, B_RANGE):
+    avg_earnings = evaluate_linear_model(a, b)
+    linear_results.append({'a': a, 'b': b, 'avg_earnings': avg_earnings})
+    if avg_earnings &gt; best_linear_earnings:
+        best_linear_earnings = avg_earnings
+        best_linear_params = {'a': a, 'b': b}</p>
+<p>linear_df = pd.DataFrame(linear_results)</p>
+<h1>--- Visualization of Linear Model Results ---</h1>
+<p>pivot_linear = linear_df.pivot_table(index='a', columns='b', values='avg_earnings')
+plt.figure(figsize=(10, 6))
+sns.heatmap(pivot_linear, annot=True, fmt=".2f", cmap="viridis")
+plt.title("Average Affiliate Earnings for Linear Commission Model")
+plt.xlabel("Sensitivity Factor (b)")
+plt.ylabel("Base Commission Rate (a)")
+plt.show()</p>
+<p>print(f"Best Linear Model Parameters: {best_linear_params}, Best Average Earnings: {best_linear_earnings:.2f}")</p>
+<h1>--- Optimization for Tiered Model (Simple Evaluation) ---</h1>
+<p>print("\nEvaluating Tiered Commission Model...")
+tiered_avg_earnings = evaluate_tiered_model(TIER_THRESHOLDS, TIER_RATES)
+print(f"Average Earnings for Tiered Commission Model: {tiered_avg_earnings:.2f}")</p>
+<h1>--- Compare Models ---</h1>
+<p>print("\nComparing Models:")
+print(f"Best Linear Model Average Earnings: {best_linear_earnings:.2f}")
+print(f"Tiered Model Average Earnings: {tiered_avg_earnings:.2f}")</p>
+<p>if best_linear_earnings &gt; tiered_avg_earnings:
+    print("\nConclusion: The Linear Commission Model performs better with the current parameter ranges.")
+else:
+    print("\nConclusion: The Tiered Commission Model performs better.")
+```</p>
+<p><strong>Explanation:</strong></p>
+<ol>
+<li>
+<p><strong>Import Libraries:</strong> Imports necessary libraries like <code>numpy</code> for numerical operations, <code>pandas</code> for data manipulation, <code>itertools</code> for creating parameter combinations, and <code>matplotlib</code> and <code>seaborn</code> for visualization.</p>
+</li>
+<li>
+<p><strong>Simulation Parameters:</strong></p>
+<ul>
+<li><code>NUM_SIMULATIONS</code>:  Defines how many times the simulation will run to get a more stable average.</li>
+<li><code>INVESTORS_PER_SIMULATION</code>:  A hypothetical number of investors each affiliate brings in a simulation.</li>
+<li><code>BASE_INVESTMENT_AMOUNT</code>:  A base amount each investor invests.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dynamic Commission Model Parameters:</strong></p>
+<ul>
+<li><code>A_RANGE</code>:  A range of possible base commission rates (<code>a</code> in the formula <code>alpha = a + bx</code>).</li>
+<li><code>B_RANGE</code>:  A range of possible sensitivity factors (<code>b</code> in the formula).</li>
+</ul>
+</li>
+<li>
+<p><strong>Tiered Commission Model Parameters:</strong></p>
+<ul>
+<li><code>TIER_THRESHOLDS</code>: A list of performance metric values that define the tiers.</li>
+<li><code>TIER_RATES</code>: A list of commission rates corresponding to the tiers.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>estimate_investment_volume()</code> Function:</strong></p>
+<ul>
+<li>This is a <strong>simplified</strong> function to model how the investment volume might be affected by the commission rate and affiliate performance.</li>
+<li><strong>Important:</strong> In a real-world scenario, this would be a much more sophisticated model based on historical data, marketing effectiveness, and other factors. For this CPU-based Kaggle notebook, we use a simple linear relationship.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>calculate_commission_linear()</code> Function:</strong></p>
+<ul>
+<li>Implements the linear dynamic commission formula: $\alpha = a + b \times performance_metric$.</li>
+<li>Calculates the commission earned based on the $\alpha$ and the $investment$.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>calculate_commission_tiered()</code> Function:</strong></p>
+<ul>
+<li>Implements the tiered commission structure.</li>
+<li>Determines the commission rate based on which tier the <code>performance_metric</code> falls into.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>simulate_affiliate_performance()</code> Function:</strong></p>
+<ul>
+<li>This function simulates a single affiliate's performance, returning a <code>performance_metric</code>.</li>
+<li><strong>Simplification:</strong>  Here, it's a random integer. In a real system, this would depend on the affiliate's marketing efforts, reach, etc.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>evaluate_linear_model()</code> Function:</strong></p>
+<ul>
+<li>Runs the simulation for a given set of linear model parameters (<code>a</code>, <code>b</code>).</li>
+<li>For each simulation:<ul>
+<li>Simulates affiliate performance.</li>
+<li>Estimates investment volume based on the commission rate and performance.</li>
+<li>Calculates the commission earned.</li>
+</ul>
+</li>
+<li>Returns the average earnings across all simulations.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>evaluate_tiered_model()</code> Function:</strong></p>
+<ul>
+<li>Runs the simulation for the tiered model.</li>
+<li>Similar to <code>evaluate_linear_model()</code>, but uses the <code>calculate_commission_tiered()</code> function.</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimization for Linear Model (Grid Search):</strong></p>
+<ul>
+<li>Uses <code>itertools.product</code> to create all possible combinations of <code>a</code> and <code>b</code> from the defined ranges.</li>
+<li>Iterates through each combination:<ul>
+<li>Calls <code>evaluate_linear_model()</code> to get the average earnings for those parameters.</li>
+<li>Stores the results in the <code>linear_results</code> list.</li>
+<li>Keeps track of the <code>best_linear_earnings</code> and the corresponding <code>best_linear_params</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualization of Linear Model Results:</strong></p>
+<ul>
+<li>Creates a Pandas DataFrame from the <code>linear_results</code>.</li>
+<li>Uses <code>pivot_table</code> to reshape the data for a heatmap.</li>
+<li>Generates a heatmap using <code>seaborn</code> to visualize how average earnings change with different values of <code>a</code> and <code>b</code>. This helps identify the optimal region.</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimization for Tiered Model (Simple Evaluation):</strong></p>
+<ul>
+<li>Directly calls <code>evaluate_tiered_model()</code> to get the average earnings for the defined tiered structure.</li>
+</ul>
+</li>
+<li>
+<p><strong>Compare Models:</strong></p>
+<ul>
+<li>Prints the best average earnings for both the linear and tiered models.</li>
+<li>Compares the results and prints a conclusion about which model performed better based on the simulation.</li>
+</ul>
+</li>
+</ol>
+<p><strong>How to Use in a Kaggle Notebook (CPU):</strong></p>
+<ol>
+<li><strong>Create a New Notebook:</strong> Start a new Kaggle notebook.</li>
+<li><strong>Copy and Paste the Code:</strong> Copy the entire Python code and paste it into a code cell in your notebook.</li>
+<li><strong>Adjust Parameters:</strong><ul>
+<li><strong>Experiment with <code>NUM_SIMULATIONS</code>:</strong> Increase this for more stable results (at the cost of longer runtime).</li>
+<li><strong>Modify <code>A_RANGE</code> and <code>B_RANGE</code>:</strong> Change the ranges and number of points to explore different parameter spaces for the linear model.</li>
+<li><strong>Adjust <code>TIER_THRESHOLDS</code> and <code>TIER_RATES</code>:</strong>  Modify the thresholds and rates for the tiered model.</li>
+<li><strong>Refine <code>estimate_investment_volume()</code>:</strong> This is the most crucial part for making the simulation more realistic. Think about how commission rates and affiliate performance might influence investment.</li>
+<li><strong>Modify <code>simulate_affiliate_performance()</code>:</strong> If you have a better understanding of how affiliate performance varies, you can make this simulation more sophisticated (e.g., using different probability distributions).</li>
+</ul>
+</li>
+<li><strong>Run the Notebook:</strong> Execute the code cells.</li>
+<li><strong>Analyze the Results:</strong><ul>
+<li>Look at the printed "Best Linear Model Parameters" and "Best Average Earnings".</li>
+<li>Examine the heatmap to visually understand the relationship between <code>a</code>, <code>b</code>, and average earnings for the linear model.</li>
+<li>Compare the average earnings of the linear and tiered models.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Important Considerations and Potential Improvements:</strong></p>
+<ul>
+<li><strong>Simplified Models:</strong> The <code>estimate_investment_volume()</code> and <code>simulate_affiliate_performance()</code> functions are highly simplified. For a more accurate optimization, you'd need to use real-world data or create more sophisticated models.</li>
+<li><strong>Computational Cost:</strong>  Grid search can be computationally expensive, especially if you have wide ranges and many steps in your parameter ranges. For more complex models or larger search spaces, consider more efficient optimization algorithms (though they might be more challenging to implement on CPU).</li>
+<li><strong>Randomness:</strong> The simulations involve randomness. Running the notebook multiple times might give slightly different results. Increasing <code>NUM_SIMULATIONS</code> helps mitigate this.</li>
+<li><strong>Feature Engineering:</strong> In a real-world scenario, the "performance metric" could be a combination of factors (number of referrals, conversion rates, etc.). You could explore optimizing based on multiple performance metrics.</li>
+<li><strong>More Sophisticated Optimization:</strong> For larger parameter spaces or more complex objective functions, you could explore libraries like <code>scipy.optimize</code> (which includes algorithms like <code>differential_evolution</code>, <code>shgo</code>, etc.) or even simple gradient descent implementations. However, these might be more complex to set up and tune.</li>
+</ul>
+<p>This code provides a framework for finding optimal parameters using a CPU-based approach in a Kaggle notebook. Remember to adapt and refine the simulation parameters and the model functions to better reflect your specific scenario.</p>
+</body>
+</html>

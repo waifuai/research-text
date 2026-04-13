@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>continuation paper</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>1: continuation paper</h1>
+<p>Below is a continuation of the paper you provided, focusing on expanding the mathematical frameworks introduced in the original problems while introducing new concepts and equations. This continuation avoids repetition of the original content, builds on its foundation, and incorporates a significant number of equations as requested. Each section is designed to be self-contained per your thinking process guidelines, redefining necessary variables and contexts where applicable.
+Continuation Paper: Advanced Models and Dynamics in Tokenized Ecosystems
+This paper extends the mathematical exploration of tokenized systems initially outlined in the study of AbundanceCoin's Initial Coin Offering (ICO), Tokenized Economy dynamics, and TokenAffiliates commission structures. Here, we introduce advanced models that incorporate market volatility, arbitrage opportunities, and multi-token staking mechanisms. Each problem statement is self-contained, with all variables and contexts explicitly defined within its scope, ensuring clarity and independence.
+5. Volatility-Adjusted Bonding Curve for AbundanceCoin
+Problem Statement:
+Consider the AbundanceCoin token, where the price is determined by a bonding curve in an Initial Coin Offering (ICO). Unlike the simple linear model, market volatility now influences the token price dynamically. Define the price of AbundanceCoin at circulating supply 
+$S$
+ as 
+P($S$, t)
+, where
+$t$
+ represents time, and volatility is modeled through a stochastic term. The volatility-adjusted bonding curve is given by:</p>
+<p>$$P(S, t) = $m$ S + $b$ + $\sigma$ $W(t)$$$</p>
+<p>where:
+$S$ is the current circulating supply of AbundanceCoin.
+$m$ is the slope of the linear bonding curve, representing the price increase per unit of supply.
+$b$ is the base price when supply is zero.
+$\sigma$ is the volatility coefficient, measuring the amplitude of price fluctuations.
+$W(t)$ is a Wiener process (standard Brownian motion), introducing randomness with
+$W(t) \sim N(0, t)$
+.
+Determine:
+a) The expected price of AbundanceCoin at time
+$t$
+ given a supply
+$S$.
+b) The total expected cost to purchase an additional
+$\Delta S$
+ tokens at time
+$t$
+ , accounting for the stochastic nature of the price.
+Solution:
+a) Expected Price:
+ Since
+$W(t)$
+ is a Wiener process with mean zero (
+$\mathbb{E}[$W(t)$] = 0$
+), the expected price at time
+$t$
+ is:</p>
+<p>$ \mathbb{E}[P($S$, t)] = \mathbb{E}[m $S$ + $b$ + $\sigma$ $W(t)$] = $m$ $S$ + $b$ + $\sigma$ \cdot 0 = $m$ $S$ + $b$ $</p>
+<p>Thus, the stochastic term does not shift the expected price from the deterministic linear model.
+b) Expected Cost:
+ The cost to purchase
+$\Delta S$
+ tokens from supply
+$S$
+ to
+$S + \Delta S$
+ at time
+$t$
+ is the integral of the price function over the supply interval:</p>
+<p>\text{Cost}($S$, \Delta $S$, t) = \int_{$S$}^{$S$ + \Delta $S$} P(u, t) \, du = \int_{$S$}^{$S$ + \Delta $S$} (m u + $b$ + $\sigma$ $W(t)$) \, du</p>
+<p>Since 
+$W(t)$
+ is constant with respect to supply 
+u
+ at a fixed time 
+t
+, compute the integral:</p>
+<p>\text{Cost}($S$, \Delta $S$, t) = \int_{$S$}^{$S$ + \Delta $S$} (m u + b) \, du + \int_{$S$}^{$S$ + \Delta $S$} $\sigma$ $W(t)$ \, du
+First term:
+\int_{$S$}^{$S$ + \Delta $S$} (m u + b) \, du = \left[ \frac{m u^2}{2} + $b$ u \right]<em>{$S$}^{$S$ + \Delta $S$} = \left( \frac{m ($S$ + \Delta $S$)^2}{2} + $b$ ($S$ + \Delta $S$) \right) - \left( \frac{m $S$^2}{2} + $b$ $S$ \right)
+= \frac{m}{2} ($S$^2 + 2 $S$ \Delta $S$ + (\Delta $S$)^2) + $b$ $S$ + $b$ \Delta $S$ - \frac{m $S$^2}{2} - $b$ $S$ = \frac{m}{2} (\Delta $S$)^2 + $m$ $S$ \Delta $S$ + $b$ \Delta $S$
+Second term:
+\int</em>{$S$}^{$S$ + \Delta $S$} $\sigma$ $W(t)$ \, du = $\sigma$ $W(t)$ \int_{$S$}^{$S$ + \Delta $S$} 1 \, du = $\sigma$ $W(t)$ \cdot ($S$ + \Delta $S$ - $S$) = $\sigma$ $W(t)$ \cdot \Delta $S$
+ Thus:</p>
+<p>\text{Cost}($S$, \Delta $S$, t) = \frac{m}{2} (\Delta $S$)^2 + $m$ $S$ \Delta $S$ + $b$ \Delta $S$ + $\sigma$ $W(t)$ \Delta $S$</p>
+<p>Taking the expectation:</p>
+<p>\mathbb{E}[\text{Cost}($S$, \Delta $S$, t)] = \frac{m}{2} (\Delta $S$)^2 + $m$ $S$ \Delta $S$ + $b$ \Delta $S$ + $\sigma$ \cdot 0 \cdot \Delta $S$ = \frac{m}{2} (\Delta $S$)^2 + (m $S$ + b) \Delta $S$
+6. Arbitrage in a Multi-Token Economy
+Problem Statement:
+In a tokenized economy with two tokens, Token A and Token B, each follows a linear bonding curve. Define their prices as:
+Price of Token A: 
+P_A($S$<em>A) = $m_A$ $S$_A + b_A
+, where 
+$S$_A
+ is the circulating supply, 
+m_A
+ is the slope, and 
+b_A
+ is the base price.
+Price of Token B: 
+P_B($S$_B) = m_B $S$_B + b_B
+, with similar definitions for 
+$S$_B
+, 
+m_B
+, and 
+b_B
+.
+An arbitrage opportunity arises if an external decentralized exchange (DEX) offers a different exchange rate than the bonding curve ratio. Let the DEX exchange rate be 
+R</em>{\text{DEX}}
+ (units of Token B per Token A), while the bonding curve exchange rate is 
+R_{\text{BC}} = \frac{P_A($S$<em>A)}{P_B($S$_B)}
+.
+Determine:
+a) The condition under which arbitrage is profitable.
+b) The profit from converting 
+x
+ units of Token A to Token B via the DEX and then redeeming Token B back to the bonding curve system, assuming no transaction fees.
+Solution:
+a) Arbitrage Condition:
+ Arbitrage is profitable if the DEX exchange rate differs from the bonding curve rate:
+If 
+R</em>{\text{DEX}} &gt; R_{\text{BC}}
+, buy Token B with Token A on the DEX and redeem Token B via its bonding curve.
+If 
+R_{\text{DEX}} &lt; R_{\text{BC}}
+, buy Token A with Token B on the DEX and redeem Token A via its bonding curve.
+ Define 
+R_{\text{BC}} = \frac{m_A $S$<em>A + b_A}{m_B $S$_B + b_B}
+. Profitability requires 
+R</em>{\text{DEX}} \neq R_{\text{BC}}
+.
+b) Profit Calculation (Case: 
+R_{\text{DEX}} &gt; R_{\text{BC}}
+):
+Sell 
+x
+ Token A on the DEX to get 
+y = x \cdot R_{\text{DEX}}
+ Token B.
+Redeem 
+y
+ Token B via the bonding curve. The value received is the integral of 
+P_B($S$<em>B)
+ as supply decreases from 
+$S$_B
+ to 
+$S$_B - y
+:
+\text{Value} = \int</em>{$S$<em>B - y}^{$S$_B} P_B(u) \, du = \int</em>{$S$<em>B - y}^{$S$_B} (m_B u + b_B) \, du
+= \left[ \frac{m_B u^2}{2} + b_B u \right]</em>{$S$<em>B - y}^{$S$_B} = \left( \frac{m_B $S$_B^2}{2} + b_B $S$_B \right) - \left( \frac{m_B ($S$_B - y)^2}{2} + b_B ($S$_B - y) \right)
+= \frac{m_B}{2} ($S$_B^2 - ($S$_B^2 - 2 $S$_B y + y^2)) + b_B ($S$_B - ($S$_B - y))
+= \frac{m_B}{2} (2 $S$_B y - y^2) + b_B y = m_B $S$_B y - \frac{m_B y^2}{2} + b_B y
+Cost of 
+x
+ Token A via its bonding curve:
+\text{Cost} = x \cdot P_A($S$_A) = x (m_A $S$_A + b_A)
+Profit:
+\text{Profit} = m_B $S$_B (x R</em>{\text{DEX}}) - \frac{m_B (x R_{\text{DEX}})^2}{2} + b_B (x R_{\text{DEX}}) - x (m_A $S$_A + b_A)
+7. Staking Rewards in a Tokenized Ecosystem
+Problem Statement:
+In a tokenized ecosystem, holders of Token A can stake their tokens to earn rewards in Token B. Define:
+$S$_A
+ as the total supply of Token A, and 
+Q_A
+ as the amount staked.
+P_A($S$_A) = $m_A$ $S$_A + b_A
+ as the price of Token A.
+P_B($S$_B) = m_B $S$_B + b_B
+ as the price of Token B, where 
+$S$_B
+ is Token B's supply.
+Reward rate 
+r
+ (units of Token B per unit of Token A staked per unit time).
+Determine:
+a) The total reward 
+R
+ in Token B earned over time 
+T
+ for staking 
+Q_A
+ Token A.
+b) The value of rewards in terms of Token A at current prices after time 
+T
+.
+Solution:
+a) Total Reward:
+ The reward rate 
+r
+ gives Token B per unit of Token A staked per unit time. For 
+Q_A
+ staked over time 
+T
+:</p>
+<p>R = r Q_A T
+b) Value in Token A:
+ The value of 
+R
+ Token B in terms of Token B's price is 
+R \cdot P_B($S$_B)
+. Convert this to Token A using the exchange rate:</p>
+<p>\text{Value in Token A} = \frac{R \cdot P_B($S$_B)}{P_A($S$_A)} = \frac{r Q_A T (m_B $S$_B + b_B)}{m_A $S$_A + b_A}
+This continuation introduces volatility, arbitrage, and staking, enriching the original framework with dynamic and interdependent systems, all expressed through rigorous mathematical formulations. Each section stands alone, ready for further exploration or practical implementation. Let me know if you'd like deeper elaboration or additional sections!</p>
+</body>
+</html>

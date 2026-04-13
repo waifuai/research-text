@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tokenized Economy: A Mathematical Framework</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h2>The Tokenized Economy: A Mathematical Framework</h2>
+<p>This paper formalizes the mathematical underpinnings of the Tokenized Economy, focusing on the bonding curve mechanics and their implications for token pricing, supply, and market dynamics.</p>
+<p><strong>1. Bonding Curves:</strong></p>
+<p>A bonding curve, denoted by <em>P</em>( <em>S</em> ), defines the price <em>P</em> of a token as a function of its total supply <em>S</em>. Different curve types can be implemented, each with unique properties.  For this framework, we consider two primary types:</p>
+<ul>
+<li><strong>Linear Bonding Curve:</strong>  $P(S) = mS + b$, where $m$ represents the slope (price increment per token) and $b$ is the initial price. This curve offers simplicity and predictable price changes.</li>
+<li><strong>Exponential Bonding Curve:</strong>  $P(S) = ae^{kS}$, where $a$ is a scaling factor, $k$ controls the curve's steepness, and $e$ is the base of the natural logarithm. This curve creates more dramatic price changes as supply increases.</li>
+</ul>
+<p><strong>2. Token Exchange:</strong></p>
+<p>Token exchange between participants occurs directly on the bonding curves. Consider two companies, A and B, with tokens A and B respectively. The exchange rate between tokens is determined by the ratio of their prices on their respective bonding curves:</p>
+<p>Exchange Rate (A/B) = $P_A(S_A) / P_B(S_B)$</p>
+<p>When a participant exchanges <em>x</em> amount of token A for token B, the following occurs:</p>
+<ul>
+<li>Tokens A are burned, reducing <em>S</em><sub>A</sub> by <em>x</em>.</li>
+<li>Tokens B are minted, increasing <em>S</em><sub>B</sub> by <em>y</em>, where <em>y</em> is calculated based on the exchange rate.</li>
+<li>The prices of both tokens adjust according to their respective bonding curves.</li>
+</ul>
+<p><strong>3. Relative Debasement:</strong></p>
+<p>The value of SOL within the Tokenized Economy is determined by its purchasing power relative to the goods and services offered by participating companies.  As token prices fluctuate on their bonding curves, the relative value of SOL can change. This can be visualized by considering the ratio of a token's price to the price of SOL.</p>
+<p>Relative Value (A/SOL) = $P_A(S_A) / P_{SOL}$</p>
+<p>If the demand for token A increases, driving its price up, its relative value to SOL increases. This implies that more SOL would be required to purchase the same amount of goods or services offered by company A.</p>
+<p><strong>4. Speculation Dynamics:</strong></p>
+<p>Speculation within the Tokenized Economy revolves around predicting the future demand for company products and services.  If a participant anticipates increased demand for company A's products, they may purchase token A. This increased demand for token A pushes its price up along the bonding curve, potentially generating profit for the early investors.</p>
+<p><strong>5. Market Equilibrium:</strong></p>
+<p>Market equilibrium within the Tokenized Economy is achieved when the exchange rates between tokens reflect the relative demand for the products and services they represent.  This dynamic equilibrium is constantly shifting as consumer preferences and company performance change.</p>
+<p><strong>6. System Parameters:</strong></p>
+<p>The Tokenized Economy relies on several key parameters that influence its behavior:</p>
+<ul>
+<li><strong>Curve Type:</strong>  The choice of bonding curve significantly impacts price volatility and market dynamics.</li>
+<li><strong>Reserve Ratio (for Bancor-style curves):</strong>  This ratio determines the relationship between token supply and reserve currency (e.g., SOL).</li>
+<li><strong>Initial Price and Supply:</strong> These values set the starting point for the bonding curve.</li>
+</ul>
+<p><strong>7. Future Research:</strong></p>
+<p>Further research is needed to explore:</p>
+<ul>
+<li>Optimal bonding curve design for different business models.</li>
+<li>The impact of external factors (e.g., macroeconomic conditions) on the Tokenized Economy.</li>
+<li>Mechanisms for governance and dispute resolution within the system.</li>
+<li>Integration with decentralized finance (DeFi) protocols.</li>
+</ul>
+<p>This mathematical framework provides a foundation for understanding the dynamics of the Tokenized Economy. By carefully designing the system parameters and choosing appropriate bonding curves, it is possible to create a robust and sustainable economic system that empowers individuals and fosters innovation.</p>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hitting a Moving Target: Accounting for Acceleration</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h2>Hitting a Moving Target: Accounting for Acceleration</h2>
+<p>In our previous discussions, we assumed the target moved at a constant velocity. But what if the target is accelerating? This makes things a bit more complex, but still solvable. Here's how we can adapt our projectile aiming calculations to handle a target that's speeding up or slowing down.</p>
+<p><strong>The New Setup</strong></p>
+<p>We're still dealing with a projectile and a moving target, but now the target has an acceleration:</p>
+<ol>
+<li><strong>Target 'a':</strong> </li>
+<li>Initial Position: (xa, ya, za)</li>
+<li>Initial Velocity: (vax, vay, vaz)</li>
+<li>Acceleration: (aax, aay, aaz) - This represents how the target's velocity changes over time.</li>
+<li><strong>Projectile 'b':</strong></li>
+<li>Initial Position: (xb, yb, zb)</li>
+<li>Speed: sb (We still need to find its velocity components)</li>
+</ol>
+<p><strong>The Challenge</strong></p>
+<p>The target's changing velocity means we can't use the simple equations from before. We need a new approach that takes acceleration into account.</p>
+<p><strong>The Updated Equations</strong></p>
+<p>We'll use the equations of motion under constant acceleration to model the target's position:</p>
+<p><strong>(1)  xa + vax * t + 0.5 * aax * t² = xb + vbx * t</strong> (Matching x-coordinates)
+<strong>(2)  ya + vay * t + 0.5 * aay * t² = yb + vby * t</strong> (Matching y-coordinates)
+<strong>(3)  za + vaz * t + 0.5 * aaz * t² = zb + vbz * t</strong> (Matching z-coordinates)
+<strong>(4)  vbx² + vby² + vbz² = sb²</strong> (Projectile's speed)</p>
+<p>Let's break these down:</p>
+<ul>
+<li><strong>'t' : Time to Hit:</strong>  As before, 't' represents the future time when the projectile will hit the target.</li>
+<li><strong>Equations (1), (2), and (3): Position Matching with Acceleration:</strong> These equations now include the acceleration term (0.5 * a * t²). They state that at time 't', the x, y, and z coordinates of the target (considering its acceleration) must equal those of the projectile.</li>
+<li><strong>Equation (4): Speed Constraint:</strong> This remains the same – the projectile must travel at speed 'sb'.</li>
+</ul>
+<p><strong>Solving the Equations</strong></p>
+<p>We now have four equations and four unknowns (vbx, vby, vbz, and t). Unlike the constant velocity case, we cannot isolate 't' and solve it separately. However, we can still try to reduce the number of variables in the system.
+We can re-arrange the equations (1), (2), and (3) to look like this:</p>
+<p>(1) <strong>vbx * t = xa - xb + vax * t + 0.5 * aax * t²</strong>
+(2) <strong>vby * t = ya - yb + vay * t + 0.5 * aay * t²</strong>
+(3) <strong>vbz * t = za - zb + vaz * t + 0.5 * aaz * t²</strong></p>
+<p>Then, substitute these into equation (4) to remove <code>vbx</code>, <code>vby</code>, and <code>vbz</code>:</p>
+<p><strong>(xa - xb + vax * t + 0.5 * aax * t²)² + (ya - yb + vay * t + 0.5 * aay * t²)² + (za - zb + vaz * t + 0.5 * aaz * t²)² = (sb * t)²</strong></p>
+<p>This is a quartic equation in 't'. Quartic equations have a closed-form solution, but it's extremely complex.</p>
+<p><strong>Numerical Solutions</strong></p>
+<p>In practice, instead of using the complex quartic formula, numerical methods are used to find the value of 't'. These methods involve making educated guesses for 't' and iteratively refining them until a solution that satisfies the equation is found. Some common numerical methods include:</p>
+<ul>
+<li><strong>Newton-Raphson Method:</strong> A popular iterative method for finding roots of equations.</li>
+<li><strong>Bisection Method:</strong> A simpler but slower method that repeatedly narrows down an interval containing the root.</li>
+</ul>
+<p>Once a value for 't' is found, we can plug it back into equations (1), (2), and (3) to find <code>vbx</code>, <code>vby</code>, and <code>vbz</code>.</p>
+<p><strong>Practical Considerations</strong></p>
+<ul>
+<li><strong>Multiple Solutions:</strong> Like the constant velocity case, there might be multiple solutions for 't', representing different possible trajectories. You'll need to choose the most suitable one based on your game's logic.</li>
+<li><strong>Computational Cost:</strong> Numerical methods can be computationally intensive, especially if high accuracy is needed. Consider the trade-off between accuracy and performance in your game.</li>
+<li><strong>Real-Time Recalculation:</strong> Just like before, you'll need to recalculate the projectile's velocity in real-time to account for any changes in the target's acceleration or the projectile's position.</li>
+<li><strong>No Solution:</strong> It is possible that there is no solution for 't' that satisfies the equation. This would mean that it is impossible for the projectile to hit the target.</li>
+</ul>
+<p><strong>In Summary</strong></p>
+<p>When dealing with an accelerating target, we need to use the equations of motion with acceleration and solve for the time of impact numerically. While more complex than the constant velocity case, this approach allows for accurate projectile aiming in dynamic game environments. Remember to consider the computational cost and choose appropriate numerical methods for your specific game's needs.</p>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>add jumps</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>3: add jumps</h1>
+<p>Let's extend the SDE we derived for the token price in Project Genesis by incorporating jumps to model sudden, discontinuous price changes. These jumps can represent events like unexpected news, regulatory shifts, or coordinated agent actions (e.g., a pump-and-dump), which are common in tokenized economies and crypto markets. I'll build on the previous SDE, adding a jump component via a compound Poisson process, and walk through the derivation and implementation.
+Starting Point: Previous SDE
+The SDE without jumps was:
+$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t$$</p>
+<p>where:
+$\theta = m k$
+ is the mean-reversion speed (from the bonding curve and agent feedback),
+$\bar{P}$
+ is the target price,
+$\sigma$
+ is the volatility,
+$dW_t$
+ is the Wiener process increment (continuous randomness).
+This models smooth price evolution with mean-reversion and Brownian noise. Now, we'll add a jump term.
+Step 1: Define the Jump Component
+Jumps are discrete, random events that cause abrupt price changes. We'll use a compound Poisson process to model them:
+Jumps occur at random times, with frequency governed by a Poisson process with rate $\lambda$ (average number of jumps per unit time).
+When a jump occurs, the price changes by a random magnitude $J_t$, drawn from a specified distribution.
+The jump term is:
+$$J_t dN_t$$</p>
+<p>where:
+$dN_t$ is the increment of a Poisson process:
+$dN_t = 1$ if a jump occurs in $[t, t+dt)$, and $0$ otherwise, with $\mathbb{E}[dN_t] = \lambda dt$,
+$J_t$ is the jump size at time $t$, a random variable (e.g., positive for upward jumps, negative for downward jumps).
+Step 2: Choose a Jump Size Distribution
+The jump size $J_t$ should reflect the nature of shocks in a tokenized economy. Common choices include:
+Normal Distribution: $J_t \sim N(\mu_J, \sigma_J^2)$, allowing both positive and negative jumps with a mean $\mu_J$ and variance $\sigma_J^2$
+Log-Normal Distribution: $J_t = e^Z - 1$ where $Z \sim N(\mu_J, \sigma_J^2)$, ensuring positive jumps (e.g., for pumps), with relative size controlled by $\mu_J$.
+Signed Mixture: A mix of positive and negative jumps, e.g., $J_t = Y \cdot |Z|$ where $Y = \pm 1$ (with probabilities $p$ and $1-p$) and $|Z| \sim \text{Exponential}(\beta)$.
+For generality, let's use a normal distribution: $J_t \sim N(\mu_J, \sigma_J^2)$, where $\mu_J$ could be positive (e.g., 0.1 for a 10% average jump) or zero (neutral shocks), and $\sigma_J$ controls the variability of jump sizes.
+In a tokenized economy, jumps might be relative to the current price (e.g., a 20% drop), so we'll scale $J_t$ by $P_t$:
+$\text{Jump effect} = P_{t^-} J_t$</p>
+<p>where $P_{t^-}$ is the price just before the jump.
+Step 3: Combine into the Full SDE
+Adding the jump term to the original SDE, we get:
+$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t$$</p>
+<p>where:
+$\theta (\bar{P} - P_t) dt$: Deterministic mean-reversion from the bonding curve,
+$\sigma P_t dW_t$: Continuous stochastic fluctuations (GBM-like),
+$P_{t^-} J_t dN_t$: Discontinuous jumps, proportional to the pre-jump price.
+This is a jump-diffusion process, combining continuous diffusion (Brownian motion) with discrete jumps (Poisson process).
+Step 4: Interpret the Dynamics
+Drift: The price tends toward $\bar{P}$ at rate $\theta$, driven by supply adjustments along the bonding curve.
+Diffusion: Random fluctuations scale with the current price, capturing market volatility.
+Jumps: Sudden events occur at rate $\lambda$, with the price shifting by a percentage drawn from $N(\mu_J, \sigma_J^2)$. For example, if $J_t = 0.2$, the price jumps by 20% of its pre-jump value.
+The expected price change over a small interval $dt$, accounting for jumps, is:
+$$\mathbb{E}[dP_t] = \theta (\bar{P} - P_t) dt + \lambda \mu_J P_t dt$$</p>
+<p>The jump term contributes an additional drift ($\lambda \mu_J P_t$), reflecting the average effect of jumps.
+Step 5: Simulation Considerations
+To simulate this SDE, we need to discretize it. The Euler-Maruyama method works for the continuous part, and we'll add jumps by sampling the Poisson process. Here's the discrete update over a time step $dt$:
+Continuous update:
+$$P_{t+dt}^* = P_t + \theta (\bar{P} - P_t) dt + \sigma P_t \Delta W_t$$</p>
+<p>where $$\Delta W_t \sim N(0, dt)$$
+.
+Jump update: 
+Sample the number of jumps $N_{dt} \sim \text{Poisson}(\lambda dt)$,
+For each jump, sample $J_i \sim N(\mu_J, \sigma_J^2)$,
+Apply jumps sequentially: 
+P_{t+dt} = P_{t+dt}^* \cdot (1 + J_1) \cdot (1 + J_2) \cdots
+.
+Since $\lambda dt$ is small, $N_{dt}$ is usually 0 or 1 in practice.
+Final SDE
+The jump-diffusion SDE for the token price is:
+$$dP_t = \theta (\bar{P} - P_t) dt + \sigma P_t dW_t + P_{t^-} J_t dN_t$$</p>
+<p>with:
+\theta = m k
+ (reversion speed),
+$\bar{P}$ (target price),
+$\sigma$ (continuous volatility),
+$J_t \sim N(\mu_J, \sigma_J^2)$ (jump size),
+$dN_t \sim \text{Poisson}(\lambda dt)$ (jump occurrence).
+Python Implementation
+Here's a simulation of the SDE with jumps:
+python
+import numpy as np
+import matplotlib.pyplot as plt</p>
+<p>def simulate_price_with_jumps(P0, theta, P_bar, sigma, lambda_jump, mu_J, sigma_J, dt=0.01, T=1.0):
+    N = int(T / dt)
+    t = np.linspace(0, T, N+1)
+    P = np.zeros(N+1)
+    P[0] = P0</p>
+<pre><code>for i in range(N):
+    # Continuous part (Euler-Maruyama)
+    dW = np.random.normal(0, np.sqrt(dt))
+    drift = theta * (P_bar - P[i]) * dt
+    diffusion = sigma * P[i] * dW
+    P_temp = P[i] + drift + diffusion
+
+    # Jump part
+    num_jumps = np.random.poisson(lambda_jump * dt)  # Number of jumps in dt
+    if num_jumps &gt; 0:
+        jumps = np.random.normal(mu_J, sigma_J, num_jumps)  # Jump sizes
+        jump_effect = np.prod(1 + jumps)  # Compound jumps
+        P[i+1] = P_temp * jump_effect
+    else:
+        P[i+1] = P_temp
+
+    P[i+1] = max(P[i+1], 0)  # Prevent negative prices
+
+return t, P
+</code></pre>
+<h2>Parameters</h2>
+<p>P0 = 1.0      # Initial price
+theta = 0.5   # Reversion speed
+P_bar = 2.0   # Target price
+sigma = 0.3   # Continuous volatility
+lambda_jump = 2.0  # Jump frequency (2 jumps per unit time on average)
+mu_J = 0.1    # Average jump size (10% upward bias)
+sigma_J = 0.05  # Jump size volatility</p>
+<h2>Simulate</h2>
+<p>t, P = simulate_price_with_jumps(P0, theta, P_bar, sigma, lambda_jump, mu_J, sigma_J)</p>
+<h2>Plot</h2>
+<p>plt.plot(t, P, label="Token Price")
+plt.axhline(P_bar, color='r', linestyle='--', label="Target Price")
+plt.xlabel("Time")
+plt.ylabel("Price")
+plt.title("Token Price with Jump-Diffusion")
+plt.legend()
+plt.show()
+Output Interpretation
+The plot will show a price path with smooth fluctuations (from $dW_t$) punctuated by sharp jumps (from $dN_t$).
+With $\mu_J = 0.1$ and $\lambda = 2.0$, expect occasional upward spikes averaging 10%, balanced by mean-reversion pulling toward $\bar{P}$.
+Extensions
+State-Dependent Jumps: Make $\lambda$ or $\mu_J$ depend on $P_t$ (e.g., more jumps when $P_t$ deviates far from $\bar{P}$).
+Correlated Jumps: Introduce correlation between $dW_t$ and $J_t$ for more realistic event-driven volatility.
+Agent Triggers: Link jumps to aggregate agent actions (e.g., a threshold of buy/sell volume).
+This jump-diffusion SDE enriches your model with the ability to capture sudden shocks, making it more representative of tokenized economies. Let me know if you'd like to tweak the jump distribution, adjust parameters, or explore further refinements!</p>
+</body>
+</html>

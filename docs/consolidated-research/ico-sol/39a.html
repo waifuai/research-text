@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>affiliate</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>affiliate</h1>
+<p>The user wants to translate the provided Python code, which simulates a token economy with bonding curves and affiliates, into a mathematical problem statement and solution. Here's a breakdown of the thinking process:</p>
+<ol>
+<li>
+<p><strong>Identify the Core Components:</strong> The first step is to recognize the key elements of the simulation that need mathematical representation. These are:</p>
+<ul>
+<li><strong>Tokens:</strong> Their price and supply dynamics.</li>
+<li><strong>Bonding Curves:</strong> The mathematical relationship defining the token price based on supply.</li>
+<li><strong>Affiliates:</strong> Their actions (buying/selling tokens), commission, and base currency balance.</li>
+<li><strong>Simulation Steps:</strong> The iterative process of the simulation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Define Notation:</strong> Assign mathematical symbols to the variables in the code. This makes the problem statement concise and understandable. For example:</p>
+<ul>
+<li>$S_i(t)$: Supply of token $i$ at time $t$.</li>
+<li>$P_i(t)$: Price of token $i$ at time $t$.</li>
+<li>$B_i(S_i(t))$: Bonding curve function for token $i$.</li>
+<li>$C_j(t)$: Commission rate of affiliate $j$ at time $t$.</li>
+<li>$W_{j,i}(t)$: Wallet balance of token $i$ for affiliate $j$ at time $t$.</li>
+<li>$B_j(t)$: Base currency balance of affiliate $j$ at time $t$.</li>
+</ul>
+</li>
+<li>
+<p><strong>Formulate the Problem Statement:</strong>  Clearly state the objective of the problem. In this case, it's about modeling the dynamics of the token economy and analyzing the outcomes. This involves describing the key entities and their initial states.</p>
+</li>
+<li>
+<p><strong>Mathematical Formulation of Key Mechanics:</strong>  This is the most crucial part. Translate the Python logic into mathematical equations:</p>
+<ul>
+<li><strong>Bonding Curve:</strong> Express the price determination using the chosen bonding curve function. Acknowledge that the specific function can change over time.</li>
+<li><strong>Buying Tokens:</strong>  Define how buying affects token supply and affiliate balances.</li>
+<li><strong>Selling Tokens:</strong> Define how selling affects token supply and affiliate balances.</li>
+<li><strong>Commission:</strong>  Represent the calculation of commission earned by affiliates.</li>
+<li><strong>Dynamic Commission Adjustment:</strong>  This is slightly more complex as it depends on past behavior. Use logical conditions or a piecewise function to describe the adjustment.</li>
+<li><strong>Simulation Update Rules:</strong> Express how the variables change from one time step to the next.</li>
+</ul>
+</li>
+<li>
+<p><strong>Solution Approach:</strong>  Describe the methodology used to solve the problem, which is a discrete-time simulation. Highlight the iterative nature of the process.</p>
+</li>
+<li>
+<p><strong>Analysis:</strong> Explain what kind of analysis can be performed on the simulation results, such as calculating means, standard deviations, and visualizing trends.</p>
+</li>
+<li>
+<p><strong>Markdown Formatting:</strong> Use appropriate Markdown syntax to structure the document, including headings, bullet points, and LaTeX for equations. Use <code>$</code> for inline equations and <code>$$</code> for displayed equations.</p>
+</li>
+<li>
+<p><strong>Review and Refine:</strong> Check the mathematical formulation for accuracy and clarity. Ensure the notation is consistent and the explanations are easy to understand. For instance, initially, I might have just said "price is a function of supply." But refining this to $P_i(t) = f_i(S_i(t), \theta_i(t))$ makes it clearer that the function <em>and</em> its parameters can change.</p>
+</li>
+</ol>
+<p><strong>Self-Correction/Improvements during the process:</strong></p>
+<ul>
+<li><strong>Initial thought:</strong>  Simply list the bonding curve functions.</li>
+<li><strong>Improvement:</strong>  Explicitly state the general form and then list the specific examples. This provides better context.</li>
+<li><strong>Initial thought:</strong> Describe the commission adjustment vaguely.</li>
+<li><strong>Improvement:</strong> Use conditional statements or piecewise notation to represent the different scenarios for commission adjustments based on earnings.</li>
+<li><strong>Initial thought:</strong> Focus solely on the equations.</li>
+<li><strong>Improvement:</strong> Include descriptions of the parameters and variables to make the mathematical formulation more accessible.</li>
+<li><strong>Initial thought:</strong>  Treat all affiliates the same.</li>
+<li><strong>Improvement:</strong> Acknowledge the presence of "whales" and their potentially different behavior (though the provided mathematical formulation doesn't explicitly model their special rules, the Python code does). This acknowledges a nuance in the simulation.</li>
+</ul>
+<p>By following these steps, the Python code can be effectively translated into a rigorous mathematical problem statement and solution. The use of LaTeX ensures that the mathematical expressions are correctly rendered in GitHub Markdown. document presents a mathematical formulation of a simulated token economy involving tokens with dynamic bonding curves and affiliates earning commissions.</p>
+<p><strong>Problem Statement:</strong></p>
+<p>Consider a system with $N$ distinct tokens and $M$ affiliates interacting over discrete time steps $t = 0, 1, 2, \dots, T$. Each token $i \in {1, \dots, N}$ has a supply $S_i(t)$ and a price $P_i(t)$ at time $t$. The price of each token is determined by a bonding curve function $f_i$, which can change over time. Specifically, the price depends on the current supply and possibly time-varying parameters $\theta_i(t)$:</p>
+<p>$$P_i(t) = f_i(S_i(t), \theta_i(t))$$</p>
+<p>The bonding curve function $f_i$ can be one of several predefined functions (e.g., linear, exponential, sigmoid, root, inverse), and the specific function used for token $i$ can change at discrete intervals. The parameters $\theta_i(t)$ associated with the active bonding curve function can also change at discrete intervals.</p>
+<p>Each affiliate $j \in {1, \dots, M}$ has a base currency balance $B_j(t)$, a wallet holding balances of each token $W_{j,i}(t)$ for token $i$, and a commission rate $C_j(t)$.</p>
+<p>At each time step, affiliates can perform buy or sell transactions for each token. When affiliate $j$ buys $\Delta s$ units of token $i$ at time $t$, the following occurs:</p>
+<ol>
+<li>The cost of the transaction is $\Delta s \cdot P_i(t)$.</li>
+<li>The affiliate's base currency balance decreases: $B_j(t+1) = B_j(t) - \Delta s \cdot P_i(t)$.</li>
+<li>The affiliate's wallet balance of token $i$ increases: $W_{j,i}(t+1) = W_{j,i}(t) + \Delta s$.</li>
+<li>The token's supply increases: $S_i(t+1) = S_i(t) + \Delta s$.</li>
+<li>The token's price is recalculated based on the new supply and the current bonding curve.</li>
+</ol>
+<p>When affiliate $j$ sells $\Delta s$ units of token $i$ at time $t$:</p>
+<ol>
+<li>The proceeds from the sale are $\Delta s \cdot P_i(t)$.</li>
+<li>The affiliate's base currency balance increases: $B_j(t+1) = B_j(t) + \Delta s \cdot P_i(t)$.</li>
+<li>The affiliate's wallet balance of token $i$ decreases: $W_{j,i}(t+1) = W_{j,i}(t) - \Delta s$.</li>
+<li>The token's supply decreases: $S_i(t+1) = S_i(t) - \Delta s$.</li>
+<li>The token's price is recalculated.</li>
+</ol>
+<p>Affiliates earn commissions based on some measure of their activity (not explicitly modeled in the provided code snippet for direct calculation within transactions, but the commission rate exists). The commission rate $C_j(t)$ for affiliate $j$ can dynamically adjust based on their past investment behavior and total earnings. The adjustment follows a set of predefined rules:</p>
+<ul>
+<li>The rate of adjustment is given by a dynamic adjustment rate.</li>
+<li>Adjustments happen at specific time step intervals.</li>
+<li>Commission rates have upper and lower bounds.</li>
+</ul>
+<p>The goal is to simulate the evolution of this token economy over time, observing the changes in token prices, supplies, affiliate balances, and commission rates.</p>
+<p><strong>Solution Approach (Simulation):</strong></p>
+<p>The problem is solved through a discrete-time simulation. The simulation proceeds as follows:</p>
+<ol>
+<li><strong>Initialization (t=0):</strong></li>
+<li>Set initial supplies $S_i(0)$ and prices $P_i(0)$ for each token.</li>
+<li>Assign initial bonding curve functions $f_i$ and parameters $\theta_i(0)$ for each token.</li>
+<li>
+<p>Set initial base currency balances $B_j(0)$, wallet balances $W_{j,i}(0)$, and commission rates $C_j(0)$ for each affiliate.</p>
+</li>
+<li>
+<p><strong>Iteration (for t = 0 to T-1):</strong></p>
+</li>
+<li><strong>Affiliate Actions:</strong> For each affiliate $j$, determine their actions for each token $i$ (buy, sell, or do nothing). The amount to buy or sell can be based on predefined strategies or randomness.</li>
+<li><strong>Token Transactions:</strong>  Update token supplies and affiliate balances based on the executed buy and sell transactions, applying the rules described in the problem statement.</li>
+<li><strong>Price Calculation:</strong> Recalculate the price of each token using its current bonding curve function and supply:
+     $$P_i(t+1) = f_i(S_i(t+1), \theta_i(t))$$
+     The code includes factors for demand and dampening, which can be incorporated as:
+     $$P_i(t+1) = f_i(S_i(t+1), \theta_i(t)) \cdot (1 + \alpha \cdot D_i(t))$$
+     where $D_i(t)$ represents a demand factor and $\alpha$ is a sensitivity parameter.</li>
+<li><strong>Bonding Curve Changes:</strong> At predefined intervals, the bonding curve function $f_i$ and/or its parameters $\theta_i(t)$ for each token can change according to predefined rules or randomness.</li>
+<li>
+<p><strong>Commission Adjustment:</strong> At predefined intervals, adjust the commission rates $C_j(t)$ for each affiliate based on their past performance (e.g., average investment, total earnings) according to predefined rules and bounds.</p>
+</li>
+<li>
+<p><strong>Analysis:</strong> After the simulation runs for $T$ steps, analyze the collected data, including:</p>
+</li>
+<li>Time series of token prices $P_i(t)$ and supplies $S_i(t)$.</li>
+<li>Time series of affiliate base currency balances $B_j(t)$ and commission rates $C_j(t)$.</li>
+<li>Distributions of final balances and commission rates.</li>
+</ol>
+<p><strong>Mathematical Representation of Bonding Curves (Examples):</strong></p>
+<p>The code provides several examples of bonding curve functions:</p>
+<ul>
+<li><strong>Linear:</strong> $f(S) = m \cdot S + b$</li>
+<li><strong>Exponential:</strong> $f(S) = a \cdot e^{k \cdot S}$</li>
+<li><strong>Sigmoid:</strong> $f(S) = \frac{K}{1 + e^{-k(S - S_0)}}$</li>
+<li><strong>Root:</strong> $f(S) = k \cdot \sqrt{S}$</li>
+<li><strong>Inverse:</strong> $f(S) = \frac{k}{S + 1}$</li>
+</ul>
+<p>The active bonding curve function $f_i$ for token $i$ at time $t$ is chosen from this set and its parameters are updated according to the simulation rules.</p>
+<p><strong>Dynamic Commission Rate Adjustment (Mathematical Description):</strong></p>
+<p>The commission rate $C_j(t)$ for affiliate $j$ is adjusted dynamically. Let $\Delta C_j(t)$ be the change in commission rate at time $t$. The adjustment can be described as:</p>
+<p>$$\Delta C_j(t) = \begin{cases}
+   +\delta_j &amp; \text{if } \text{condition}_1 \
+   -\delta_j &amp; \text{if } \text{condition}_2 \
+   0           &amp; \text{otherwise}
+\end{cases}$$</p>
+<p>where $\delta_j$ is the dynamic adjustment rate for affiliate $j$, which itself can depend on the affiliate's total earnings. The conditions are based on metrics like average recent investment. The commission rate is also bounded:</p>
+<p>$$C_{min} \leq C_j(t) \leq C_{max}$$</p>
+<p><strong>Output and Analysis:</strong></p>
+<p>The simulation generates time series data that can be used to analyze the dynamics of the token economy. This includes:</p>
+<ul>
+<li><strong>Token Price and Supply Evolution:</strong> Observe how prices and supplies change over time and how they are affected by bonding curve changes and market activity.</li>
+<li><strong>Affiliate Performance:</strong> Track the growth of affiliate base currency balances and how commission rates evolve.</li>
+<li><strong>Market Stability:</strong> Analyze the volatility of token prices and the overall stability of the simulated economy.</li>
+</ul>
+<p>This mathematical formulation provides a framework for understanding and modeling the complex interactions within the simulated token economy. The simulation, as implemented in the Python code, serves as a computational method for exploring the behavior of this system under different conditions and parameter settings.</p>
+</body>
+</html>

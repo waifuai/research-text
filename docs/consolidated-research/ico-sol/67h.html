@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>answer 8: combined equations</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>answer 8: combined equations</h1>
+<p>Below, I combine insights from both prior questions—Optimal Portfolio Allocation with RWA-Correlated Risks and Optimal RWA-Backed Stablecoin Design—to create a unified mathematical framework. This integrates the portfolio optimization problem (from the first question) with the stablecoin’s dynamic collateralization, risk mitigation, and governance systems (from the second). The goal is a cohesive model where the stablecoin’s collateral portfolio is optimized while maintaining stability and resilience.</p>
+<p>Unified Mathematical Framework</p>
+<p>Notation</p>
+<p>$n$ : Number of assets (digital assets and tokenized RWAs).</p>
+<p>$w_i$ : Portfolio weight of asset i $(\sum_{i=1}^n w_i = 1)$.</p>
+<p>$V_i$ : Market value of asset i.</p>
+<p>$S$ : Total stablecoin supply.</p>
+<p>$CR$ : Collateralization ratio $(CR = V / S)$.</p>
+<p>$\mu_i$ : Expected return of asset i.</p>
+<p>$\sigma_i$ : Volatility of asset i.</p>
+<p>$\rho_{ij}$ : Correlation between assets i and j.</p>
+<p>$\mathbf{\Sigma}$ : Covariance matrix, where $\Sigma_{ij} = \sigma_i \sigma_j \rho_{ij}$.</p>
+<p>$c_i$ : Transaction cost per unit weight change for asset i.</p>
+<p>$w_{0i}$ : Current weight of asset i before rebalancing.</p>
+<p>$R_i$ : Risk score of asset i.</p>
+<p>$\lambda$ : Dynamic risk aversion parameter.</p>
+<p>$m$ : Number of stakeholder groups.</p>
+<p>$v_j$ : Voting power of group j.</p>
+<ol>
+<li>Combined Optimization Problem</li>
+</ol>
+<p>Objective Function</p>
+<p>Maximize a utility function that integrates portfolio return, risk, transaction costs, and stablecoin stability:</p>
+<p>$$\max_{\mathbf{w}, CR} \left[ \sum_{i=1}^n w_i \mu_i - \frac{\lambda}{2} \mathbf{w}^T \mathbf{\Sigma} \mathbf{w} - \sum_{i=1}^n c_i t_i + \psi (CR - CR_{\text{target}})\right]$$</p>
+<p>where:</p>
+<ul>
+<li>$\sum w_i \mu_i$: Expected portfolio return (portfolio allocation goal)</li>
+<li>$\frac{\lambda}{2} \mathbf{w}^T \mathbf{\Sigma} \mathbf{w}$: Risk penalty (portfolio variance)</li>
+<li>$\sum c_i t_i$: Transaction costs, where $t_i \geq |w_i - w_{0i}|$ (portfolio rebalancing cost)</li>
+<li>$\psi (CR - CR_{\text{target}})$: Stability incentive, where $\psi$ is a positive coefficient and $CR_{\text{target}}$ (e.g., 150%) ensures over-collateralization</li>
+</ul>
+<p>Constraints</p>
+<ol>
+<li>
+<p>Budget: $\sum_{i=1}^n w_i = 1$</p>
+</li>
+<li>
+<p>No Short Selling: $w_i \geq 0$</p>
+</li>
+<li>
+<p>Collateralization: $CR = \frac{\sum_{i=1}^n w_i V_i}{S} \geq CR_{\text{min}}$ (e.g., 110%)</p>
+</li>
+<li>
+<p>Risk Limit: $\sum_{i=1}^n w_i R_i \leq R_{\text{max}}$</p>
+</li>
+<li>
+<p>Transaction Cost Auxiliary: $t_i \geq w_i - w_{0i}$, $t_i \geq w_{0i} - w_i$, $t_i \geq 0$</p>
+</li>
+</ol>
+<p>This is a quadratic programming (QP) problem with an added stability term.</p>
+<ol>
+<li>Dynamic Collateral and Risk Adjustments</li>
+</ol>
+<p>Collateralization Ratio</p>
+<p>$$CR = \frac{V}{S} = \frac{\sum_{i=1}^n w_i V_i}{S}$$</p>
+<p>Risk Score</p>
+<p>$R_i = \alpha \sigma_i + \beta L_i^{-1} + \gamma E_i$</p>
+<p>Adjusts $w_i$ dynamically based on real-time data (volatility $\sigma_i$, liquidity $L_i$, external factors $E_i$).</p>
+<p>Portfolio Variance</p>
+<p>$$\sigma_p^2 = \mathbf{w}^T \mathbf{\Sigma} \mathbf{w} = \sum_{i=1}^n \sum_{j=1}^n w_i w_j \sigma_i \sigma_j \rho_{ij}$$</p>
+<p>Trigger for Adjustment</p>
+<p>Rebalance if:</p>
+<p>$$CR &lt; CR_{\text{crit}} \quad \text{or} \quad \sigma_p &gt; \sigma_{\text{threshold}}$$</p>
+<p>where:</p>
+<ul>
+<li>$CR_{\text{crit}}$: Critical threshold (e.g., 110%)</li>
+<li>
+<p>$\sigma_{\text{threshold}}$: Volatility limit (e.g., 20%)</p>
+</li>
+<li>
+<p>Multi-Layered Risk Mitigation</p>
+</li>
+</ul>
+<p>Automated Liquidations</p>
+<p>If $CR &lt; CR_{\text{crit}}$:</p>
+<p>$$V_{\text{liq}} = S \cdot \frac{CR_{\text{target}} - CR}{CR_{\text{target}}}$$</p>
+<p>Adjust weights post-liquidation:</p>
+<p>$$w_i' = w_i \cdot \frac{V_i - V_{\text{liq},i}}{V - V_{\text{liq}}}$$</p>
+<p>Circuit Breakers</p>
+<p>Pause if:</p>
+<p>$$\sigma_p &gt; \sigma_{\text{threshold}} \quad \text{or} \quad \frac{\Delta V}{V} &lt; -\delta$$</p>
+<p>Resume when $\sigma_p &lt; \sigma_{\text{reset}}$.</p>
+<p>Insurance Pool</p>
+<p>$$\frac{dP}{dt} = f \cdot T + p \cdot S$$</p>
+<p>Payout:</p>
+<p>$$P_{\text{out}} = \min(P, L), \quad L = S - V \text{ if } V &lt; S$$</p>
+<p>Bail-In</p>
+<p>Residual loss:</p>
+<p>$$L_{\text{residual}} = L - P$$</p>
+<p>Allocation:</p>
+<p>$$L_c = \kappa \cdot L_{\text{residual}} \cdot \frac{V_c}{\sum V_i}, \quad L_h = (1 - \kappa) \cdot L_{\text{residual}}$$</p>
+<ol>
+<li>Autonomous Governance with Dynamic Risk Aversion</li>
+</ol>
+<p>Governance Decision</p>
+<p>Parameter $\theta_k$ (e.g., $CR_{\text{min}}$, $\lambda$):</p>
+<p>$$\theta_k = \frac{\sum_{j=1}^m v_j \theta_{k,j}}{\sum_{j=1}^m v_j}$$</p>
+<p>where $\theta_{k,j}$: Proposal by agent $j$ based on utility $U_j = w_{j1} \cdot CR + w_{j2} \cdot \sum w_i \mu_i - w_{j3} \cdot \sigma_p^2$.</p>
+<p>Dynamic $\lambda$</p>
+<p>$$\lambda = \lambda_0 + \eta \cdot \sigma_p + \zeta \cdot \frac{\Delta V}{V}$$</p>
+<p>Updates based on market conditions, influencing the optimization.</p>
+<ol>
+<li>Stability and Risk Assessment</li>
+</ol>
+<p>Stability Condition</p>
+<p>$$\frac{dCR}{dt} = \frac{1}{S} \sum_{i=1}^n w_i \frac{dV_i}{dt} \geq 0 \quad \text{or} \quad CR \geq 1$$</p>
+<p>Monte Carlo Simulation</p>
+<p>Simulated portfolio value:</p>
+<p>$$V_s = \sum_{i=1}^n w_i V_i (1 + r_{i,s}), \quad r_{i,s} \sim N(\mu_i, \sigma_i^2)$$</p>
+<p>With market impact:</p>
+<p>$$r_{i,s}' = r_{i,s} + \sum_j \Delta w_{j,i} \cdot k_i$$</p>
+<p>where $k_i$: Price impact coefficient.</p>
+<p>Check:</p>
+<p>$$P(CR_s = V_s / S &lt; 1) &lt; \epsilon$$</p>
+<h2>Combined Optimization Problem</h2>
+<p>$$\max_{\mathbf{w}, CR, \mathbf{t}} \left[ \mathbf{w}^T \mu - \frac{\lambda}{2} \mathbf{w}^T \mathbf{\Sigma} \mathbf{w} - \sum_{i=1}^n c_i t_i + \psi (CR - CR_{\text{target}}) \right]$$</p>
+<p>Subject to:</p>
+<ol>
+<li>$\sum_{i=1}^n w_i = 1, \quad w_i \geq 0$</li>
+<li>$CR = \frac{\sum_{i=1}^n w_i V_i}{S} \geq CR_{\text{min}}$</li>
+<li>$\sum_{i=1}^n w_i R_i \leq R_{\text{max}}$</li>
+<li>$t_i \geq w_i - w_{0i}, \quad t_i \geq w_{0i} - w_i, \quad t_i \geq 0$</li>
+<li>$\lambda = \lambda_0 + \eta \cdot \sqrt{\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}} + \zeta \cdot \frac{\Delta V}{V}$</li>
+</ol>
+<p>Integration Highlights</p>
+<p>Portfolio Optimization: The original QP problem is extended with $CR$ stability and governance-driven $\lambda$.</p>
+<p>Stablecoin Mechanics: Collateral adjustments and risk mitigation (liquidations, insurance, bail-in) are triggered by the same portfolio metrics ($CR$, $\sigma_p$).</p>
+<p>Real-Time Solving: QP solvers handle this dynamically, with Monte Carlo simulations assessing risk across scenarios.</p>
+<p>This unified model ensures the stablecoin’s collateral portfolio is both optimally allocated and resilient, balancing return, risk, and stability under governance oversight.</p>
+</body>
+</html>

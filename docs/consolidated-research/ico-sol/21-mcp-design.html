@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>-mcp-design</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Okay, let's design a Solana token, which we'll call "ContextCoin" (CTX), that integrates with the Model Context Protocol (MCP) to provide access to resources while preventing spam and DDoS attacks through nominal SOL payments.</p>
+<p><strong>1. Tokenomics of ContextCoin (CTX)</strong></p>
+<ul>
+<li><strong>Name:</strong> ContextCoin (CTX)</li>
+<li><strong>Symbol:</strong> CTX</li>
+<li><strong>Total Supply:</strong> Fixed at 1,000,000,000 CTX (1 Billion) - No minting after launch.</li>
+<li><strong>Initial Distribution:</strong><ul>
+<li><strong>Team &amp; Development:</strong> 20% (200,000,000 CTX) - Locked for 1 year, then vesting.</li>
+<li><strong>Ecosystem Fund:</strong> 30% (300,000,000 CTX) - For grants, partnerships, and future developments within the MCP ecosystem.</li>
+<li><strong>Initial Sale:</strong> 50% (500,000,000 CTX) - Sold via a bonding curve ICO.</li>
+</ul>
+</li>
+<li><strong>Decimal Places:</strong> 9 - To support microtransactions and prevent integer overflow issues.</li>
+<li><strong>Utility:</strong><ul>
+<li><strong>Access to MCP Resources:</strong> CTX is required to access resources provided by MCP servers (described later).</li>
+<li><strong>Staking/Voting:</strong> Future option to stake CTX and participate in the governance of the MCP ecosystem.</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Bonding Curve ICO Details</strong></p>
+<ul>
+<li><strong>Starting Price:</strong> 0.00001 SOL per CTX.</li>
+<li><strong>Bonding Curve:</strong> Linear bonding curve, as defined in your prior whitepaper:<ul>
+<li>P(T) = P₀ * (1 + T/S)<ul>
+<li>P(T): Price of CTX after selling T tokens.</li>
+<li>P₀: Initial Price (0.00001 SOL).</li>
+<li>T: Total CTX tokens sold in the ICO.</li>
+<li>S: Scaling Factor (100,000,000). This means the price will double at 100 million tokens sold.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>ICO Duration:</strong> No fixed duration, the ICO concludes after all 500,000,000 tokens are sold, or the bonding curve price goes too high.</li>
+<li><strong>Incentives:</strong> Early buyers will receive a lower average price per CTX token, and their purchasing power will increase as they are rewarded from holding onto their tokens and as the network grows.</li>
+</ul>
+<p><strong>3. Integration with Model Context Protocol (MCP)</strong></p>
+<ul>
+<li><strong>Resource Access:</strong><ul>
+<li>MCP servers will implement a method to check for valid CTX balances.</li>
+<li>Users must have a sufficient CTX balance in their wallet to request resources.</li>
+<li>MCP client will facilitate this wallet checking as part of the request.</li>
+</ul>
+</li>
+<li><strong>Pay-Per-Access:</strong><ul>
+<li>When a client sends a request to access a resource, it includes the transaction that transfers a small amount of CTX to the server (e.g., 0.0001 CTX). This payment is on a per-request basis.</li>
+<li>The transfer happens before the resource content is sent back, preventing abuse by users without sufficient tokens.</li>
+<li>The server uses a smart contract to verify payment and then grant access to the resource.</li>
+</ul>
+</li>
+<li><strong>Rate Limiting:</strong><ul>
+<li>Servers can implement rate limiting per wallet address. This combined with per-request payments prevents users from spamming resources or causing a DDoS scenario.</li>
+<li>Users who spam too many requests will incur increasing costs as the prices increase along the bonding curve.</li>
+</ul>
+</li>
+<li><strong>Dynamic Pricing:</strong><ul>
+<li>MCP servers can dynamically set their access fees based on demand. This allows them to manage resource availability and prevents overload.</li>
+<li>A server can also implement an access fee schedule to align with demand.</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. Preventing Spam and DDoS Attacks</strong></p>
+<ul>
+<li><strong>Cost Barrier:</strong> By requiring a small payment per resource access request, spam and DDoS attacks become uneconomical. Attackers need to spend real money, making it a costly endeavor.</li>
+<li><strong>Token Drain:</strong> Spam accounts will have their CTX balance drained, preventing them from continuing attacks.</li>
+<li><strong>Rate Limiting:</strong> Combined with payment requirements, rate limiting prevents a single user from abusing the system, even if they have a substantial amount of CTX.</li>
+<li><strong>Real Value:</strong> Since access to resources requires CTX tokens, the network generates value and will encourage organic demand for the tokens.</li>
+<li><strong>Transaction Fees:</strong> Solana's low transaction fees ensure that small micro-payments are still practical.</li>
+</ul>
+<p><strong>5. Smart Contract Implementation</strong></p>
+<ul>
+<li><strong>Token Contract:</strong> A standard SPL token contract for CTX.</li>
+<li><strong>Verification Contract:</strong> A smart contract will handle verification of payments, and resource authorization:<ul>
+<li><code>verify_payment(wallet_address, server_address, amount)</code> - Checks that a user paid an amount to a server before resource access.</li>
+<li><code>authorize_access(wallet_address, server_address)</code> - Verifies that a user is authorized to access specific resources, usually based on a previous transaction.</li>
+<li><code>set_resource_cost(server_address, resource_id, cost)</code> - Allows servers to dynamically adjust access fees for specific resources.</li>
+<li>This contract will also handle initial token distribution.</li>
+</ul>
+</li>
+<li><strong>Wallet-to-Wallet Transfers:</strong> Solana's normal wallet transfer functionality would be used for payments within the system.</li>
+<li><strong>Escrow Mechanism:</strong> A built-in escrow mechanism to ensure that servers cannot cheat and withhold resources after receiving CTX.</li>
+</ul>
+<p><strong>6. Key Considerations</strong></p>
+<ul>
+<li><strong>User Experience:</strong> Making the micro-payment process smooth is critical.  Wallets need to provide an easy way to authorize small token payments.</li>
+<li><strong>Server Adoption:</strong> Encouraging MCP server operators to implement CTX payments is crucial.</li>
+<li><strong>Security:</strong> Ensure the smart contracts and payment mechanisms are robust against attacks and bugs.</li>
+</ul>
+<p><strong>7. Benefits</strong></p>
+<ul>
+<li><strong>Scalable Access:</strong> CTX enables scalable and affordable access to valuable resources within the MCP ecosystem.</li>
+<li><strong>Spam/DDoS Prevention:</strong> A powerful defense against attacks by requiring payments for each resource access.</li>
+<li><strong>Decentralization:</strong> All transactions are decentralized on the Solana blockchain.</li>
+<li><strong>Incentive Alignment:</strong> Motivates both server operators and resource users to participate in the network.</li>
+<li><strong>Real-World Value:</strong> The utility of the CTX token gives it real-world value and encourages a sustainable economy.</li>
+</ul>
+<p><strong>8. Future Development</strong></p>
+<ul>
+<li><strong>Staking and Governance:</strong> Implement staking of CTX tokens and enable holders to vote on the direction of the MCP ecosystem.</li>
+<li><strong>Tiered Access:</strong> Servers can provide tiered access based on the amount of CTX the user holds.</li>
+<li><strong>Integration with DeFi:</strong> Allow the CTX token to be used in decentralized finance applications on Solana.</li>
+</ul>
+<p>By combining the principles of a bonding curve ICO with a practical application within the Model Context Protocol, ContextCoin (CTX) presents a viable solution for enabling secure, scalable, and accessible resources while effectively preventing spam and DDoS attacks.</p>
+<p>Let me know if you'd like me to expand on any of these aspects or have other ideas!</p>
+</body>
+</html>

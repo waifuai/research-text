@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>--- Simulation Parameters ---</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Okay, I understand. You want me to create a simulation of the off-chain AI agent (from the provided Rust code) using Python for a Kaggle notebook. This simulation will help test the agent's behavior and the Q-learning algorithm in a controlled environment before deploying it to the actual Solana blockchain.</p>
+<p>Here's the Python code for the simulation, designed for a Kaggle notebook environment, along with explanations:</p>
+<pre><code class="language-python">import random
+import numpy as np
+import pandas as pd
+from IPython.display import display, clear_output
+import time
+
+# --- Simulation Parameters ---
+EXPLORATION_RATE = 0.2
+LEARNING_RATE = 0.7
+DISCOUNT_FACTOR = 0.9
+BASE_AMOUNT = 10
+INITIAL_BALANCE = 1000  # Starting balance for the agent
+SIMULATION_STEPS = 1000 # Number of steps in the simulation
+
+# --- Simplified Market Environment (for Simulation) ---
+
+class MarketEnvironment:
+    def __init__(self, base_price=50, slope=2):
+        self.base_price = base_price
+        self.slope = slope
+        self.total_supply = 0
+        self.price_history = []
+
+    def get_price(self):
+        price = self.base_price + self.slope * self.total_supply
+        self.price_history.append(price)
+        return price
+
+    def get_state(self):
+        # Determine price trend based on recent history
+        if len(self.price_history) &gt;= 3:
+            if self.price_history[-1] &gt; self.price_history[-2] &gt; self.price_history[-3]:
+                trend = &quot;Upward&quot;
+            elif self.price_history[-1] &lt; self.price_history[-2] &lt; self.price_history[-3]:
+                trend = &quot;Downward&quot;
+            else:
+                trend = &quot;Stable&quot;
+        else:
+            trend = &quot;Stable&quot;
+
+        # Determine supply level (simplified)
+        if self.total_supply &lt; 100:
+            supply_level = &quot;Low&quot;
+        elif self.total_supply &lt; 500:
+            supply_level = &quot;Medium&quot;
+        else:
+            supply_level = &quot;High&quot;
+
+        return {&quot;trend&quot;: trend, &quot;supply_level&quot;: supply_level}
+
+    def buy(self, amount):
+        price = self.get_price()
+        cost = price * amount
+        self.total_supply += amount
+        return cost
+
+    def sell(self, amount):
+        price = self.get_price()
+        revenue = price * amount
+        self.total_supply -= amount
+        return revenue
+
+# --- Agent (Adapted from Rust Code) ---
+
+class Agent:
+    def __init__(self, agent_id):
+        self.agent_id = agent_id
+        self.q_table = {}  # Q-table (state, action) -&gt; value
+        self.balance = INITIAL_BALANCE
+        self.inventory = 0 # Number of tokens the agent holds
+        self.last_action = None
+        self.last_market_state = None
+
+    def choose_action(self, state):
+        if random.random() &lt; EXPLORATION_RATE:
+            # Explore
+            action = random.choice([&quot;buy&quot;, &quot;sell&quot;, &quot;hold&quot;])
+        else:
+            # Exploit
+            state_tuple = (state[&quot;trend&quot;], state[&quot;supply_level&quot;])
+            q_values = self.q_table.get(state_tuple, {&quot;buy&quot;: 0.0, &quot;sell&quot;: 0.0, &quot;hold&quot;: 0.0})
+            action = max(q_values, key=q_values.get)
+        return action
+
+    def update_q_table(self, current_state, action, reward, new_state):
+        current_state_tuple = (current_state[&quot;trend&quot;], current_state[&quot;supply_level&quot;])
+        new_state_tuple = (new_state[&quot;trend&quot;], new_state[&quot;supply_level&quot;])
+
+        if current_state_tuple not in self.q_table:
+            self.q_table[current_state_tuple] = {&quot;buy&quot;: 0.0, &quot;sell&quot;: 0.0, &quot;hold&quot;: 0.0}
+        if new_state_tuple not in self.q_table:
+            self.q_table[new_state_tuple] = {&quot;buy&quot;: 0.0, &quot;sell&quot;: 0.0, &quot;hold&quot;: 0.0}
+
+        current_q = self.q_table[current_state_tuple][action]
+        max_next_q = max(self.q_table[new_state_tuple].values())
+
+        new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (
+            reward + DISCOUNT_FACTOR * max_next_q
+        )
+        self.q_table[current_state_tuple][action] = new_q
+
+    def calculate_reward(self, action, cost=0, revenue=0):
+        if action == &quot;buy&quot;:
+            if cost &gt; 0:
+                return -cost  # Penalty for buying (spending money)
+            else:
+                return -50  # Penalty if buying wasn't possible (e.g., not enough balance)
+        elif action == &quot;sell&quot;:
+            if revenue &gt; 0:
+                return revenue  # Reward for selling (getting money)
+            else:
+                return -50 # Penalty if selling wasn't possible (e.g., not enough inventory)
+        elif action == &quot;hold&quot;:
+            # Reward/penalty for holding based on price change
+            return 0 # Neutral reward for holding in this simplified version
+
+        return -5 # Penalty for invalid action
+
+# --- Simulation Loop ---
+
+def run_simulation(agent, environment, num_steps=SIMULATION_STEPS):
+    results = []
+    for step in range(num_steps):
+        state = environment.get_state()
+        action = agent.choose_action(state)
+
+        reward = 0
+        cost = 0
+        revenue = 0
+
+        if action == &quot;buy&quot;:
+            if agent.balance &gt;= environment.get_price() * BASE_AMOUNT:
+                cost = environment.buy(BASE_AMOUNT)
+                if agent.balance &gt;= cost:
+                    agent.balance -= cost
+                    agent.inventory += BASE_AMOUNT
+                    reward = agent.calculate_reward(action, cost=cost)
+                else:
+                    reward = agent.calculate_reward(action, cost=0)  # Not enough balance
+            else:
+                reward = agent.calculate_reward(action, cost=0)
+
+        elif action == &quot;sell&quot;:
+            if agent.inventory &gt;= BASE_AMOUNT:
+                revenue = environment.sell(BASE_AMOUNT)
+                if agent.inventory &gt;= BASE_AMOUNT:
+                    agent.balance += revenue
+                    agent.inventory -= BASE_AMOUNT
+                    reward = agent.calculate_reward(action, revenue=revenue)
+                else:
+                    reward = agent.calculate_reward(action, revenue=0)
+            else:
+                reward = agent.calculate_reward(action, revenue=0)
+
+        elif action == &quot;hold&quot;:
+            reward = agent.calculate_reward(action) # No cost/revenue for hold
+
+        new_state = environment.get_state()
+        agent.update_q_table(state, action, reward, new_state)
+
+        # Store results for analysis
+        results.append(
+            {
+                &quot;step&quot;: step,
+                &quot;state&quot;: state,
+                &quot;action&quot;: action,
+                &quot;reward&quot;: reward,
+                &quot;balance&quot;: agent.balance,
+                &quot;inventory&quot;: agent.inventory,
+                &quot;price&quot;: environment.get_price(),
+                &quot;total_supply&quot;: environment.total_supply
+            }
+        )
+
+        # Update last state and action
+        agent.last_action = action
+        agent.last_market_state = state
+
+        # Print current status every 50 steps
+        if (step + 1) % 50 == 0:
+            clear_output(wait=True)
+            df_results = pd.DataFrame(results)
+            display(df_results.tail(50))
+            print(f&quot;Step: {step+1}, Balance: {agent.balance:.2f}, Inventory: {agent.inventory}, Price: {environment.get_price():.2f}, Total Supply: {environment.total_supply}&quot;)
+            time.sleep(0.1)  # Add a small delay for visualization
+
+    return pd.DataFrame(results)
+
+# --- Run the Simulation and Analyze Results ---
+
+# Create an agent and environment
+agent = Agent(agent_id=&quot;simulated_agent&quot;)
+environment = MarketEnvironment()
+
+# Run the simulation
+df_results = run_simulation(agent, environment)
+
+# Display the final Q-table
+print(&quot;\nFinal Q-Table:&quot;)
+q_table_df = pd.DataFrame.from_dict(agent.q_table, orient='index')
+display(q_table_df)
+
+# --- Further Analysis (Examples) ---
+# You can add more analysis here, for example:
+
+# 1. Plot the agent's balance over time:
+# df_results.plot(x=&quot;step&quot;, y=&quot;balance&quot;, title=&quot;Agent's Balance Over Time&quot;)
+
+# 2. Plot the price over time:
+# df_results.plot(x=&quot;step&quot;, y=&quot;price&quot;, title=&quot;Market Price Over Time&quot;)
+
+# 3. Analyze the frequency of each action:
+# print(&quot;\nAction Frequency:&quot;)
+# print(df_results[&quot;action&quot;].value_counts())
+</code></pre>
+<p><strong>Explanation of the Code:</strong></p>
+<ol>
+<li>
+<p><strong>Simulation Parameters:</strong></p>
+<ul>
+<li>Sets up the key parameters like exploration rate, learning rate, discount factor, base amount for transactions, initial balance for the agent, and the number of simulation steps.</li>
+</ul>
+</li>
+<li>
+<p><strong>Market Environment (Simplified):</strong></p>
+<ul>
+<li><code>MarketEnvironment</code> class: Simulates a very basic market with a bonding curve.</li>
+<li><code>get_price()</code>: Calculates the price based on <code>base_price</code>, <code>slope</code>, and <code>total_supply</code>.</li>
+<li><code>get_state()</code>: Returns a simplified market state consisting of <code>trend</code> (Upward, Downward, Stable) and <code>supply_level</code> (Low, Medium, High).</li>
+<li><code>buy()</code>: Simulates buying tokens, updating the <code>total_supply</code> and returning the cost.</li>
+<li><code>sell()</code>: Simulates selling tokens, updating the <code>total_supply</code> and returning the revenue.</li>
+</ul>
+</li>
+<li>
+<p><strong>Agent:</strong></p>
+<ul>
+<li><code>Agent</code> class: Represents the AI agent, adapted from your Rust code.</li>
+<li><code>q_table</code>: Stores the Q-values for state-action pairs.</li>
+<li><code>balance</code>: Tracks the agent's current balance (in a simulated currency).</li>
+<li><code>inventory</code>: Tracks the number of tokens the agent holds.</li>
+<li><code>choose_action()</code>: Implements the epsilon-greedy strategy for action selection (exploration vs. exploitation).</li>
+<li><code>update_q_table()</code>: Updates the Q-values based on the Q-learning update rule.</li>
+<li><code>calculate_reward()</code>: Calculates the reward based on the action taken.</li>
+</ul>
+</li>
+<li>
+<p><strong>Simulation Loop:</strong></p>
+<ul>
+<li><code>run_simulation()</code>: Runs the main simulation loop for the specified number of steps.</li>
+<li>In each step:<ul>
+<li>Gets the current market state.</li>
+<li>The agent chooses an action.</li>
+<li>The action is executed in the environment (buy, sell, or hold).</li>
+<li>The reward is calculated.</li>
+<li>The agent's Q-table is updated.</li>
+<li>The results (state, action, reward, balance, inventory, etc.) are stored.</li>
+<li>The loop prints the agent's status every 50 steps.</li>
+</ul>
+</li>
+<li>Returns a Pandas DataFrame containing the simulation results.</li>
+</ul>
+</li>
+<li>
+<p><strong>Run Simulation and Analyze:</strong></p>
+<ul>
+<li>Creates an <code>Agent</code> and <code>MarketEnvironment</code>.</li>
+<li>Calls <code>run_simulation()</code> to execute the simulation.</li>
+<li>Prints the final Q-table.</li>
+<li>Includes placeholders for further analysis (plotting balance, price, action frequency, etc.).</li>
+</ul>
+</li>
+</ol>
+<p><strong>How to Use in a Kaggle Notebook:</strong></p>
+<ol>
+<li><strong>Create a New Notebook:</strong> Go to Kaggle and create a new Python notebook.</li>
+<li><strong>Copy and Paste:</strong> Copy the entire Python code provided above into a code cell in your notebook.</li>
+<li><strong>Run the Code:</strong> Execute the code cell.</li>
+</ol>
+<p><strong>Output and Analysis:</strong></p>
+<ul>
+<li><strong>Simulation Progress:</strong> The notebook will display the agent's balance, inventory, market price, and total supply every 50 simulation steps. This gives you a live view of how the simulation is progressing.</li>
+<li><strong>Final Q-Table:</strong> After the simulation finishes, the code prints the agent's learned Q-table. This table shows the agent's estimated value of taking each action in each state.</li>
+<li><strong>Further Analysis:</strong> The code provides placeholders for additional analysis. You can uncomment and modify the example code to:<ul>
+<li>Plot the agent's balance over time to see if it's learning to make a profit.</li>
+<li>Plot the market price to visualize the simulated bonding curve.</li>
+<li>Analyze the frequency of each action to understand the agent's behavior.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Important Considerations:</strong></p>
+<ul>
+<li><strong>Simplification:</strong> This simulation is a highly simplified model of the real-world system. It's meant to be a starting point for testing the basic logic of your agent and the Q-learning algorithm.</li>
+<li><strong>Parameters:</strong> Experiment with different values for the simulation parameters (exploration rate, learning rate, discount factor, etc.) to see how they affect the agent's behavior.</li>
+<li><strong>Market Dynamics:</strong> The <code>MarketEnvironment</code> class is very basic. You can make it more realistic by:<ul>
+<li>Adding noise or randomness to the price.</li>
+<li>Implementing a more complex bonding curve formula.</li>
+<li>Simulating other market participants (e.g., other agents or traders).</li>
+</ul>
+</li>
+<li><strong>Reward Function:</strong> The <code>calculate_reward()</code> function is also simplified. You can refine it to better reflect the agent's goals and the complexities of the real-world trading environment.</li>
+<li><strong>Visualization:</strong> Use the plotting capabilities of libraries like Matplotlib or Seaborn to create more informative visualizations of the simulation results.</li>
+</ul>
+<p>By running this simulation and analyzing the results, you can gain valuable insights into your agent's behavior and make improvements before deploying it to the Solana blockchain. Remember that this is just a starting point, and you'll need to continue to refine and test your system as you move towards a production-ready implementation.</p>
+</body>
+</html>

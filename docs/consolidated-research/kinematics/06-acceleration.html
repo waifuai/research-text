@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Problem Statement</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>Problem Statement</h1>
+<p>Consider two particles, A and B, moving in $\mathbb{R}^3$. Their position vectors, $\mathbf{r}_A(t)$ and $\mathbf{r}_B(t)$, respectively, are governed by the following second-order ordinary differential equations (ODEs):</p>
+<p>$\frac{d^2 \mathbf{r}_A}{dt^2} = \mathbf{a}_A$
+$\frac{d^2 \mathbf{r}_B}{dt^2} = \mathbf{a}_B$</p>
+<p>where $\mathbf{a}<em>A$ and $\mathbf{a}_B$ are constant acceleration vectors in $\mathbb{R}^3$. Let $\mathbf{r}_A(t) = (x</em>{1A}(t), x_{2A}(t), x_{3A}(t))$ and $\mathbf{r}<em>B(t) = (x</em>{1B}(t), x_{2B}(t), x_{3B}(t))$.</p>
+<p>Let $\mathbf{r}<em>{A0} = \mathbf{r}_A(0)$, $\mathbf{v}</em>{A0} = \frac{d\mathbf{r}<em>A}{dt}(0)$ denote the initial position and velocity vectors of particle A, respectively. Similarly, let $\mathbf{r}</em>{B0} = \mathbf{r}<em>B(0)$, $\mathbf{v}</em>{B0} = \frac{d\mathbf{r}_B}{dt}(0)$ denote the initial position and velocity vectors of particle B, respectively.</p>
+<p>Furthermore, let $t^<em> \in \mathbb{R}$, $t^</em> &gt; 0$, be the time at which the two particles occupy the same position; i.e., $\mathbf{r}<em>A(t^<em>) = \mathbf{r}_B(t^</em>)$. We constrain the initial velocity of particle B such that $\lVert \mathbf{v}</em>{B0} \rVert = s_b$, where $s_b$ is a constant scalar.</p>
+<h1>Objective</h1>
+<p>Determine the symbolic expressions for the components of the initial velocity vector $\mathbf{v}<em>{B0}$, denoted by $v</em>{b1}$, $v_{b2}$, $v_{b3}$, and the time of coincidence $t^*$, given the initial conditions, the constant accelerations, and the velocity magnitude constraint for particle B.  Express the general solution in terms of known quantities.</p>
+<h1>Mathematical Formulation</h1>
+<h2>Position Vector Solutions</h2>
+<p>Given the constant acceleration, and defining  $\mathbf{v}_A(t) = \frac{d\mathbf{r}_A}{dt}$, $\mathbf{v}_B(t) = \frac{d\mathbf{r}_B}{dt}$, the position vectors of the particles are:</p>
+<p>$$
+  \mathbf{r}<em>A(t) = \mathbf{r}</em>{A0} + \mathbf{v}<em>{A0} t + \frac{1}{2} \mathbf{a}_A t^2
+  $$
+  $$
+  \mathbf{r}_B(t) = \mathbf{r}</em>{B0} + \mathbf{v}_{B0} t + \frac{1}{2} \mathbf{a}_B t^2
+  $$</p>
+<p>Where: $\mathbf{v}<em>A(t) = \mathbf{v}</em>{A0} + \mathbf{a}<em>A t$ and $\mathbf{v}_B(t) = \mathbf{v}</em>{B0} + \mathbf{a}_B t$</p>
+<h2>Coincidence Condition</h2>
+<p>The particles coincide when $\mathbf{r}<em>A(t^<em>) = \mathbf{r}_B(t^</em>)$, which expands to:
+    $$
+    \mathbf{r}</em>{A0} + \mathbf{v}<em>{A0} t^<em> + \frac{1}{2} \mathbf{a}_A (t^</em>)^2 = \mathbf{r}</em>{B0} + \mathbf{v}_{B0} t^<em> + \frac{1}{2} \mathbf{a}_B (t^</em>)^2
+    $$</p>
+<h2>Magnitude Constraint</h2>
+<p>The magnitude of the initial velocity vector $\mathbf{v}_{B0}$ is constrained by $s_b$:</p>
+<p>$$
+\lVert \mathbf{v}_{B0} \rVert = s_b
+$$</p>
+<h2>Component-wise Equations</h2>
+<p>$$
+ \frac{dx_{1A}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{1A}}{dt^2}(0) (t^</em>)^2 = x_{1B}(0) + \frac{dx_{1B}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{1B}}{dt^2}(0) (t^</em>)^2
+$$
+$$
+x_{2A}(0) + \frac{dx_{2A}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{2A}}{dt^2}(0) (t^</em>)^2 = x_{2B}(0) + \frac{dx_{2B}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{2B}}{dt^2}(0) (t^</em>)^2
+$$
+$$
+x_{3A}(0) + \frac{dx_{3A}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{3A}}{dt^2}(0) (t^</em>)^2 = x_{3B}(0) + \frac{dx_{3B}}{dt}(0) t^<em> + \frac{1}{2} \frac{d^2 x_{3B}}{dt^2}(0) (t^</em>)^2
+$$</p>
+<h2>Component Constraint</h2>
+<p>$$
+v_{b1}^2 + v_{b2}^2 + v_{b3}^2 = s_b^2
+$$
+Where: $v_{b1}$, $v_{b2}$, and $v_{b3}$ are the components of $\mathbf{v}<em>{B0}$. The components of the acceleration vectors are $\left( \frac{d^2 x</em>{1A}}{dt^2}, \frac{d^2 x_{2A}}{dt^2}, \frac{d^2 x_{3A}}{dt^2} \right) = \mathbf{a}<em>A$ and $\left( \frac{d^2 x</em>{1B}}{dt^2}, \frac{d^2 x_{2B}}{dt^2}, \frac{d^2 x_{3B}}{dt^2} \right) = \mathbf{a}_B$</p>
+<h1>Assumptions</h1>
+<ul>
+<li>The constants $\mathbf{a}_A$ and $\mathbf{a}_B$ are given.</li>
+<li>The constants $\mathbf{r}<em>{A0}$, $\mathbf{v}</em>{A0}$, $\mathbf{r}_{B0}$, and $s_b$ are known.</li>
+<li>A solution t<em> &gt; 0 is sought, where t</em> represents the time of coincidence between particles A and B.</li>
+</ul>
+<h1>Note</h1>
+<p>If closed-form solutions are not feasible, discuss methods to numerically approximate the solution to this problem.</p>
+</body>
+</html>

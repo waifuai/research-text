@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>more examples</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>2: more examples</h1>
+<p>Below, I'll expand the set of equations by adding more examples across the previously covered chapters and subchapters, as well as including additional subchapters from your outline where equations can be meaningfully applied. These examples will provide a broader range of mathematical formulations, reflecting the diverse techniques and concepts discussed in the document. I'll maintain consistency with the multimodal transformer and reinforcement learning (RL) context, ensuring each equation ties directly to the text's themes.</p>
+<h3>Chapter 1: Introduction to Large Multimodal Transformer Models and Reinforcement Learning</h3>
+<h4>1.2.2 Architectures for Cross-Modal Fusion</h4>
+<p>Shared Attention Mechanism:
+$$ H_{\text{shared}} = \text{softmax}\left(\frac{(W_q E_{\text{all}})(W_k E_{\text{all}})^T}{\sqrt{d_k}}\right) (W_v E_{\text{all}}) $$
+$$ E_{\text{all}} = [E_1; E_2; \ldots; E_M] $$
+ concatenates embeddings from all
+$M$
+ modalities,
+$W_q$, $W_k$, $W_v$
+ are query, key, and value projection matrices, and
+$H_{\text{shared}}$
+ is the fused output using a single attention mechanism across modalities.
+Separate but Coupled Encoders:
+$$ H_m = \text{Transformer}<em>m(E_m), \quad H</em>{\text{fused}} = W_f [H_1; H_2; \ldots; H_M] + b_f $$
+Each modality $m$
+  has its own transformer encoder $\text{Transformer}<em>m$
+, producing $H_m$
+, which are concatenated and linearly transformed to $H</em>{\text{fused}}$
+  with weights $W_f$
+  and bias $b_f$
+.</p>
+<h4>1.5.2 Value-Based Methods</h4>
+<p>Q-Learning Update with Multimodal Input:
+$$ Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[ R_t + \gamma \max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \right] $$
+Updates the Q-value for state
+$s_t$
+ (multimodal representation) and action
+$a_t$
+, with learning rate
+$\alpha$
+ and discount factor
+$\gamma$
+.</p>
+<h4>1.7 Problem Statement: Challenges in Fine-tuning and Optimization</h4>
+<p>Regularized Loss for Stability:
+$$ L_{\text{total}} = L_{\text{task}} + \lambda ||\theta - \theta_{\text{pretrained}} ||<em>2^2 $$
+Adds an L2 regularization term to the task-specific loss
+$L</em>{\text{task}}$
+, penalizing deviation from pretrained parameters
+$\theta_{\text{pretrained}}$
+ with coefficient
+$\lambda$
+ to improve stability during fine-tuning.</p>
+<h3>Chapter 2: Fundamentals of Multimodal Data Representation and Preprocessing</h3>
+<h4>2.1.2 Fusion Strategies</h4>
+<p>Attention-Based Fusion:
+$$ H_{\text{fused}} = \sum_{m} \alpha_m E_m, \quad \alpha_m = \text{softmax}(W_a [E_1; E_2; \ldots; E_M]) $$
+Weights
+$\alpha_m$
+ for each modality's embedding
+$E_m$
+ are computed via attention over concatenated embeddings, with
+$W_a$
+ as a learnable projection.</p>
+<h4>2.5.3 Feature Fusion Strategies</h4>
+<p>Weighted Sum Fusion:
+$$ F_{\text{fused}} = \sum_{m} w_m F_m, \quad \sum_m w_m = 1 $$
+Combines modality-specific features
+$F_m$
+ with learned weights
+$w_m$
+, constrained to sum to 1 for normalization.</p>
+<h3>Chapter 3: Fine-tuning Multimodal Transformers for Specific Tasks</h3>
+<h4>3.1.2 Fine-tuning Strategies</h4>
+<p>Adapter Fine-tuning Loss:
+$$ L_{\text{adapter}} = L_{\text{task}}(f_{\text{adapter}}(H; \phi)) + \beta ||\phi||<em>2^2 $$
+$f</em>{\text{adapter}}$
+ is the adapter function with parameters
+$\phi$
+ applied to transformer output
+$H$
+,
+$L_{\text{task}}$
+ is the task loss, and
+$\beta$
+ regularizes adapter parameters.</p>
+<h4>3.3.2 Hyperparameter Optimization for RL Fine-tuning</h4>
+<p>Learning Rate Schedule (Cosine Annealing):
+$$ \eta_t = \eta_{\min} + \frac{1}{2} (\eta_{\max} - \eta_{\min}) \left(1 + \cos\left(\frac{t}{T} \pi\right)\right) $$
+Adjusts learning rate
+$\eta_t$
+ at step
+$t$
+ between
+$\eta_{\min}$
+ and
+$\eta_{\max}$
+ over total steps
+$T$
+.</p>
+<h4>3.4.1 Decomposing Multimodal Representations</h4>
+<p>Feature Importance via Gradients:
+$$ I_m = \left| \frac{\partial L}{\partial E_m} \right| $$
+Measures the importance
+$I_m$
+ of modality
+$m$
+'s embedding
+$E_m$
+ by the magnitude of the gradient of the loss
+$L$
+.</p>
+<h3>Chapter 4: Reinforcement Learning Strategies for Optimization</h3>
+<h4>4.2.3 Addressing Multimodal Data Challenges</h4>
+<p>Multimodal Reward Function:
+$$ R(s_t, a_t) = \sum_{m} w_m R_m(s_t^m, a_t^m) $$
+Aggregates modality-specific rewards
+$R_m$
+ for modality
+$m$
+'s state
+$s_t^m$
+ and action
+$a_t^m$
+, weighted by
+$w_m$
+.</p>
+<h4>4.4.3 Feature Engineering and Selection</h4>
+<p>Principal Component Analysis (PCA):
+$$ Z = X W, \quad W = \text{argmax}_W \text{Var}(X W) $$
+Projects multimodal data
+$X$
+ onto principal components
+$W$
+ to reduce dimensionality while maximizing variance, yielding
+$Z$
+.</p>
+<h4>4.5.1 Exploration Strategies</h4>
+<p>Epsilon-Greedy Action Selection:
+$$ a_t =
+\begin{cases}
+\text{random action} &amp; \text{with probability } \epsilon \
+\text{argmax}<em>a Q(s_t, a) &amp; \text{with probability } 1 - \epsilon
+\end{cases} $$
+Balances exploration (random action) and exploitation (optimal action) with probability
+$\epsilon$
+.
+Boltzmann Exploration:
+$$ P(a_t | s_t) = \frac{e^{Q(s_t, a_t) / \tau}}{\sum</em>{a'} e^{Q(s_t, a') / \tau}} $$
+Selects actions probabilistically based on Q-values, tempered by
+$\tau$
+ (temperature).</p>
+<h3>Chapter 5: Advanced Techniques and Applications</h3>
+<h4>5.1.2 RL for Transformer Optimization</h4>
+<p>Reward-Guided Transformer Loss:
+$$ L_{\text{RL}} = - \mathbb{E} \left[ R(s_t, a_t) \log f_\theta(s_t) \right] $$
+Fine-tunes transformer parameters
+$\theta$
+ by maximizing expected reward-weighted log-likelihood of output
+$f_\theta(s_t)$
+.</p>
+<h4>5.2.2 Strategies for Uncertainty Quantification</h4>
+<p>Aleatoric Uncertainty (Variance Output):
+$$ L_{\text{aleatoric}} = \frac{1}{N} \sum_{i=1}^N \frac{(y_i - \hat{y}_i)^2}{2\sigma_i^2} + \frac{1}{2} \log \sigma_i^2 $$
+Models output variance
+$\sigma_i^2$
+ alongside prediction
+$\hat{y}_i$
+, balancing fit and uncertainty estimation.</p>
+<h4>5.4.1 Image Captioning Case Study</h4>
+<p>Captioning Reward Function:
+$$ R_{\text{cap}} = \alpha \text{BLEU}(c, c^<em>) + \beta \text{Detail}(c) - \gamma \text{Length}(c) $$
+Combines BLEU score (accuracy to reference
+$c^</em>$
+), detail level, and penalizes verbosity, with weights
+$\alpha$, $\beta$, $\gamma$
+.</p>
+<h4>5.5.2 Modality-Specific Metrics</h4>
+<p>Combined Modality Correlation:
+$$ \rho = \frac{\text{Cov}(A, S_{\text{combined}})}{\sqrt{\text{Var}(A) \text{Var}(S_{\text{combined}})}} $$
+Measures correlation
+$\rho$
+ between actions
+$A$
+ and combined multimodal state
+$S_{\text{combined}}$
+.
+Additional Notes:
+Diversity of Examples: I've added equations for various techniques (e.g., PCA, uncertainty modeling, exploration strategies) and applications (e.g., image captioning), broadening the scope beyond the initial set.
+Contextual Fit: Each equation reflects the multimodal RL focus, such as modality-specific rewards or cross-modal attention, aligning with the document's emphasis on integrating diverse data types.
+Further Expansion: If you'd like more examples for specific subchapters (e.g., ethical considerations with fairness metrics, or video understanding with temporal models), please specify!
+These additional examples enhance the mathematical representation of the concepts, offering a richer toolkit for implementing and understanding the integration of large multimodal transformer models with RL. Let me know if you need further adjustments or specific focuses!</p>
+</body>
+</html>

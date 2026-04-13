@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>-refactor</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Okay, this is a significant undertaking. Building a complete Solana project with all the features we've discussed (dynamic commissions, barter system, custom bonding curves, cheaper ICOs, etc.) is quite complex. I'll provide you with a structured approach, focusing on a modular design and starting with the core components.</p>
+<p><strong>Important Considerations:</strong></p>
+<ul>
+<li><strong>Scope:</strong> We cannot build the "entire" system in one go. This will be an iterative process. I'll provide the core logic and scaffolding. You'll need to expand it.</li>
+<li><strong>Complexity:</strong>  This is advanced. You need a solid understanding of Solana programming with Rust, Anchor, and ideally some knowledge of economics and math.</li>
+<li><strong>Security:</strong> Security is paramount in any blockchain project. This code is for illustrative purposes, and you'll need to implement thorough security audits and testing.</li>
+<li><strong>Testing:</strong>  You'll need to write extensive unit tests and integration tests for every module.</li>
+<li><strong>Deployment:</strong> Deploying to Solana requires understanding its network configurations and infrastructure.</li>
+</ul>
+<p><strong>Project Structure (Using Anchor):</strong></p>
+<pre><code>abundancecoin-ico/
+├── programs/
+│   └── abundancecoin-ico/
+│       ├── src/
+│       │   ├── lib.rs
+│       │   ├── state.rs       // Data structures (like config, accounts, bonding curve)
+│       │   ├── instructions/
+│       │   │   ├── mod.rs
+│       │   │   ├── create_token_sale.rs
+│       │   │   ├── buy_tokens.rs
+│       │   │   ├── sell_tokens.rs
+│       │   │   ├── withdraw.rs
+│       │   │   ├── set_commission_rate.rs
+│       │   ├── utils/          // Utility functions
+│       │       ├── mod.rs
+│       │       ├── bonding_curve.rs
+│       │   └── errors.rs
+│       │
+│       └── Cargo.toml
+├── migrations/
+│   └── deploy.ts
+├── tests/
+│   └── abundancecoin-ico.ts
+├── app/                 // Basic frontend to interact with the program
+│   ├── index.html
+│   ├── script.js
+├── Cargo.toml       // Main project Cargo.toml
+├── Anchor.toml       // Anchor configuration
+├── README.md
+</code></pre>
+<p><strong>1. <code>Cargo.toml</code> (Main Project):</strong></p>
+<pre><code class="language-toml">[workspace]
+members = [
+    &quot;programs/abundancecoin-ico&quot;,
+]
+</code></pre>
+<p><strong>2. <code>programs/abundancecoin-ico/Cargo.toml</code>:</strong></p>
+<pre><code class="language-toml">[package]
+name = &quot;abundancecoin-ico&quot;
+version = &quot;0.1.0&quot;
+description = &quot;Solana ICO program with bonding curve, dynamic commissions, and token barter&quot;
+edition = &quot;2021&quot;
+
+[lib]
+crate-type = [&quot;cdylib&quot;, &quot;rlib&quot;]
+
+[dependencies]
+anchor-lang = &quot;0.29.0&quot;
+async-trait = &quot;0.1.74&quot;
+borsh = &quot;0.10.3&quot;
+futures = &quot;0.3.28&quot;
+num-derive = &quot;0.4.1&quot;
+num-traits = &quot;0.2.17&quot;
+rust_decimal = &quot;1.30.0&quot;
+serde = { version = &quot;1.0.190&quot;, features = [&quot;derive&quot;] }
+solana-client = &quot;1.17.13&quot;
+solana-program = &quot;1.17.13&quot;
+solana-sdk = &quot;1.17.13&quot;
+spl-associated-token-account = { version =&quot;1.1.2&quot;, features = [&quot;no-entrypoint&quot;] }
+spl-token = { version = &quot;4.0.0&quot;, features = [&quot;no-entrypoint&quot;] }
+thiserror = &quot;1.0.50&quot;
+tokio = { version = &quot;1.33.0&quot;, features = [&quot;full&quot;] }
+</code></pre>
+<p><strong>3. <code>programs/abundancecoin-ico/src/lib.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+pub mod instructions;
+pub mod state;
+pub mod errors;
+pub mod utils;
+
+use instructions::*;
+declare_id!(&quot;YourProgramIdHere&quot;);
+
+#[program]
+pub mod abundancecoin_ico {
+    use super::*;
+
+    pub fn create_token_sale(ctx: Context&lt;CreateTokenSale&gt;, config: state::TokenSaleConfig) -&gt; Result&lt;()&gt; {
+        instructions::create_token_sale::handler(ctx, config)
+    }
+
+    pub fn buy_tokens(ctx: Context&lt;BuyTokens&gt;, amount: u64) -&gt; Result&lt;()&gt; {
+        instructions::buy_tokens::handler(ctx, amount)
+    }
+
+    pub fn sell_tokens(ctx: Context&lt;SellTokens&gt;, amount: u64) -&gt; Result&lt;()&gt; {
+        instructions::sell_tokens::handler(ctx, amount)
+    }
+
+     pub fn withdraw(ctx: Context&lt;Withdraw&gt;) -&gt; Result&lt;()&gt; {
+          instructions::withdraw::handler(ctx)
+    }
+     pub fn set_commission_rate(ctx: Context&lt;SetCommissionRate&gt;, commission_rate: state::CommissionRate) -&gt; Result&lt;()&gt; {
+         instructions::set_commission_rate::handler(ctx, commission_rate)
+    }
+}
+
+</code></pre>
+<p><strong>4.  <code>programs/abundancecoin-ico/src/state.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use rust_decimal::Decimal;
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq, Copy)]
+pub struct BondingCurveConfig {
+   pub base_price: Decimal, //in lamports
+    pub slope: Decimal,
+    pub total_supply: u64,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq, Copy)]
+pub struct TokenSaleConfig {
+    pub bonding_curve: BondingCurveConfig,
+    pub token_mint: Pubkey,
+     pub token_account: Pubkey,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq, Copy)]
+pub struct CommissionRate {
+    pub token_mint: Pubkey,
+    pub affiliate: Pubkey,
+    pub rate: f64, // Store as f64, but be careful with floating-point comparisons on-chain
+}
+
+#[account]
+pub struct TokenSale {
+    pub config: TokenSaleConfig,
+    pub total_raised: Decimal,
+    pub total_tokens_sold: u64,
+    pub bump: u8,
+}
+
+</code></pre>
+<p><strong>5. <code>programs/abundancecoin-ico/src/instructions/mod.rs</code>:</strong></p>
+<pre><code class="language-rust">pub mod create_token_sale;
+pub mod buy_tokens;
+pub mod sell_tokens;
+pub mod withdraw;
+pub mod set_commission_rate;
+</code></pre>
+<p><strong>6. <code>programs/abundancecoin-ico/src/instructions/create_token_sale.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use crate::state::*;
+use crate::errors::TokenSaleError;
+
+#[derive(Accounts)]
+pub struct CreateTokenSale&lt;'info&gt; {
+    #[account(mut)]
+    pub owner: Signer&lt;'info&gt;,
+    #[account(
+        init,
+        payer = owner,
+        space = 8 + 8 + 8 + 8 + 8 + 32 + 32 + 1,
+        seeds = [b&quot;token_sale&quot;, owner.key().as_ref()],
+        bump
+    )]
+    pub token_sale: Account&lt;'info, TokenSale&gt;,
+    pub system_program: Program&lt;'info, System&gt;,
+}
+pub fn handler(ctx: Context&lt;CreateTokenSale&gt;, config: TokenSaleConfig) -&gt; Result&lt;()&gt; {
+
+    let token_sale = &amp;mut ctx.accounts.token_sale;
+
+     token_sale.config = config;
+     token_sale.total_raised = Decimal::ZERO;
+     token_sale.total_tokens_sold = 0;
+    token_sale.bump = *ctx.bumps.get(&quot;token_sale&quot;).ok_or(TokenSaleError::BumpSeedNotFound)?;
+    Ok(())
+}
+</code></pre>
+<p><strong>7. <code>programs/abundancecoin-ico/src/instructions/buy_tokens.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use crate::state::*;
+use rust_decimal::Decimal;
+use crate::errors::TokenSaleError;
+use spl_token::{
+    instruction::mint_to,
+    ID as TOKEN_PROGRAM_ID,
+};
+use spl_associated_token_account::{create_associated_token_account, get_associated_token_address};
+#[derive(Accounts)]
+pub struct BuyTokens&lt;'info&gt; {
+    #[account(mut)]
+    pub buyer: Signer&lt;'info&gt;,
+     #[account(mut)]
+     pub token_sale: Account&lt;'info, TokenSale&gt;,
+     /// CHECK: This is the token mint
+    pub token_mint: AccountInfo&lt;'info&gt;,
+    /// CHECK: This is the token account that tokens are minted into
+     #[account(mut)]
+      pub token_account: AccountInfo&lt;'info&gt;,
+      pub system_program: Program&lt;'info, System&gt;,
+       /// CHECK: This is the token program
+     pub token_program: Program&lt;'info, spl_token::Token&gt;,
+}
+
+pub fn handler(ctx: Context&lt;BuyTokens&gt;, amount: u64) -&gt; Result&lt;()&gt; {
+    let token_sale = &amp;mut ctx.accounts.token_sale;
+    let token_mint = ctx.accounts.token_mint.key;
+     let token_price = calculate_token_price(token_sale.total_tokens_sold, &amp;token_sale.config.bonding_curve);
+
+           let amount_as_decimal = Decimal::from(amount);
+        let tokens_to_buy = (amount_as_decimal / token_price).floor().to_u64().ok_or(TokenSaleError::InvalidAmountError)?;
+
+          if tokens_to_buy + token_sale.total_tokens_sold &gt; token_sale.config.bonding_curve.total_supply {
+            return Err(TokenSaleError::InsufficientTokensError);
+        }
+        token_sale.total_tokens_sold += tokens_to_buy;
+        token_sale.total_raised += token_price * Decimal::from(tokens_to_buy);
+
+           let buyer_ata = get_associated_token_address(&amp;ctx.accounts.buyer.key(), token_mint);
+         if ctx.accounts.token_account.owner != &amp;TOKEN_PROGRAM_ID {
+            let create_ata_ix = create_associated_token_account(
+                &amp;ctx.accounts.buyer.key(),
+                &amp;ctx.accounts.buyer.key(),
+                token_mint,
+                &amp;TOKEN_PROGRAM_ID,
+            );
+           solana_program::program::invoke(
+                &amp;create_ata_ix,
+                &amp;[
+                   ctx.accounts.buyer.to_account_info(),
+                    ctx.accounts.token_account.to_account_info(),
+                     ctx.accounts.buyer.to_account_info(),
+                      ctx.accounts.token_mint.to_account_info(),
+                    ctx.accounts.system_program.to_account_info(),
+                     ctx.accounts.token_program.to_account_info(),
+                ],
+           )?;
+           }
+
+    let mint_ix = mint_to(
+            &amp;TOKEN_PROGRAM_ID,
+            token_mint,
+            &amp;buyer_ata,
+            &amp;ctx.accounts.token_sale.to_account_info(),
+            &amp;[&amp;[&amp;b&quot;token_sale&quot;[..],
+                 ctx.accounts.token_sale.owner.key().as_ref(),
+                &amp;[token_sale.bump]]],
+            tokens_to_buy,
+        )?;
+        solana_program::program::invoke_signed(
+             &amp;mint_ix,
+            &amp;[
+                 ctx.accounts.token_mint.to_account_info(),
+                 ctx.accounts.token_account.to_account_info(),
+                 ctx.accounts.token_sale.to_account_info(),
+                 ctx.accounts.token_program.to_account_info(),
+            ],
+            &amp;[&amp;[&amp;b&quot;token_sale&quot;[..],
+                 ctx.accounts.token_sale.owner.key().as_ref(),
+                &amp;[token_sale.bump]]],
+        )?;
+   Ok(())
+}
+
+pub fn calculate_token_price(current_supply: u64, config: &amp;BondingCurveConfig) -&gt; Decimal {
+    config.base_price * (Decimal::ONE + (Decimal::from(current_supply) / config.slope))
+}
+</code></pre>
+<p><strong>8. <code>programs/abundancecoin-ico/src/instructions/sell_tokens.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use crate::state::*;
+use rust_decimal::Decimal;
+use crate::errors::TokenSaleError;
+use spl_token::{
+    instruction::burn,
+    ID as TOKEN_PROGRAM_ID,
+};
+#[derive(Accounts)]
+pub struct SellTokens&lt;'info&gt; {
+    #[account(mut)]
+    pub seller: Signer&lt;'info&gt;,
+    #[account(mut)]
+    pub token_sale: Account&lt;'info, TokenSale&gt;,
+        /// CHECK: This is the token mint
+    pub token_mint: AccountInfo&lt;'info&gt;,
+         #[account(mut)]
+        pub token_account: AccountInfo&lt;'info&gt;,
+    /// CHECK: This is the token program
+       pub token_program: Program&lt;'info, spl_token::Token&gt;,
+}
+
+pub fn handler(ctx: Context&lt;SellTokens&gt;, amount: u64) -&gt; Result&lt;()&gt; {
+       let token_sale = &amp;mut ctx.accounts.token_sale;
+        let token_mint = ctx.accounts.token_mint.key;
+        let seller = &amp;ctx.accounts.seller;
+
+          if token_sale.total_tokens_sold &lt; amount {
+            return Err(TokenSaleError::InsufficientTokensError);
+        }
+
+        let token_price = calculate_token_price(token_sale.total_tokens_sold - amount, &amp;token_sale.config.bonding_curve);
+
+            let amount_to_return = Decimal::from(amount) * token_price;
+
+            token_sale.total_tokens_sold -= amount;
+            token_sale.total_raised -= amount_to_return;
+
+    let burn_ix = burn(
+            &amp;TOKEN_PROGRAM_ID,
+            &amp;ctx.accounts.token_account.key(),
+            &amp;seller.key(),
+            &amp;seller.key(),
+            &amp;[],
+            amount,
+        )?;
+         solana_program::program::invoke(
+                &amp;burn_ix,
+                &amp;[
+                    ctx.accounts.token_account.to_account_info(),
+                  seller.to_account_info(),
+                   ctx.accounts.token_program.to_account_info(),
+                ],
+            )?;
+
+   Ok(())
+}
+
+pub fn calculate_token_price(current_supply: u64, config: &amp;BondingCurveConfig) -&gt; Decimal {
+    config.base_price * (Decimal::ONE + (Decimal::from(current_supply) / config.slope))
+}
+
+</code></pre>
+<p><strong>9. <code>programs/abundancecoin-ico/src/instructions/withdraw.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use crate::state::*;
+use crate::errors::TokenSaleError;
+use solana_program::system_instruction::transfer;
+#[derive(Accounts)]
+pub struct Withdraw&lt;'info&gt; {
+    #[account(mut)]
+    pub owner: Signer&lt;'info&gt;,
+    #[account(mut,
+      seeds = [b&quot;token_sale&quot;, owner.key().as_ref()],
+        bump
+    )]
+    pub token_sale: Account&lt;'info, TokenSale&gt;,
+     /// CHECK: This is the token account that lamports are withdrawn from
+    pub token_account: AccountInfo&lt;'info&gt;,
+    pub system_program: Program&lt;'info, System&gt;,
+}
+
+pub fn handler(ctx: Context&lt;Withdraw&gt;) -&gt; Result&lt;()&gt; {
+        let token_sale = &amp;mut ctx.accounts.token_sale;
+          let lamports_to_withdraw = token_sale.total_raised.floor().to_u64().ok_or(TokenSaleError::InvalidAmountError)?;
+        let transfer_ix = transfer(
+            ctx.accounts.token_account.key,
+            &amp;ctx.accounts.owner.key(),
+            lamports_to_withdraw,
+        );
+         solana_program::program::invoke(
+                &amp;transfer_ix,
+                &amp;[
+                    ctx.accounts.token_account.to_account_info(),
+                    ctx.accounts.owner.to_account_info(),
+                    ctx.accounts.system_program.to_account_info(),
+                ],
+            )?;
+        token_sale.total_raised = Decimal::ZERO;
+        Ok(())
+}
+
+</code></pre>
+<p><strong>10. <code>programs/abundancecoin-ico/src/instructions/set_commission_rate.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use crate::state::*;
+
+#[derive(Accounts)]
+pub struct SetCommissionRate&lt;'info&gt; {
+    #[account(mut)]
+    pub affiliate: Signer&lt;'info&gt;,
+    #[account(
+        seeds = [b&quot;commission_rate&quot;, affiliate.key().as_ref()],
+        bump
+    )]
+    pub commission_rate_account: Account&lt;'info, CommissionRate&gt;,
+    pub system_program: Program&lt;'info, System&gt;,
+}
+
+pub fn handler(ctx: Context&lt;SetCommissionRate&gt;, commission_rate: CommissionRate) -&gt; Result&lt;()&gt; {
+
+   let commission_account = &amp;mut ctx.accounts.commission_rate_account;
+        commission_account.token_mint = commission_rate.token_mint;
+        commission_account.rate = commission_rate.rate;
+        commission_account.affiliate = commission_rate.affiliate;
+    Ok(())
+}
+
+</code></pre>
+<p><strong>11. <code>programs/abundancecoin-ico/src/utils/mod.rs</code>:</strong></p>
+<pre><code class="language-rust">pub mod bonding_curve;
+</code></pre>
+<p><strong>12. <code>programs/abundancecoin-ico/src/utils/bonding_curve.rs</code>:</strong></p>
+<pre><code class="language-rust">use crate::state::BondingCurveConfig;
+use rust_decimal::Decimal;
+
+pub fn calculate_token_price(current_supply: u64, config: &amp;BondingCurveConfig) -&gt; Decimal {
+    config.base_price * (Decimal::ONE + (Decimal::from(current_supply) / config.slope))
+}
+</code></pre>
+<p><strong>13. <code>programs/abundancecoin-ico/src/errors.rs</code>:</strong></p>
+<pre><code class="language-rust">use anchor_lang::prelude::*;
+use thiserror::Error;
+#[error(&quot;Token Sale Error: {0}&quot;)]
+#[derive(Debug, Copy, Clone, Error, PartialEq, Eq)]
+pub enum TokenSaleError {
+    #[error(&quot;Insufficient tokens available&quot;)]
+    InsufficientTokensError,
+    #[error(&quot;Invalid amount&quot;)]
+    InvalidAmountError,
+      #[error(&quot;Bump Seed Not Found&quot;)]
+    BumpSeedNotFound,
+}
+impl From&lt;TokenSaleError&gt; for ProgramError {
+    fn from(e: TokenSaleError) -&gt; Self {
+        ProgramError::Custom(e as u32)
+    }
+}
+</code></pre>
+<p><strong>14. <code>Anchor.toml</code>:</strong></p>
+<pre><code class="language-toml">[features]
+seeds = true
+
+[programs]
+abundancecoin_ico = &quot;programs/abundancecoin-ico/target/deploy/abundancecoin_ico.so&quot;
+
+[registry]
+url = &quot;https://api.apr.dev&quot;
+
+[provider]
+cluster = &quot;devnet&quot;
+wallet = &quot;~/.config/solana/id.json&quot;
+
+</code></pre>
+<p><strong>15. <code>migrations/deploy.ts</code>:</strong></p>
+<pre><code class="language-typescript">// Placeholder for migration, more logic needed here later
+import * as anchor from &quot;@coral-xyz/anchor&quot;;
+import { Program } from &quot;@coral-xyz/anchor&quot;;
+import { AbundancecoinIco } from &quot;../target/types/abundancecoin_ico&quot;;
+
+const { SystemProgram } = anchor.web3;
+module.exports = async function (provider: anchor.Provider) {
+    anchor.setProvider(provider);
+
+    const program = anchor.workspace.AbundancecoinIco as Program&lt;AbundancecoinIco&gt;;
+
+   const owner = provider.wallet;
+
+  const [tokenSalePda, ] = anchor.web3.PublicKey.findProgramAddressSync(
+       [Buffer.from(&quot;token_sale&quot;), owner.publicKey.toBuffer()],
+       program.programId
+    )
+
+
+  const tx = await program.methods.createTokenSale({
+        bondingCurve: {
+            basePrice: new anchor.BN(10_000),
+            slope: new anchor.BN(1_000_000),
+            totalSupply: new anchor.BN(10000000),
+        },
+        tokenMint:  anchor.web3.Keypair.generate().publicKey,
+        tokenAccount:  anchor.web3.Keypair.generate().publicKey
+    } ).accounts({
+       owner: owner.publicKey,
+       tokenSale: tokenSalePda,
+       systemProgram: SystemProgram.programId,
+    }).rpc()
+  console.log(&quot;create token sale&quot;, tx)
+};
+</code></pre>
+<p><strong>Explanation and Next Steps:</strong></p>
+<ul>
+<li><strong>Modular Design:</strong> The code is organized into modules (<code>state</code>, <code>instructions</code>, <code>utils</code>, <code>errors</code>) for better maintainability and reusability.</li>
+<li><strong>State:</strong> The <code>state.rs</code> file defines all data structures used in the program.</li>
+<li><strong>Instructions:</strong> Each file in the <code>instructions/</code> directory defines one instruction (entry point) of the program.</li>
+<li><strong>Bonding Curve Logic:</strong> The <code>utils/bonding_curve.rs</code> contains a function to calculate price based on the specified linear bonding curve.</li>
+<li><strong>Basic functionality:</strong>  The code implements basic functions: <code>create_token_sale</code>, <code>buy_tokens</code>, <code>sell_tokens</code>, <code>withdraw</code>, and  <code>set_commission_rate</code>.</li>
+<li><strong>Data Storage:</strong>  Program state is stored directly on chain in accounts owned by the program.</li>
+<li><strong>Anchor Framework:</strong>  The code utilizes the Anchor framework for Solana program development, which helps with boilerplate code.</li>
+</ul>
+<p><strong>To Do (In Order):</strong></p>
+<ol>
+<li><strong>Set Program ID:</strong> Replace <code>"YourProgramIdHere"</code> with the actual program ID you want to use.</li>
+<li><strong>Install Anchor:</strong> If you don't have it, install the Anchor CLI: <code>npm install -g @coral-xyz/anchor-cli</code></li>
+<li><strong>Run Anchor Build:</strong> Use <code>anchor build</code> to compile the program.</li>
+<li><strong>Run Anchor Deploy:</strong> Use <code>anchor deploy</code> (usually to devnet).</li>
+<li><strong>Implement <code>set_commission_rate</code>:</strong>  Modify <code>set_commission_rate.rs</code> to allow for dynamic commission rates for each token and affiliate. Also create a  <code>CommissionRate</code> account in  <code>state.rs</code> and use seeds. This will likely be similar to <code>create_token_sale.rs</code>.</li>
+<li><strong>Implement Frontend:</strong> Develop a basic frontend in <code>app/</code> to interact with your program using <code>@coral-xyz/anchor</code> library</li>
+<li><strong>Testing:</strong> Write extensive unit and integration tests for each of the modules using the <code>tests/abundancecoin-ico.ts</code> file (in Javascript or Typescript).</li>
+<li><strong>Token Barter Logic:</strong>  Extend the current <code>buy_tokens</code> and <code>sell_tokens</code> functions to include logic for token-to-token swaps. This will involve creating a separate account for token balances (possibly utilizing the associated token account program), and calculating appropriate exchange rates using mathematical models (as discussed in the previous whitepapers).</li>
+<li><strong>More Complex Bonding Curves:</strong>  Modify the <code>calculate_token_price</code> function to allow for other types of bonding curves (quadratic, sigmoid, etc).</li>
+<li><strong>Cheaper ICOs:</strong>  Explore ways to optimize the smart contracts (e.g., use of <code>invoke_signed</code>) to minimize transaction costs.</li>
+<li><strong>Security Audits:</strong>  Get a professional security audit for your code.</li>
+</ol>
+<p>This is a challenging project. Start with the core logic and build iteratively. If you have more specific questions about a particular module or function, feel free to ask.</p>
+</body>
+</html>

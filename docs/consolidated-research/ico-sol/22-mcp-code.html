@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>-mcp-code</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Okay, let's implement a comprehensive Rust solution for the ContextCoin (CTX) system on Solana, including the smart contracts and a basic client for interaction. This will be a fairly extensive implementation, so I'll provide the code in sections, explaining each part.</p>
+<p><strong>Important Notes:</strong></p>
+<ul>
+<li><strong>Complexity:</strong> This is a complex undertaking, and this implementation is for illustrative purposes. Production-ready code would require further auditing, testing, and security considerations.</li>
+<li><strong>Simplifications:</strong> For brevity, some aspects will be simplified. For example, we won't include all possible error handling or production-level security measures.</li>
+<li><strong>Dependencies:</strong> We'll use the standard Solana and <code>borsh</code> crates. Please ensure you have these dependencies installed in your Rust environment.</li>
+<li><strong>Solana CLI:</strong> You'll need the Solana CLI installed for deployment and testing.</li>
+<li><strong>Anchor:</strong> While we won't use Anchor, it's strongly recommended for production-level Solana development as it provides better ergonomics than raw Solana program development.</li>
+<li><strong>Limited Scope:</strong> This initial implementation will focus on token creation, ICO via bonding curve, and basic resource access.</li>
+</ul>
+<p><strong>Project Structure</strong></p>
+<p>Let's organize the code into a few modules for clarity:</p>
+<ul>
+<li><code>src/lib.rs</code>: Main library file for Solana smart contracts.</li>
+<li><code>src/client.rs</code>: Basic client for interacting with Solana.</li>
+<li><code>src/state.rs</code>: Defines the data structures for on-chain storage.</li>
+<li><code>src/error.rs</code>: Defines program-specific error types.</li>
+<li><code>src/instruction.rs</code>: Defines the instruction data formats.</li>
+<li><code>src/processor.rs</code>: Contains the main instruction processing logic.</li>
+</ul>
+<p><strong>1. src/lib.rs (Smart Contract Entry Point)</strong></p>
+<pre><code class="language-rust">use solana_program::{
+    account_info::AccountInfo, entrypoint, entrypoint::ProgramResult, msg, pubkey::Pubkey,
+};
+
+mod error;
+mod instruction;
+mod processor;
+mod state;
+
+entrypoint!(process_instruction);
+
+pub fn process_instruction(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    instruction_data: &amp;[u8],
+) -&gt; ProgramResult {
+    msg!(&quot;ContextCoin Program entrypoint&quot;);
+
+    processor::process(program_id, accounts, instruction_data)
+}
+</code></pre>
+<p><strong>2. src/state.rs (On-Chain Data Structures)</strong></p>
+<pre><code class="language-rust">use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::pubkey::Pubkey;
+
+#[derive(BorshSerialize, BorshDeserialize, Debug, Clone, PartialEq)]
+pub struct ICOState {
+    pub owner: Pubkey,
+    pub token_mint: Pubkey,
+    pub total_supply: u64,
+    pub tokens_sold: u64,
+    pub base_price: u64,      // In lamports
+    pub scaling_factor: u64,
+    pub escrow_account: Pubkey, // Account to hold SOL during ICO
+    pub bump: u8,
+    pub is_initialized: bool,
+}
+
+#[derive(BorshSerialize, BorshDeserialize, Debug, Clone, PartialEq)]
+pub struct ResourceAccessState {
+    pub resource_id: String,
+    pub server_address: Pubkey,
+    pub access_fee: u64,
+    pub bump: u8,
+    pub is_initialized: bool,
+}
+</code></pre>
+<p><strong>3. src/error.rs (Program Specific Errors)</strong></p>
+<pre><code class="language-rust">use solana_program::program_error::ProgramError;
+use thiserror::Error;
+
+#[derive(Error, Debug, Copy, Clone)]
+pub enum ContextCoinError {
+    #[error(&quot;Insufficient funds&quot;)]
+    InsufficientFunds,
+    #[error(&quot;Invalid account owner&quot;)]
+    InvalidAccountOwner,
+    #[error(&quot;Invalid instruction&quot;)]
+    InvalidInstruction,
+     #[error(&quot;Invalid Escrow Account&quot;)]
+    InvalidEscrowAccount,
+    #[error(&quot;Invalid Token Mint&quot;)]
+    InvalidTokenMint,
+    #[error(&quot;Invalid State Account&quot;)]
+    InvalidStateAccount,
+     #[error(&quot;Invalid Resource&quot;)]
+    InvalidResource,
+    #[error(&quot;Calculation overflow&quot;)]
+    CalculationOverflow,
+        #[error(&quot;Escrow Mismatch&quot;)]
+    EscrowMismatch,
+    #[error(&quot;Not initialized&quot;)]
+    NotInitialized,
+}
+
+impl From&lt;ContextCoinError&gt; for ProgramError {
+    fn from(e: ContextCoinError) -&gt; Self {
+        ProgramError::Custom(e as u32)
+    }
+}
+</code></pre>
+<p><strong>4. src/instruction.rs (Instruction Data)</strong></p>
+<pre><code class="language-rust">use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::pubkey::Pubkey;
+
+#[derive(BorshSerialize, BorshDeserialize, Debug)]
+pub enum ContextCoinInstruction {
+     /// Initialize the ICO State
+    InitializeIco {
+         token_mint: Pubkey,
+         total_supply: u64,
+        base_price: u64,
+        scaling_factor: u64,
+    },
+    /// Buy tokens during ICO
+    BuyTokens{
+      amount: u64,
+    },
+     /// Sell tokens during ICO
+    SellTokens{
+      amount: u64,
+    },
+       /// Withdraw lamports from escrow to owner
+    WithdrawFromEscrow {
+          amount: u64,
+    },
+    /// Create a resource access state
+    CreateResourceAccess {
+        resource_id: String,
+         access_fee: u64,
+    },
+    ///  Pay to access a resource
+    AccessResource {
+        amount: u64,
+         resource_id: String,
+    },
+}
+</code></pre>
+<p><strong>5. src/processor.rs (Instruction Processing Logic)</strong></p>
+<pre><code class="language-rust">use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::{
+    account_info::{next_account_info, AccountInfo},
+    entrypoint::ProgramResult,
+    msg,
+    program::{invoke, invoke_signed},
+    program_error::ProgramError,
+    pubkey::Pubkey,
+    system_instruction,
+    sysvar::{rent::Rent, Sysvar},
+};
+
+use spl_token::{
+    instruction::{mint_to, transfer},
+    ID as TOKEN_PROGRAM_ID,
+};
+use crate::error::ContextCoinError;
+use crate::instruction::ContextCoinInstruction;
+use crate::state::{ICOState, ResourceAccessState};
+
+pub fn process(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    instruction_data: &amp;[u8],
+) -&gt; ProgramResult {
+    let instruction = ContextCoinInstruction::try_from_slice(instruction_data)
+        .map_err(|_| ProgramError::InvalidInstructionData)?;
+
+    match instruction {
+           ContextCoinInstruction::InitializeIco {
+              token_mint,
+            total_supply,
+            base_price,
+            scaling_factor,
+        } =&gt; {
+            initialize_ico(
+                program_id,
+                accounts,
+                 &amp;token_mint,
+                total_supply,
+                base_price,
+                 scaling_factor,
+            )
+        }
+        ContextCoinInstruction::BuyTokens { amount } =&gt; buy_tokens(program_id, accounts, amount),
+         ContextCoinInstruction::SellTokens { amount } =&gt; sell_tokens(program_id, accounts, amount),
+        ContextCoinInstruction::WithdrawFromEscrow{ amount } =&gt; withdraw_from_escrow(program_id, accounts, amount),
+        ContextCoinInstruction::CreateResourceAccess {resource_id, access_fee} =&gt; create_resource_access(program_id, accounts, resource_id, access_fee),
+         ContextCoinInstruction::AccessResource {resource_id, amount} =&gt; access_resource(program_id, accounts, resource_id, amount),
+    }
+}
+
+fn initialize_ico(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    token_mint: &amp;Pubkey,
+    total_supply: u64,
+    base_price: u64,
+    scaling_factor: u64,
+) -&gt; ProgramResult {
+
+    let accounts_iter = &amp;mut accounts.iter();
+    let ico_state_account = next_account_info(accounts_iter)?;
+    let owner_account = next_account_info(accounts_iter)?;
+     let escrow_account = next_account_info(accounts_iter)?;
+     let rent_account = next_account_info(accounts_iter)?;
+
+    if !owner_account.is_signer {
+          msg!(&quot;InitializeICO Error: Missing owner signature&quot;);
+           return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+     if !rent_account.is_signer {
+             msg!(&quot;InitializeICO Error: Missing rent signature&quot;);
+          return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+        if *ico_state_account.owner != *program_id {
+          msg!(&quot;InitializeICO Error: Invalid state account owner&quot;);
+        return Err(ContextCoinError::InvalidStateAccount.into());
+    }
+
+      if *escrow_account.owner != *program_id {
+          msg!(&quot;InitializeICO Error: Invalid escrow account owner&quot;);
+           return Err(ContextCoinError::InvalidEscrowAccount.into());
+    }
+
+    let rent = Rent::from_account_info(rent_account)?;
+     if !rent.is_exempt(ico_state_account.lamports(), ico_state_account.data_len()) {
+        msg!(&quot;Error: State account not rent-exempt&quot;);
+        return Err(ProgramError::AccountNotRentExempt);
+    }
+      if !rent.is_exempt(escrow_account.lamports(), escrow_account.data_len()) {
+           msg!(&quot;Error: Escrow account not rent-exempt&quot;);
+        return Err(ProgramError::AccountNotRentExempt);
+    }
+
+    let mut ico_state = ICOState::try_from_slice(&amp;ico_state_account.data.borrow())?;
+
+    if ico_state.is_initialized {
+           msg!(&quot;InitializeICO Error: Already Initialized.&quot;);
+        return Err(ContextCoinError::InvalidInstruction.into());
+    }
+
+
+    ico_state.owner = *owner_account.key;
+    ico_state.token_mint = *token_mint;
+    ico_state.total_supply = total_supply;
+    ico_state.tokens_sold = 0;
+    ico_state.base_price = base_price;
+    ico_state.scaling_factor = scaling_factor;
+    ico_state.escrow_account = *escrow_account.key;
+
+    ico_state.bump = *ico_state_account.try_borrow_mut_data()? [0];
+    ico_state.is_initialized = true;
+
+
+    ico_state.serialize(&amp;mut *ico_state_account.try_borrow_mut_data()?)?;
+    msg!(&quot;ICO state initialized successfully.&quot;);
+     Ok(())
+}
+
+fn buy_tokens(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    amount: u64,
+) -&gt; ProgramResult {
+     let accounts_iter = &amp;mut accounts.iter();
+    let ico_state_account = next_account_info(accounts_iter)?;
+    let buyer_account = next_account_info(accounts_iter)?;
+    let token_mint_account = next_account_info(accounts_iter)?;
+    let buyer_token_account = next_account_info(accounts_iter)?;
+     let escrow_account = next_account_info(accounts_iter)?;
+     let system_program_account = next_account_info(accounts_iter)?;
+      let rent_account = next_account_info(accounts_iter)?;
+
+    if !buyer_account.is_signer {
+             msg!(&quot;BuyTokens Error: Missing buyer signature&quot;);
+         return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+          if *ico_state_account.owner != *program_id {
+          msg!(&quot;BuyTokens Error: Invalid state account owner&quot;);
+        return Err(ContextCoinError::InvalidStateAccount.into());
+    }
+    if *escrow_account.owner != *program_id {
+         msg!(&quot;BuyTokens Error: Invalid escrow account owner&quot;);
+        return Err(ContextCoinError::InvalidEscrowAccount.into());
+    }
+      if *token_mint_account.owner != TOKEN_PROGRAM_ID {
+            msg!(&quot;BuyTokens Error: Invalid token mint owner&quot;);
+        return Err(ContextCoinError::InvalidTokenMint.into());
+        }
+
+
+    let rent = Rent::from_account_info(rent_account)?;
+     if !rent.is_exempt(buyer_account.lamports(), buyer_account.data_len()) {
+        msg!(&quot;Error: Buyer account not rent-exempt&quot;);
+        return Err(ProgramError::AccountNotRentExempt);
+    }
+
+
+   let mut ico_state = ICOState::try_from_slice(&amp;ico_state_account.data.borrow())?;
+
+    if !ico_state.is_initialized {
+        msg!(&quot;BuyTokens Error: ICO not initialized&quot;);
+        return Err(ContextCoinError::NotInitialized.into());
+    }
+     if *token_mint_account.key != ico_state.token_mint {
+        msg!(&quot;BuyTokens Error: Mismatch token mint.&quot;);
+        return Err(ContextCoinError::InvalidTokenMint.into());
+    }
+
+
+    let price = calculate_token_price(ico_state.base_price, ico_state.tokens_sold, ico_state.scaling_factor)?;
+
+      let num_tokens = amount/price;
+
+     if num_tokens + ico_state.tokens_sold &gt; ico_state.total_supply {
+        msg!(&quot;BuyTokens Error: Insufficient tokens&quot;);
+         return Err(ContextCoinError::InsufficientFunds.into());
+    }
+
+
+     let transfer_ix = system_instruction::transfer(
+            buyer_account.key,
+            escrow_account.key,
+            amount,
+        );
+           invoke(
+             &amp;transfer_ix,
+            &amp;[
+                buyer_account.clone(),
+                escrow_account.clone(),
+                 system_program_account.clone(),
+            ],
+        )?;
+
+        let mint_ix = mint_to(
+            &amp;TOKEN_PROGRAM_ID,
+            token_mint_account.key,
+            buyer_token_account.key,
+            ico_state_account.key,
+            &amp;[&amp;ico_state_account],
+            num_tokens,
+        )?;
+          invoke_signed(
+            &amp;mint_ix,
+            &amp;[
+                token_mint_account.clone(),
+                buyer_token_account.clone(),
+                ico_state_account.clone()
+            ],
+            &amp;[&amp;[ico_state_account.try_borrow_mut_data()?[0] ]],
+        )?;
+
+    ico_state.tokens_sold += num_tokens;
+    ico_state.serialize(&amp;mut *ico_state_account.try_borrow_mut_data()?)?;
+
+    msg!(&quot;BuyTokens success&quot;);
+     Ok(())
+}
+fn sell_tokens(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    amount: u64,
+) -&gt; ProgramResult {
+    let accounts_iter = &amp;mut accounts.iter();
+    let ico_state_account = next_account_info(accounts_iter)?;
+    let seller_account = next_account_info(accounts_iter)?;
+        let token_mint_account = next_account_info(accounts_iter)?;
+    let seller_token_account = next_account_info(accounts_iter)?;
+     let escrow_account = next_account_info(accounts_iter)?;
+      let system_program_account = next_account_info(accounts_iter)?;
+    let rent_account = next_account_info(accounts_iter)?;
+
+
+    if !seller_account.is_signer {
+           msg!(&quot;SellTokens Error: Missing seller signature&quot;);
+         return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+       if *ico_state_account.owner != *program_id {
+          msg!(&quot;SellTokens Error: Invalid state account owner&quot;);
+        return Err(ContextCoinError::InvalidStateAccount.into());
+    }
+    if *escrow_account.owner != *program_id {
+          msg!(&quot;SellTokens Error: Invalid escrow account owner&quot;);
+           return Err(ContextCoinError::InvalidEscrowAccount.into());
+    }
+      if *token_mint_account.owner != TOKEN_PROGRAM_ID {
+            msg!(&quot;SellTokens Error: Invalid token mint owner&quot;);
+          return Err(ContextCoinError::InvalidTokenMint.into());
+        }
+
+      let rent = Rent::from_account_info(rent_account)?;
+     if !rent.is_exempt(seller_account.lamports(), seller_account.data_len()) {
+         msg!(&quot;Error: Seller account not rent-exempt&quot;);
+        return Err(ProgramError::AccountNotRentExempt);
+    }
+
+      let mut ico_state = ICOState::try_from_slice(&amp;ico_state_account.data.borrow())?;
+
+    if !ico_state.is_initialized {
+          msg!(&quot;SellTokens Error: ICO not initialized&quot;);
+       return Err(ContextCoinError::NotInitialized.into());
+    }
+      if *token_mint_account.key != ico_state.token_mint {
+           msg!(&quot;SellTokens Error: Mismatch token mint.&quot;);
+         return Err(ContextCoinError::InvalidTokenMint.into());
+    }
+
+    let price = calculate_token_price(ico_state.base_price, ico_state.tokens_sold - amount, ico_state.scaling_factor)?;
+    let lamports_to_return = price*amount;
+
+        if ico_state.tokens_sold &lt; amount{
+        msg!(&quot;SellTokens Error: Insufficient tokens sold&quot;);
+            return Err(ContextCoinError::InsufficientFunds.into());
+         }
+
+       let transfer_ix = system_instruction::transfer(
+            escrow_account.key,
+            seller_account.key,
+            lamports_to_return,
+        );
+           invoke(
+             &amp;transfer_ix,
+            &amp;[
+                  escrow_account.clone(),
+                seller_account.clone(),
+                 system_program_account.clone(),
+            ],
+        )?;
+         let burn_ix =  spl_token::instruction::burn(
+            &amp;TOKEN_PROGRAM_ID,
+            seller_token_account.key,
+            seller_account.key,
+            ico_state_account.key,
+             &amp;[&amp;ico_state_account],
+            amount,
+        )?;
+           invoke_signed(
+            &amp;burn_ix,
+            &amp;[
+                 seller_token_account.clone(),
+               seller_account.clone(),
+                 token_mint_account.clone(),
+                   ico_state_account.clone(),
+             ],
+            &amp;[&amp;[ico_state_account.try_borrow_mut_data()?[0] ]],
+        )?;
+
+        ico_state.tokens_sold -= amount;
+
+     ico_state.serialize(&amp;mut *ico_state_account.try_borrow_mut_data()?)?;
+
+    msg!(&quot;SellTokens success&quot;);
+     Ok(())
+}
+fn withdraw_from_escrow(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    amount: u64,
+) -&gt; ProgramResult {
+    let accounts_iter = &amp;mut accounts.iter();
+    let ico_state_account = next_account_info(accounts_iter)?;
+    let owner_account = next_account_info(accounts_iter)?;
+      let escrow_account = next_account_info(accounts_iter)?;
+     let system_program_account = next_account_info(accounts_iter)?;
+
+    if !owner_account.is_signer {
+       msg!(&quot;WithdrawFromEscrow Error: Missing owner signature&quot;);
+         return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+      if *ico_state_account.owner != *program_id {
+          msg!(&quot;WithdrawFromEscrow Error: Invalid state account owner&quot;);
+          return Err(ContextCoinError::InvalidStateAccount.into());
+    }
+      if *escrow_account.owner != *program_id {
+        msg!(&quot;WithdrawFromEscrow Error: Invalid escrow account owner&quot;);
+         return Err(ContextCoinError::InvalidEscrowAccount.into());
+    }
+
+
+       let ico_state = ICOState::try_from_slice(&amp;ico_state_account.data.borrow())?;
+
+    if !ico_state.is_initialized {
+         msg!(&quot;WithdrawFromEscrow Error: ICO not initialized&quot;);
+       return Err(ContextCoinError::NotInitialized.into());
+    }
+    if *owner_account.key != ico_state.owner {
+          msg!(&quot;WithdrawFromEscrow Error: Mismatch owner account&quot;);
+         return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+     let transfer_ix = system_instruction::transfer(
+            escrow_account.key,
+            owner_account.key,
+            amount,
+        );
+           invoke(
+             &amp;transfer_ix,
+            &amp;[
+                escrow_account.clone(),
+               owner_account.clone(),
+                system_program_account.clone(),
+            ],
+        )?;
+
+      msg!(&quot;WithdrawFromEscrow success&quot;);
+     Ok(())
+}
+
+fn create_resource_access(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    resource_id: String,
+    access_fee: u64,
+) -&gt; ProgramResult {
+    let accounts_iter = &amp;mut accounts.iter();
+    let resource_state_account = next_account_info(accounts_iter)?;
+     let server_account = next_account_info(accounts_iter)?;
+      let rent_account = next_account_info(accounts_iter)?;
+
+
+    if !server_account.is_signer {
+            msg!(&quot;CreateResourceAccess Error: Missing server signature&quot;);
+        return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+     if *resource_state_account.owner != *program_id {
+        msg!(&quot;CreateResourceAccess Error: Invalid resource state account owner&quot;);
+         return Err(ContextCoinError::InvalidResource.into());
+    }
+       let rent = Rent::from_account_info(rent_account)?;
+     if !rent.is_exempt(resource_state_account.lamports(), resource_state_account.data_len()) {
+          msg!(&quot;Error: Resource state account not rent-exempt&quot;);
+        return Err(ProgramError::AccountNotRentExempt);
+    }
+
+
+      let mut resource_state = ResourceAccessState::try_from_slice(&amp;resource_state_account.data.borrow())?;
+      if resource_state.is_initialized {
+          msg!(&quot;CreateResourceAccess Error: Resource state already initialized&quot;);
+       return Err(ContextCoinError::InvalidInstruction.into());
+     }
+
+     resource_state.server_address = *server_account.key;
+    resource_state.resource_id = resource_id;
+    resource_state.access_fee = access_fee;
+        resource_state.bump = *resource_state_account.try_borrow_mut_data()?[0];
+    resource_state.is_initialized = true;
+
+    resource_state.serialize(&amp;mut *resource_state_account.try_borrow_mut_data()?)?;
+
+     msg!(&quot;CreateResourceAccess success&quot;);
+     Ok(())
+}
+fn access_resource(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[AccountInfo],
+    resource_id: String,
+     amount: u64,
+) -&gt; ProgramResult {
+     let accounts_iter = &amp;mut accounts.iter();
+    let resource_state_account = next_account_info(accounts_iter)?;
+      let user_account = next_account_info(accounts_iter)?;
+     let server_account = next_account_info(accounts_iter)?;
+      let system_program_account = next_account_info(accounts_iter)?;
+
+    if !user_account.is_signer {
+            msg!(&quot;AccessResource Error: Missing user signature&quot;);
+      return Err(ContextCoinError::InvalidAccountOwner.into());
+    }
+
+      if *resource_state_account.owner != *program_id {
+         msg!(&quot;AccessResource Error: Invalid resource state account owner&quot;);
+          return Err(ContextCoinError::InvalidResource.into());
+    }
+
+     let resource_state = ResourceAccessState::try_from_slice(&amp;resource_state_account.data.borrow())?;
+      if !resource_state.is_initialized {
+        msg!(&quot;AccessResource Error: Resource state not initialized&quot;);
+         return Err(ContextCoinError::NotInitialized.into());
+     }
+       if resource_state.resource_id != resource_id {
+            msg!(&quot;AccessResource Error: Mismatch resource id&quot;);
+             return Err(ContextCoinError::InvalidResource.into());
+       }
+       if *server_account.key != resource_state.server_address {
+               msg!(&quot;AccessResource Error: Invalid server account&quot;);
+            return Err(ContextCoinError::InvalidAccountOwner.into());
+         }
+
+     let access_fee = resource_state.access_fee;
+
+      if amount &lt; access_fee {
+        msg!(&quot;AccessResource Error: Insufficient payment&quot;);
+         return Err(ContextCoinError::InsufficientFunds.into());
+    }
+         let transfer_ix = system_instruction::transfer(
+            user_account.key,
+            server_account.key,
+            access_fee,
+        );
+           invoke(
+             &amp;transfer_ix,
+            &amp;[
+                user_account.clone(),
+              server_account.clone(),
+                system_program_account.clone(),
+            ],
+        )?;
+      msg!(&quot;AccessResource Success&quot;);
+     Ok(())
+}
+
+fn calculate_token_price(base_price: u64, tokens_sold: u64, scaling_factor: u64) -&gt; Result&lt;u64, ProgramError&gt;{
+        let price = base_price
+            .checked_mul(1 + tokens_sold / scaling_factor)
+             .ok_or(ContextCoinError::CalculationOverflow)?;
+          Ok(price)
+
+}
+</code></pre>
+<p><strong>6. src/client.rs (Basic Client)</strong></p>
+<pre><code class="language-rust">use borsh::BorshSerialize;
+use solana_client::rpc_client::RpcClient;
+use solana_sdk::{
+    commitment_config::CommitmentConfig,
+    instruction::Instruction,
+    signature::{Keypair, Signer},
+    transaction::Transaction,
+};
+use crate::instruction::ContextCoinInstruction;
+
+use solana_program::pubkey::Pubkey;
+
+fn create_instruction(
+    program_id: &amp;Pubkey,
+    accounts: &amp;[solana_sdk::instruction::AccountMeta],
+    instruction_data: ContextCoinInstruction,
+) -&gt; Instruction {
+    Instruction::new_with_borsh(
+        *program_id,
+        &amp;instruction_data,
+        accounts.to_vec(),
+    )
+}
+
+fn send_and_confirm_tx(
+    client: &amp;RpcClient,
+    payer: &amp;Keypair,
+    instructions: Vec&lt;Instruction&gt;,
+) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let recent_blockhash = client.get_latest_blockhash()?;
+    let tx = Transaction::new_signed_with_payer(
+        &amp;instructions,
+        Some(&amp;payer.pubkey()),
+        &amp;[payer],
+        recent_blockhash,
+    );
+    let signature = client.send_and_confirm_transaction_with_spinner(&amp;tx)?;
+    println!(&quot;Transaction successful: {}&quot;, signature);
+    Ok(())
+}
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let program_id = Pubkey::from_str(&quot;YourProgramIdHere&quot;).expect(&quot;Invalid Program ID&quot;); // Replace with your program ID
+    let rpc_url = &quot;http://localhost:8899&quot;; // Change this for different cluster
+    let client = RpcClient::new(rpc_url);
+      let payer = Keypair::new();
+
+    // 1.  Initialize ICO Instruction
+    let (ico_state_pda, ico_bump) = Pubkey::find_program_address(&amp;[b&quot;ico_state&quot;, payer.pubkey().as_ref()], &amp;program_id);
+
+    let (escrow_pda, escrow_bump) = Pubkey::find_program_address(&amp;[b&quot;escrow_account&quot;, payer.pubkey().as_ref()], &amp;program_id);
+
+        let initialize_ico_instruction = create_instruction(
+        &amp;program_id,
+          &amp;[
+            solana_sdk::instruction::AccountMeta::new(ico_state_pda, false),
+            solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), //Owner
+                 solana_sdk::instruction::AccountMeta::new(escrow_pda, false), // Escrow account
+            solana_sdk::instruction::AccountMeta::new(solana_program::sysvar::rent::id(), true), //rent
+        ],
+       ContextCoinInstruction::InitializeIco {
+        token_mint: Pubkey::new_unique(),
+         total_supply: 1_000_000_000,
+          base_price: 10000,
+           scaling_factor: 1000000,
+        },
+    );
+    send_and_confirm_tx(&amp;client, &amp;payer, vec![initialize_ico_instruction])?;
+
+    // 2. Buy Tokens Instruction
+       let token_mint = Pubkey::new_unique();
+       let (buyer_ata, _) = Pubkey::find_program_address(
+                &amp;[payer.pubkey().as_ref(), &amp;token_mint.as_ref(), &amp;TOKEN_PROGRAM_ID.as_ref()],
+            &amp;spl_associated_token_account::ID,
+        );
+    let buy_tokens_instruction = create_instruction(
+        &amp;program_id,
+          &amp;[
+              solana_sdk::instruction::AccountMeta::new(ico_state_pda, false), // State account
+            solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), //buyer
+              solana_sdk::instruction::AccountMeta::new(token_mint, false),
+                solana_sdk::instruction::AccountMeta::new(buyer_ata, false),
+              solana_sdk::instruction::AccountMeta::new(escrow_pda, false), // Escrow account
+              solana_sdk::instruction::AccountMeta::new(solana_program::system_program::id(), false), //system program account
+               solana_sdk::instruction::AccountMeta::new(solana_program::sysvar::rent::id(), false), //rent
+        ],
+        ContextCoinInstruction::BuyTokens {
+           amount: 100_000, // Number of Lamports
+        },
+    );
+     send_and_confirm_tx(&amp;client, &amp;payer, vec![buy_tokens_instruction])?;
+
+
+  // 3. Sell Tokens Instruction
+         let sell_tokens_instruction = create_instruction(
+          &amp;program_id,
+          &amp;[
+                solana_sdk::instruction::AccountMeta::new(ico_state_pda, false), // State account
+            solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), //seller
+                solana_sdk::instruction::AccountMeta::new(token_mint, false),
+               solana_sdk::instruction::AccountMeta::new(buyer_ata, false),
+                 solana_sdk::instruction::AccountMeta::new(escrow_pda, false), // Escrow account
+                   solana_sdk::instruction::AccountMeta::new(solana_program::system_program::id(), false), //system program account
+                  solana_sdk::instruction::AccountMeta::new(solana_program::sysvar::rent::id(), false), //rent
+        ],
+         ContextCoinInstruction::SellTokens {
+           amount: 100, // Number of tokens to sell
+        },
+    );
+     send_and_confirm_tx(&amp;client, &amp;payer, vec![sell_tokens_instruction])?;
+
+     //4. Withdraw tokens from escrow
+
+         let withdraw_instruction = create_instruction(
+          &amp;program_id,
+         &amp;[
+              solana_sdk::instruction::AccountMeta::new(ico_state_pda, false), // State account
+            solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), //owner
+             solana_sdk::instruction::AccountMeta::new(escrow_pda, false), // Escrow account
+                solana_sdk::instruction::AccountMeta::new(solana_program::system_program::id(), false), //system program account
+          ],
+        ContextCoinInstruction::WithdrawFromEscrow {
+           amount: 1000, // Number of lamports to transfer back to owner
+        },
+    );
+     send_and_confirm_tx(&amp;client, &amp;payer, vec![withdraw_instruction])?;
+
+     let (resource_state_pda, resource_bump) = Pubkey::find_program_address(&amp;[b&quot;resource_state&quot;, payer.pubkey().as_ref()], &amp;program_id);
+
+
+         let create_resource_instruction = create_instruction(
+        &amp;program_id,
+         &amp;[
+             solana_sdk::instruction::AccountMeta::new(resource_state_pda, false), // resource_state account
+            solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), // Server account
+               solana_sdk::instruction::AccountMeta::new(solana_program::sysvar::rent::id(), true), //rent
+        ],
+       ContextCoinInstruction::CreateResourceAccess {
+         resource_id: &quot;MyResource1&quot;.to_string(),
+            access_fee: 1,
+        },
+    );
+     send_and_confirm_tx(&amp;client, &amp;payer, vec![create_resource_instruction])?;
+    let access_instruction = create_instruction(
+        &amp;program_id,
+        &amp;[
+            solana_sdk::instruction::AccountMeta::new(resource_state_pda, false), // resource state account
+           solana_sdk::instruction::AccountMeta::new(payer.pubkey(), true), // User account
+              solana_sdk::instruction::AccountMeta::new(payer.pubkey(), false), // server account
+           solana_sdk::instruction::AccountMeta::new(solana_program::system_program::id(), false), //system program account
+        ],
+         ContextCoinInstruction::AccessResource {
+           resource_id: &quot;MyResource1&quot;.to_string(),
+           amount: 2, // Number of lamports
+        },
+    );
+    send_and_confirm_tx(&amp;client, &amp;payer, vec![access_instruction])?;
+
+
+    Ok(())
+}
+</code></pre>
+<p><strong>Explanation</strong></p>
+<ol>
+<li>
+<p><strong><code>lib.rs</code></strong>: The entry point for the Solana program. It forwards the processing to the <code>processor</code> module.</p>
+</li>
+<li>
+<p><strong><code>state.rs</code></strong>: Defines the data structures that will be stored on the blockchain.</p>
+<ul>
+<li><code>ICOState</code>: Contains the information about the ICO, including the owner, token mint, supply, prices and total amount raised.</li>
+<li><code>ResourceAccessState</code>: Information about a particular resource and its access fee.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>error.rs</code></strong>: Defines custom error types that the smart contract might encounter.</p>
+</li>
+<li>
+<p><strong><code>instruction.rs</code></strong>: Defines the different instruction data that clients can send to the smart contract, including instructions to initialize ICO, buy/sell tokens, and create/access resources.</p>
+</li>
+<li>
+<p><strong><code>processor.rs</code></strong>: This module contains the main logic for:</p>
+</li>
+<li>
+<p><strong><code>process</code> Function:</strong> This function is the main entry point for instruction processing. It deserializes the instruction data and calls the appropriate handler function.</p>
+</li>
+<li>
+<p><strong><code>initialize_ico</code> Function:</strong></p>
+<ul>
+<li>Initializes the <code>ICOState</code> on the blockchain.</li>
+<li>Validates that the <code>owner_account</code> is a signer, and that the accounts are correct for the program.</li>
+<li>Sets the <code>is_initialized</code> field to <code>true</code> to prevent re-initialization.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>buy_tokens</code> Function:</strong></p>
+<ul>
+<li>Calculates the token price based on the current supply and a linear bonding curve.</li>
+<li>Verifies the buyer signature and the account owner of the buyer token account.</li>
+<li>Transfers SOL from buyer to the ICO’s escrow account via system program transfer.</li>
+<li>Mints the equivalent CTX tokens to the buyer’s account using SPL token program’s mint_to.</li>
+<li>Updates the <code>tokens_sold</code> field and total raised on the ICO state account.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>sell_tokens</code> Function:</strong></p>
+<ul>
+<li>Calculates the current token price based on the tokens being sold.</li>
+<li>Verifies the seller signature and the account owner of the seller token account.</li>
+<li>Transfers SOL from the escrow to seller using system program transfer.</li>
+<li>Burns the amount of CTX tokens from the user using SPL token program’s burn.</li>
+<li>Updates the <code>tokens_sold</code> field and total raised on the ICO state account.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>withdraw_from_escrow</code> Function:</strong></p>
+<ul>
+<li>Allows the ICO owner to withdraw the SOL they have collected.<ul>
+<li>Verifies the owner signature and the account owner of the ico account and the escrow account.</li>
+<li>Transfers the tokens from the escrow to the owner.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>create_resource_access</code> Function:</strong></p>
+<ul>
+<li>Creates or updates the <code>ResourceAccessState</code> for a specific resource.</li>
+<li>Validates that the server_account is a signer and the resource state account is owned by the program.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>access_resource</code> Function:</strong></p>
+<ul>
+<li>Verifies the resource id being requested.</li>
+<li>Verifies the user payment and the server id provided match with the resource access state, and the users signature.</li>
+<li>Transfers the access fee to the server using system transfer.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>calculate_token_price</code> Function:</strong></p>
+<ul>
+<li>A simple method to calculate the bonding curve price based on the total sold and scaling factors.</li>
+</ul>
+</li>
+</ol>
+<p><strong>6.  <code>client.rs</code> (Basic Client continued)</strong></p>
+<ul>
+<li><strong><code>create_instruction</code> Function:</strong> This helper function creates a Solana <code>Instruction</code> from the given data.</li>
+<li><strong><code>send_and_confirm_tx</code> Function:</strong> This helper function is used to send and confirm a transaction, as well as print the transaction.</li>
+<li><strong><code>main</code> Function:</strong><ul>
+<li>Sets up connection to a Solana cluster.</li>
+<li><strong>Initialization:</strong> Calls <code>create_instruction</code> to generate the data needed to initialize the ICO, then sends it to the program.</li>
+<li><strong>Buy Tokens:</strong> Creates the instruction to simulate buying tokens and send to program</li>
+<li><strong>Sell Tokens:</strong> Creates the instruction to simulate selling tokens and send to program</li>
+<li><strong>Withdraw:</strong> Calls the <code>withdraw_from_escrow</code> to send the lamports back to the owner.</li>
+<li><strong>Create Resource:</strong> Creates and executes the instruction to simulate resource creation.</li>
+<li><strong>Access Resource:</strong> Creates and executes an instruction to simulate accessing a resource for a particular amount.</li>
+</ul>
+</li>
+</ul>
+<p><strong>How to Compile and Run</strong></p>
+<ol>
+<li>
+<p><strong>Create a new Rust Project:</strong></p>
+<p><code>bash
+cargo new contextcoin
+cd contextcoin</code></p>
+</li>
+<li>
+<p><strong>Add Dependencies to <code>Cargo.toml</code></strong></p>
+<p>```toml
+[package]
+name = "contextcoin"
+version = "0.1.0"
+edition = "2021"</p>
+<p>[dependencies]
+borsh = "0.10"
+solana-program = "1.17.13"
+solana-sdk = "1.17.13"
+solana-client = "1.17.13"
+thiserror = "1.0"
+spl-token = { version = "4.0.0", features = ["no-entrypoint"] }
+spl-associated-token-account = { version ="1.1.2", features = ["no-entrypoint"] }
+```</p>
+</li>
+<li>
+<p><strong>Create <code>src</code> directory and add files:</strong></p>
+<p>Create <code>src/lib.rs</code>, <code>src/client.rs</code>, <code>src/state.rs</code>, <code>src/error.rs</code>, <code>src/instruction.rs</code>, and <code>src/processor.rs</code> and paste in the code sections above, as well as the following for the main.rs file:
+```rust
+fn main() -&gt; Result&lt;(), Box<dyn std::error::Error>&gt; {
+Ok(())
+}</p>
+<p>```
+4.   <strong>Build Smart Contract</strong></p>
+<p>First install the solana tool suite if you haven't already with <code>sh -c "$(curl -sSfL https://release.solana.com/v1.17.13/install)"</code>
+Then run:
+    <code>bash
+    cargo build-bpf --target bpfel-unknown-unknown --release</code></p>
+</li>
+<li>
+<p><strong>Deploy Smart Contract</strong></p>
+<p>First create a new keypair:
+  <code>bash
+   solana-keygen new -o ./program-keypair.json</code>
+  Then deploy by running:
+    <code>bash
+    solana program deploy target/bpfel-unknown-unknown/release/contextcoin.so --keypair ./program-keypair.json</code>
+Replace the  <code>YourProgramIdHere</code> in <code>src/client.rs</code> with the program id returned by the command above.</p>
+</li>
+<li>
+<p><strong>Run the client:</strong></p>
+<p><code>bash
+    cargo run --package contextcoin --bin client</code>
+<strong>Important Considerations:</strong></p>
+</li>
+<li>
+<p><strong>Keypairs:</strong> For production, manage your keypairs securely. This example uses in-memory keypairs for testing.</p>
+</li>
+<li><strong>Error Handling:</strong> Add more comprehensive error handling and logging.</li>
+<li><strong>Security:</strong>  This implementation is a starting point. Thoroughly audit your smart contracts before deployment.</li>
+<li><strong>Testing:</strong> Write unit and integration tests for your smart contracts.</li>
+<li><strong>Data Validation:</strong>  Add rigorous data validation in <code>processor.rs</code> to prevent invalid data from being written on-chain.</li>
+<li><strong>Gas Fees:</strong>  Be mindful of transaction costs and optimize your code for efficiency.</li>
+<li><strong>More Advanced Features:</strong> This solution is a starting point, you can further expand this by adding things like:<ul>
+<li>Dynamic Access Fees</li>
+<li>Staking/Governance features</li>
+<li>Automated testing.</li>
+<li>CLI tooling.</li>
+<li>Customizable pricing models.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Next Steps</strong></p>
+<ol>
+<li>
+<p><strong>Test on a local cluster</strong>: After you have created this project and implemented the code, try running it on a local Solana cluster.</p>
+</li>
+<li>
+<p><strong>Further Development:</strong> Build upon this implementation to make it more comprehensive and production-ready.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: Add documentation comments to make the code easier to understand and maintain.</p>
+</li>
+</ol>
+<p>This is a detailed implementation that showcases how to build a comprehensive system for the use case you described. Please let me know if you have any further questions or requests.</p>
+</body>
+</html>

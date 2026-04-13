@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContextCoin (CTX): Enabling Secure and Scalable Resource Access with MCP on Solana</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>ContextCoin (CTX): Enabling Secure and Scalable Resource Access with MCP on Solana</h1>
+<p>ContextCoin (CTX) is a Solana-based token designed to provide a secure and scalable solution for accessing resources within the Model Context Protocol (MCP) ecosystem. This token facilitates micro-payments for resource access, effectively preventing spam and DDoS attacks, while encouraging a thriving, decentralized economy.</p>
+<h2>Overview</h2>
+<p>This project introduces a novel way to use blockchain technology to manage access to resources within the MCP ecosystem. By requiring nominal payments for each resource access request using CTX tokens, we create a cost barrier that discourages malicious activities and aligns incentives for both resource providers and consumers.</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Secure Resource Access:</strong> Uses CTX payments to prevent spam and DDoS attacks.</li>
+<li><strong>Dynamic Pricing:</strong> Allows resource providers to set prices based on demand.</li>
+<li><strong>Micro-payments:</strong> Enables efficient and cost-effective access to resources.</li>
+<li><strong>Decentralized:</strong> Leverages the speed and security of the Solana blockchain.</li>
+<li><strong>Open-Source:</strong>  Encourages community contributions and transparency.</li>
+<li><strong>Bonding Curve ICO:</strong> Utilizes a bonding curve model for initial token distribution.</li>
+<li><strong>SPL Token:</strong> Uses the standard SPL token program.</li>
+<li><strong>Micro-Transactions:</strong> Allows the usage of micro-transactions for resource access.</li>
+<li><strong>Customizable:</strong> Uses custom program-derived addresses for ease of use.</li>
+</ul>
+<h2>Tokenomics</h2>
+<ul>
+<li><strong>Name:</strong> ContextCoin</li>
+<li><strong>Symbol:</strong> CTX</li>
+<li><strong>Total Supply:</strong> 1,000,000,000 CTX (Fixed)</li>
+<li><strong>Decimals:</strong> 9</li>
+<li><strong>Initial Distribution:</strong><ul>
+<li>20% - Team &amp; Development (Locked for 1 year, then vesting)</li>
+<li>30% - Ecosystem Fund (Grants, partnerships, future development)</li>
+<li>50% - Initial Sale (Bonding curve ICO)</li>
+</ul>
+</li>
+<li><strong>Utility:</strong><ul>
+<li>Pay-per-access to resources within the Model Context Protocol (MCP) ecosystem.</li>
+<li>Future options for staking and governance.</li>
+</ul>
+</li>
+</ul>
+<h2>Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li><a href="https://www.rust-lang.org/">Rust</a> (latest stable)</li>
+<li><a href="https://docs.solana.com/cli/install-solana-cli-tools">Solana Tool Suite</a> (v1.17 or later)</li>
+<li>Basic understanding of Solana and smart contracts</li>
+</ul>
+<h3>Building the Smart Contract</h3>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<p><code>bash
+git clone &lt;repository-url&gt;
+cd contextcoin</code></p>
+</li>
+<li>
+<p>Build the smart contract:</p>
+<p><code>bash
+cargo build-bpf --target bpfel-unknown-unknown --release</code></p>
+</li>
+</ol>
+<h3>Deploying the Smart Contract</h3>
+<ol>
+<li>
+<p>Generate a new keypair for your program:</p>
+<p><code>bash
+solana-keygen new -o ./program-keypair.json</code>
+2.  Deploy the smart contract:</p>
+<p><code>bash
+   solana program deploy target/bpfel-unknown-unknown/release/contextcoin.so --keypair ./program-keypair.json</code></p>
+<p><strong>Note:</strong> Replace <code>&lt;your-program-id&gt;</code> with the output of the <code>solana program deploy</code> command.</p>
+</li>
+</ol>
+<h3>Running the Basic Client</h3>
+<ol>
+<li>
+<p>Update the <code>src/client.rs</code> with your program id:
+    <code>rust
+    let program_id = Pubkey::from_str("YourProgramIdHere").expect("Invalid Program ID"); // Replace with your program ID</code></p>
+</li>
+<li>
+<p>Run the client:</p>
+<p><code>bash
+cargo run --package contextcoin --bin client</code></p>
+</li>
+</ol>
+<p>This client will showcase the basic functionality of the program, allowing you to initialize the ICO, simulate buying and selling, withdraw from the escrow, and create / access resources.</p>
+<h2>Smart Contract Details</h2>
+<p>The smart contract is written in Rust and leverages the Solana program library. It provides the following functionality:</p>
+<ul>
+<li>
+<p><strong>ICO Initialization:</strong> Sets up the initial state for token distribution and pricing.</p>
+</li>
+<li>
+<p><strong>Token Purchasing:</strong> Allows users to buy CTX tokens using SOL, while adhering to the configured bonding curve.</p>
+</li>
+<li>
+<p><strong>Token Selling:</strong> Allows users to sell back CTX tokens, receiving SOL.</p>
+</li>
+<li>
+<p><strong>Withdraw Funds:</strong> Allows the owner of the ICO to withdraw the accumulated SOL from the escrow.</p>
+</li>
+<li>
+<p><strong>Resource Creation:</strong> Enables MCP resource providers to register their resources and set access fees.</p>
+</li>
+<li>
+<p><strong>Resource Access:</strong> Facilitates pay-per-access to resources, rewarding resource providers and preventing malicious attacks.</p>
+</li>
+</ul>
+<h2>Code Structure</h2>
+<ul>
+<li>
+<p><code>src/lib.rs</code>:  Main smart contract entry point.</p>
+</li>
+<li>
+<p><code>src/state.rs</code>: Data structures (ICO state, resource state).</p>
+</li>
+<li>
+<p><code>src/error.rs</code>: Custom error types.</p>
+</li>
+<li>
+<p><code>src/instruction.rs</code>: Instruction data formats.</p>
+</li>
+<li>
+<p><code>src/processor.rs</code>: Instruction processing logic.</p>
+</li>
+<li>
+<p><code>src/client.rs</code>: Basic client implementation showcasing how to interact with the smart contracts.</p>
+</li>
+</ul>
+<h2>How it Works</h2>
+<ol>
+<li><strong>Initial Token Offering (ICO):</strong> Tokens are sold using a linear bonding curve model.</li>
+<li><strong>Resource Registration:</strong> Resource providers register their resources and set access fees on the blockchain.</li>
+<li><strong>Resource Access:</strong><ul>
+<li>Users pay a small CTX fee to access a resource.</li>
+<li>Smart contracts verify payment before granting access.</li>
+</ul>
+</li>
+</ol>
+<h2>Contributing</h2>
+<p>We welcome contributions to this project! If you have ideas, bug fixes, or feature requests, please submit a pull request or open an issue on GitHub.</p>
+<h2>Future Development</h2>
+<ul>
+<li>Staking and governance mechanisms for CTX holders.</li>
+<li>Tiered access levels for resources based on CTX holdings.</li>
+<li>Integration with decentralized exchanges (DEXs) on Solana.</li>
+<li>More sophisticated bonding curve options.</li>
+<li>Dynamic fee adjustments based on network conditions.</li>
+<li>Enhanced security measures and audits.</li>
+<li>CLI tooling to aid users in building on top of the contracts.</li>
+</ul>
+<h2>Disclaimer</h2>
+<p>This project is provided as-is and is for educational and experimental purposes. Please use it responsibly and do your own due diligence before making any financial decisions. No guarantees are made about the security or stability of the system.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT-0 License - see the file for details.</p>
+</body>
+</html>

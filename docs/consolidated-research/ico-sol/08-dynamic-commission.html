@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>-dynamic-commission</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Absolutely! Let's design a system where salespeople (affiliates in this case) can dynamically adjust the commission amount for each token they're promoting within the TokenAffiliates program.</p>
+<p><strong>System Design: Dynamic Commission Management for TokenAffiliates</strong></p>
+<p><strong>1. Core Components:</strong></p>
+<ul>
+<li><strong>User Interface (UI):</strong> A dashboard for affiliates to manage their referral links and adjust commission rates.</li>
+<li><strong>Database:</strong> To store information about tokens, referral links, commission rates, and affiliate activity.</li>
+<li><strong>API:</strong> To connect the UI with the database and handle commission calculations and payouts.</li>
+<li><strong>Smart Contract (Optional but recommended):</strong> To automate and secure commission payouts on the Solana blockchain.</li>
+</ul>
+<p><strong>2. User Interface (Affiliate Dashboard):</strong></p>
+<ul>
+<li><strong>Token Listing:</strong> Displays a list of all available ICO tokens within the TokenAffiliates program.</li>
+<li><strong>Referral Link Generation:</strong> Allows affiliates to generate unique referral links for each token.</li>
+<li><strong>Commission Rate Management:</strong><ul>
+<li><strong>Default Rate:</strong>  Displays the program's default commission rate (e.g., 10%).</li>
+<li><strong>Custom Rate:</strong>  Provides a field for each token allowing the affiliate to input a custom commission percentage.</li>
+<li><strong>Range Limits:</strong>  Implements minimum and maximum commission rate limits set by the platform to prevent abuse and ensure program sustainability.</li>
+<li><strong>Real-time Feedback:</strong> Provides visual feedback on the impact of commission adjustments (e.g., potential earnings based on current token price).</li>
+</ul>
+</li>
+<li><strong>Performance Tracking:</strong> Shows metrics like clicks, conversions, and earned commissions for each token.</li>
+<li><strong>Payout History:</strong>  Displays a record of all commission payouts.</li>
+</ul>
+<p><strong>3. Database Structure:</strong></p>
+<ul>
+<li><strong>Token Table:</strong> Stores information about each token (name, symbol, contract address, etc.).</li>
+<li><strong>Affiliate Table:</strong>  Stores affiliate details (ID, name, contact info, etc.).</li>
+<li><strong>Referral Link Table:</strong> Links affiliate IDs to token IDs and their unique referral links.</li>
+<li><strong>Commission Rate Table:</strong> Stores the commission rate for each affiliate-token pair.</li>
+<li><strong>Transaction Table:</strong> Records all investment transactions made through referral links.</li>
+<li><strong>Payout Table:</strong> Tracks commission payouts.</li>
+</ul>
+<p><strong>4. API Functionality:</strong></p>
+<ul>
+<li><strong>Generate Referral Link:</strong> Creates a unique referral link for an affiliate-token pair and stores it in the database.</li>
+<li><strong>Update Commission Rate:</strong> Allows affiliates to modify the commission rate for a specific token within the allowed range.</li>
+<li><strong>Track Investment:</strong> Records investments made through referral links, associating them with the corresponding affiliate and token.</li>
+<li><strong>Calculate Commission:</strong>  Calculates the commission amount based on the investment amount and the specified commission rate.</li>
+<li><strong>Process Payout:</strong>  Handles commission payouts to the affiliate's wallet (either through a smart contract or a centralized payment system).</li>
+</ul>
+<p><strong>5. Smart Contract (Optional):</strong></p>
+<ul>
+<li><strong>Secure and Transparent Payouts:</strong> Automates commission payouts based on the recorded transactions and commission rates, ensuring transparency and reducing reliance on intermediaries.</li>
+<li><strong>Immutable Record:</strong> Creates an immutable record of all transactions and payouts on the blockchain.</li>
+<li><strong>Efficiency:</strong> Streamlines the payout process and reduces administrative overhead.</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li><strong>Affiliate Onboarding:</strong> The affiliate joins the TokenAffiliates program and gains access to the dashboard.</li>
+<li><strong>Token Selection:</strong> The affiliate selects a token they want to promote.</li>
+<li><strong>Referral Link Generation:</strong> The affiliate generates a unique referral link for the chosen token.</li>
+<li><strong>Commission Adjustment (Optional):</strong> The affiliate can adjust the commission rate for the token within the permitted range.</li>
+<li><strong>Link Promotion:</strong> The affiliate shares the referral link on their chosen platforms.</li>
+<li><strong>Investment:</strong> A user clicks the link and invests in the token's ICO.</li>
+<li><strong>Transaction Recording:</strong> The system records the investment and associates it with the affiliate.</li>
+<li><strong>Commission Calculation:</strong> The system calculates the commission based on the investment amount and the affiliate's commission rate for that token.</li>
+<li><strong>Payout:</strong>  The commission is paid out to the affiliate's wallet, either automatically via a smart contract or through a centralized payout process.</li>
+</ol>
+<p><strong>Key Considerations:</strong></p>
+<ul>
+<li><strong>Security:</strong> Implement robust security measures to protect user data and prevent fraud.</li>
+<li><strong>Scalability:</strong> Design the system to handle a large number of affiliates, tokens, and transactions.</li>
+<li><strong>User Experience:</strong> Create a user-friendly interface that is easy to navigate and understand.</li>
+<li><strong>Transparency:</strong>  Ensure transparency in commission calculations and payouts.</li>
+</ul>
+<p><strong>Benefits of this System:</strong></p>
+<ul>
+<li><strong>Flexibility:</strong>  Affiliates have greater control over their earnings potential by adjusting commission rates.</li>
+<li><strong>Incentivization:</strong>  The ability to offer higher commissions for specific tokens can motivate affiliates to focus on promoting those tokens.</li>
+<li><strong>Market Responsiveness:</strong> Affiliates can quickly adapt to changing market conditions by adjusting commission rates in real-time.</li>
+<li><strong>Competitive Advantage:</strong>  This dynamic system can attract more affiliates by offering greater flexibility and earning potential compared to fixed-rate programs.</li>
+</ul>
+<p>This system allows affiliates to take a more active role in their promotional strategies, potentially leading to higher engagement and success within the TokenAffiliates program. Remember to carefully consider the risks and benefits before implementing such a system, ensuring it aligns with your project's overall goals and sustainability.</p>
+</body>
+</html>

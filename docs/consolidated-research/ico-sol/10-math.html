@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenAffiliates: A Formal Mathematical Model</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h2>TokenAffiliates: A Formal Mathematical Model</h2>
+<p>This paper presents a formal mathematical model of the TokenAffiliates program, analyzing its commission structure, payout mechanism, and impact on the token dynamics within a Tokenized Economy. We delve into the quantitative aspects of the program, providing a foundation for understanding its influence on token value, distribution, and overall market behavior.</p>
+<p><strong>1. Definitions and Notation:</strong></p>
+<ul>
+<li><strong>I:</strong> Investment amount in tokens made through an affiliate's referral link.</li>
+<li><strong>C:</strong> Commission earned by the affiliate, denominated in the invested token.</li>
+<li><strong>α:</strong> Commission rate (fixed at 10%, or 0.10 in the current model).</li>
+<li><strong>E:</strong> Total earnings of an affiliate.</li>
+<li><strong>$I_{\text{total}}$:</strong> Total investment generated through an affiliate's referral link.</li>
+<li><strong>$S$:</strong> Current supply of tokens in the ecosystem (applicable for bonding curve scenarios).</li>
+<li><strong>$P(S)$:</strong> Price of the token as a function of supply, defined by the project's bonding curve equation.</li>
+<li><strong>Affiliate Identifier ($A_{\text{ID}}$):</strong> Unique identifier associated with an affiliate, embedded in their referral link.</li>
+</ul>
+<p><strong>2. Commission Structure:</strong></p>
+<p>The commission earned by an affiliate for a single investment is a linear function of the investment amount:</p>
+<ul>
+<li><strong>$C = \alpha \times I$ (Equation 1)</strong></li>
+</ul>
+<p>Where α = 0.10 (fixed commission rate).</p>
+<p><strong>3. Payout Mechanism (Formalized):</strong></p>
+<p>The payout mechanism is modeled as a sequence of transactions executed on the Solana blockchain via a smart contract. Let <strong>$T_i$</strong> represent the i-th transaction within the system.</p>
+<ul>
+<li><strong>$T_1$ (Investment):</strong> User invests $I$ tokens through an affiliate link with identifier $A_{\text{ID}}$. The smart contract registers $A_{\text{ID}}$.</li>
+<li><strong>$T_2$ (Commission Calculation):</strong> The smart contract calculates the commission $C$ using Equation 1.</li>
+<li><strong>$T_3$ (Payout):</strong> The smart contract transfers $C$ tokens from the ICO's designated address to the affiliate's wallet associated with $A_{\text{ID}}$.</li>
+</ul>
+<p><strong>4. Impact on Token Dynamics:</strong></p>
+<p><strong>4.1 Increased Demand:</strong></p>
+<p>Let <strong>$D(x)$</strong> represent the demand function for the token, where $x$ represents factors influencing demand (e.g., marketing efforts, project fundamentals, market sentiment). The TokenAffiliates program aims to increase $x$ through enhanced marketing, potentially leading to an increase in demand:</p>
+<ul>
+<li><strong>$D(x + \Delta x) &gt; D(x)$ (Equation 2)</strong></li>
+</ul>
+<p>Where $\Delta x$ represents the positive change in demand factors due to affiliate marketing.</p>
+<p><strong>4.2 Token Distribution:</strong></p>
+<p>The commission payout mechanism contributes to token decentralization. Let <strong>N<sub>A</sub></strong> be the number of active affiliates. The total tokens distributed through commissions are:</p>
+<ul>
+<li><strong>$\sum_{i=1}^{N_A} C_i$ (Equation 3)</strong></li>
+</ul>
+<p>Where C<sub>i</sub> is the commission earned by the i-th affiliate. This distribution broadens token ownership beyond the initial investor base.</p>
+<p><strong>4.3 Bonding Curve Effects:</strong></p>
+<p>For projects employing bonding curves, the increase in demand shifts the supply and influences the price. Let the initial supply be $S$. After an investment $I$, the new supply becomes $S' = S + I$.</p>
+<p>The price change is given by:</p>
+<ul>
+<li><strong>$\Delta P = P(S') - P(S) = P(S + I) - P(S)$ (Equation 4)</strong></li>
+</ul>
+<p>The specific form of P(S) depends on the chosen bonding curve equation (e.g., linear, exponential, sigmoid).</p>
+<p><strong>Example (Linear Bonding Curve):</strong></p>
+<p>Let P(S) = k * S, where k is the slope of the linear curve. Then:</p>
+<ul>
+<li><strong>$\Delta P = k \times (S + I) - k \times S = k \times I$</strong></li>
+</ul>
+<p>This demonstrates that for a linear bonding curve, the price increase is directly proportional to the investment amount.</p>
+<p><strong>5. Affiliate Earnings:</strong></p>
+<p>An affiliate's total earnings <em>E</em> are the sum of all commissions earned:</p>
+<ul>
+<li><strong>$E = \alpha \times \sum_{i=1}^{n} I_i = \alpha \times I_{\text{total}}$ (Equation 5)</strong></li>
+</ul>
+<p>Where <em>n</em> is the number of investments made through the affiliate's link and I<sub>i</sub> is the i-th investment.</p>
+<p><strong>6. Sensitivity Analysis and Future Considerations:</strong></p>
+<p>The model allows for sensitivity analysis by varying key parameters like α, I, and the parameters of the bonding curve equation.</p>
+<p>Future considerations include:</p>
+<ul>
+<li><strong>Dynamic Commission Rates:</strong> Introducing variable commission rates α = f(performance, time, or other factors).</li>
+<li><strong>Integration with DEXs:</strong> Modeling the impact of seamless token swaps facilitated by DEX integration.</li>
+<li><strong>Stochastic Modeling:</strong> Incorporating uncertainty and volatility in demand (D(x)) and market sentiment through stochastic processes.</li>
+<li><strong>Game Theoretic Analysis:</strong> Studying the strategic behavior of affiliates and investors within the TokenAffiliates ecosystem.</li>
+</ul>
+<p><strong>7. Conclusion:</strong></p>
+<p>This formal mathematical model provides a robust framework for understanding and analyzing the TokenAffiliates program. By quantifying the relationships between key variables, the model enables a deeper understanding of the program's impact on token dynamics and affiliate earnings. Future research will focus on expanding the model to incorporate more complex scenarios and explore advanced features, ultimately contributing to the development of a more sophisticated and efficient Tokenized Economy.</p>
+</body>
+</html>

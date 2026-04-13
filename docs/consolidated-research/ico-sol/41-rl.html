@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>**1. Agent Dynamics**</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<p>Below is a detailed development of the equations for the reinforcement learning (RL) framework applied to agent-based economic systems with dynamic asset pricing. These equations cover agent dynamics, asset pricing mechanisms, reward functions, and optimization processes.</p>
+<hr />
+<h3><strong>1. Agent Dynamics</strong></h3>
+<h4><strong>1.1. State Space ($S_i(t)$)</strong></h4>
+<p>The state of agent $i$ at time $t$ includes its balance, asset holdings, and market observations:<br />
+$$
+S_i(t) = \left[ B_i(t), H_{i,1}(t), H_{i,2}(t), \dots, H_{i,M}(t), P_1(t), P_2(t), \dots, P_M(t), \mathbf{M}(t) \right]
+$$<br />
+where:<br />
+- $B_i(t)$: Balance of agent $i$ at time $t$.<br />
+- $H_{i,j}(t)$: Holdings of asset $j$ by agent $i$ at time $t$.<br />
+- $P_j(t)$: Price of asset $j$ at time $t$.<br />
+- $\mathbf{M}(t)$: Market conditions (e.g., total supply, demand, external shocks).</p>
+<h4><strong>1.2. Action Space ($A_i(t)$)</strong></h4>
+<p>The action of agent $i$ at time $t$ includes buying, selling, or holding assets:<br />
+$$
+A_i(t) = \left[ a_{i,1}(t), a_{i,2}(t), \dots, a_{i,M}(t) \right]
+$$<br />
+where $a_{i,j}(t)$ represents the action for asset $j$:<br />
+$$
+a_{i,j}(t) \in {-1, 0, 1}
+$$<br />
+- $-1$: Sell one unit of asset $j$.<br />
+- $0$: Hold asset $j$.<br />
+- $1$: Buy one unit of asset $j$.</p>
+<h4><strong>1.3. Policy ($\pi_i$)</strong></h4>
+<p>The policy $\pi_i$ maps states to actions:<br />
+$$
+\pi_i: S_i(t) \rightarrow A_i(t)
+$$<br />
+For example, using a softmax policy:<br />
+$$
+\pi_i(a_i(t) | S_i(t)) = \frac{e^{Q_i(S_i(t), a_i(t)) / \tau}}{\sum_{a'} e^{Q_i(S_i(t), a') / \tau}}
+$$<br />
+where $Q_i$ is the action-value function, and $\tau$ is the temperature parameter.</p>
+<hr />
+<h3><strong>2. Asset Pricing Mechanisms</strong></h3>
+<h4><strong>2.1. Bonding Curve</strong></h4>
+<p>The price of asset $j$ is determined by a bonding curve $f_j$:<br />
+$$
+P_j(t) = f_j(S_j(t), \mathbf{\Phi}_j(t))
+$$<br />
+where:<br />
+- $S_j(t)$: Total supply of asset $j$ at time $t$.<br />
+- $\mathbf{\Phi}_j(t)$: Parameters of the bonding curve (e.g., slope, intercept).  </p>
+<p>Examples of bonding curves:<br />
+- <strong>Linear:</strong><br />
+  $$
+  P_j(t) = m_j S_j(t) + b_j
+  $$<br />
+- <strong>Exponential:</strong><br />
+  $$
+  P_j(t) = a_j e^{k_j S_j(t)}
+  $$<br />
+- <strong>Sigmoid:</strong><br />
+  $$
+  P_j(t) = \frac{K_j}{1 + e^{-k_j(S_j(t) - S_{0,j})}}
+  $$</p>
+<h4><strong>2.2. Market Clearing</strong></h4>
+<p>Prices can also emerge from market clearing conditions:<br />
+$$
+D_j(P_j(t)) = O_j(P_j(t))
+$$<br />
+where $D_j$ and $O_j$ are the demand and supply functions for asset $j$.</p>
+<hr />
+<h3><strong>3. Reward Function</strong></h3>
+<h4><strong>3.1. Utility-Based Reward</strong></h4>
+<p>The reward $r_i(t)$ for agent $i$ is based on its utility function $U_i$:<br />
+$$
+r_i(t) = U_i(B_i(t), H_{i,j}(t), P_j(t))
+$$<br />
+For example, a profit-maximizing agent might have:<br />
+$$
+U_i = \sum_{j=1}^M \left[ H_{i,j}(t) \cdot P_j(t) \right] + B_i(t)
+$$</p>
+<h4><strong>3.2. Risk-Adjusted Reward</strong></h4>
+<p>A risk-averse agent might include a penalty for volatility:<br />
+$$
+U_i = \sum_{j=1}^M \left[ H_{i,j}(t) \cdot P_j(t) \right] + B_i(t) - \lambda \cdot \text{Var}(P_j(t))
+$$<br />
+where $\lambda$ is the risk aversion coefficient.</p>
+<hr />
+<h3><strong>4. System Dynamics</strong></h3>
+<h4><strong>4.1. Asset Supply Update</strong></h4>
+<p>The supply of asset $j$ changes based on minting, burning, or agent actions:<br />
+$$
+S_j(t+1) = S_j(t) + \sum_{i=1}^N a_{i,j}(t)
+$$</p>
+<h4><strong>4.2. Agent Balance Update</strong></h4>
+<p>The balance of agent $i$ is updated based on trading and policy interventions:<br />
+$$
+B_i(t+1) = B_i(t) - \sum_{j=1}^M a_{i,j}(t) \cdot P_j(t) + \text{Income}_i(t) + \text{PolicyEffects}_i(t)
+$$</p>
+<h4><strong>4.3. Agent Holdings Update</strong></h4>
+<p>The holdings of agent $i$ for asset $j$ are updated as:<br />
+$$
+H_{i,j}(t+1) = H_{i,j}(t) + a_{i,j}(t)
+$$</p>
+<hr />
+<h3><strong>5. Reinforcement Learning Algorithms</strong></h3>
+<h4><strong>5.1. Q-Learning</strong></h4>
+<p>The action-value function $Q_i$ is updated as:<br />
+$$
+Q_i(S_i(t), A_i(t)) \leftarrow Q_i(S_i(t), A_i(t)) + \alpha \left[ r_i(t) + \gamma \max_{a'} Q_i(S_i(t+1), a') - Q_i(S_i(t), A_i(t)) \right]
+$$<br />
+where:<br />
+- $\alpha$: Learning rate.<br />
+- $\gamma$: Discount factor.</p>
+<h4><strong>5.2. Policy Gradient</strong></h4>
+<p>The policy parameters $\theta_i$ are updated using the gradient:<br />
+$$
+\theta_i \leftarrow \theta_i + \alpha \nabla_{\theta_i} \log \pi_i(A_i(t) | S_i(t)) \cdot G_i(t)
+$$<br />
+where $G_i(t)$ is the cumulative reward:<br />
+$$
+G_i(t) = \sum_{k=0}^T \gamma^k r_i(t+k)
+$$</p>
+<h4><strong>5.3. Deep RL</strong></h4>
+<p>For high-dimensional state spaces, a neural network approximates the Q-function or policy:<br />
+$$
+Q_i(S_i(t), A_i(t)) \approx Q_i(S_i(t), A_i(t); \mathbf{W}_i)
+$$<br />
+where $\mathbf{W}_i$ are the network weights.</p>
+<hr />
+<h3><strong>6. Optimization</strong></h3>
+<h4><strong>6.1. Bonding Curve Parameter Optimization</strong></h4>
+<p>The parameters $\mathbf{\Phi}<em>j(t)$ are optimized to minimize price volatility:<br />
+$$
+\min</em>{\mathbf{\Phi}_j} \text{Var}(P_j(t))
+$$</p>
+<h4><strong>6.2. Airdrop Strategy Optimization</strong></h4>
+<p>The airdrop strategy is optimized to maximize adoption:<br />
+$$
+\max_{\mathbf{AirdropParams}} \sum_{i=1}^N \mathbb{I}(H_{i,j}(t) &gt; 0)
+$$<br />
+where $\mathbb{I}$ is the indicator function.</p>
+<hr />
+<h3><strong>7. Metrics for Evaluation</strong></h3>
+<h4><strong>7.1. Price Volatility</strong></h4>
+<p>$$
+\text{Volatility}(P_j) = \sqrt{\frac{1}{T} \sum_{t=1}^T (P_j(t) - \bar{P}_j)^2}
+$$</p>
+<h4><strong>7.2. Wealth Distribution (Gini Coefficient)</strong></h4>
+<p>$$
+G = \frac{\sum_{i=1}^N \sum_{k=1}^N |B_i(t) - B_k(t)|}{2N \sum_{i=1}^N B_i(t)}
+$$</p>
+<h4><strong>7.3. Resource Utilization</strong></h4>
+<p>$$
+\text{Utilization} = \frac{\sum_{i=1}^N Q_{i,j}(t)}{C_j}
+$$<br />
+where $C_j$ is the total capacity of resource $j$.</p>
+<hr />
+<p>These equations provide a comprehensive mathematical foundation for applying RL to agent-based economic systems. They can be adapted and extended for specific use cases, such as DeFi protocols, token economies, or resource allocation systems.</p>
+</body>
+</html>

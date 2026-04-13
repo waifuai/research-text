@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContextCoin (CTX) Formal Specification</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; color: #e6edf3; background: #0d1117; }
+  pre { background: #161b22; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #30363d; }
+  code { background: #161b22; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+  th { background: #161b22; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3 { border-bottom: 1px solid #30363d; padding-bottom: 0.3em; }
+  blockquote { border-left: 4px solid #30363d; padding-left: 1rem; color: #8b949e; }
+  .back-link { display: inline-block; margin-bottom: 1rem; color: #8b949e; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<a class="back-link" href="index.html">&larr; Back to index</a>
+<h1>ContextCoin (CTX) Formal Specification</h1>
+<p>This document provides a formal specification for the ContextCoin (CTX) smart contract on the Solana blockchain. The goal is to precisely define the program's behavior, state transitions, and invariants to allow for rigorous analysis, testing, and formal verification.</p>
+<h2>State Space</h2>
+<p>The state of the system is defined by a tuple $S = (O, M, T, S_s, B, C, E, R)$, where:</p>
+<ul>
+<li>$O$: The public key of the ICO owner. ($O \in Pubkey$)</li>
+<li>$M$: The public key of the SPL token mint. ($M \in Pubkey$)</li>
+<li>$T$: The total supply of CTX tokens. ($T \in \mathbb{N}$)</li>
+<li>$S_s$: The number of CTX tokens sold during the ICO. ($S_s \in \mathbb{N}$)</li>
+<li>$B$: The base price of a CTX token (in lamports). ($B \in \mathbb{N}$)</li>
+<li>$C$: The scaling factor for the bonding curve. ($C \in \mathbb{N}$)</li>
+<li>$E$: The public key of the escrow account. ($E \in Pubkey$)</li>
+<li>$R$: Set of Resource Definitions. ($R \subset {R_i}$)<ul>
+<li>$R_i$: A resource.  $R_i = (id, s_a, a_f)$<ul>
+<li>$id$: The unique identifier of the resource. ($id \in String$)</li>
+<li>$s_a$: The public key of the server which is providing the resource. ($s_a \in Pubkey$)</li>
+<li>$a_f$: The access fee in lamports to access the resource. ($a_f \in \mathbb{N}$)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Invariants</h2>
+<p>The following system-wide invariants must always hold true.</p>
+<ol>
+<li>$0 \leq S_s \leq T$: The number of CTX tokens sold must always be within the bounds of total supply.</li>
+<li>The escrow balance is always greater than or equal to 0.</li>
+</ol>
+<h2>Instructions and State Transitions</h2>
+<h3><code>InitializeIco</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The ICO has not been initialized.</li>
+<li><strong>Input:</strong> $m \in Pubkey$, $t \in \mathbb{N}$, $b \in \mathbb{N}$, $c \in \mathbb{N}$</li>
+<li><strong>State Transition:</strong>
+    $$ S' = (O_n, M_n, T_n, S_{s_n}, B_n, C_n, E_n, R_n) $$
+    where:<ul>
+<li>$O_n = owner_public_key$</li>
+<li>$M_n = m$</li>
+<li>$T_n = t$</li>
+<li>$S_{s_n} = 0$</li>
+<li>$B_n = b$</li>
+<li>$C_n = c$</li>
+<li>$E_n = escrow_public_key$</li>
+<li>$R_n = \emptyset$</li>
+</ul>
+</li>
+<li><strong>Post-conditions:</strong> State $S'$ is created, and all conditions within invariant 1 hold true.</li>
+</ul>
+<h3><code>BuyTokens</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The ICO has been initialized.</li>
+<li><strong>Input:</strong> $a \in \mathbb{N}$ (The lamports being paid)</li>
+<li><strong>Helper Function:</strong>
+    $$
+    p =
+    \begin{cases}
+        b \times (1 + \lfloor S_s / c\rfloor) &amp; \text{if }  \lfloor S_s / c\rfloor &gt; 0 \
+        b &amp; \text{if }  \lfloor S_s / c\rfloor = 0
+    \end{cases}
+    $$</li>
+<li><strong>Tokens to Mint:</strong> $t_m = \lfloor a / p \rfloor $ (the number of tokens to mint)</li>
+<li><strong>State Transition:</strong>
+    $$ S' = (O, M, T, S_{s_n}, B, C, E, R) $$
+    where:<ul>
+<li>$S_{s_n} = S_s + t_m$</li>
+</ul>
+</li>
+<li><strong>Post-conditions:</strong> $S_s &lt; T$ and escrow account balance increases by $a$, tokens are minted to the buyer, all invariants hold true.</li>
+</ul>
+<h3><code>SellTokens</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The ICO has been initialized.</li>
+<li><strong>Input:</strong> $a \in \mathbb{N}$ (The number of tokens to sell)</li>
+<li><strong>Helper Function:</strong>
+    $$
+    p =
+    \begin{cases}
+        b \times (1 + \lfloor (S_s - a) / c \rfloor) &amp; \text{if }  \lfloor (S_s - a) / c \rfloor &gt; 0 \
+        b &amp; \text{if }  \lfloor (S_s - a) / c \rfloor = 0
+    \end{cases}
+    $$</li>
+<li><strong>Tokens to Burn:</strong> $t_b = a$</li>
+<li><strong>SOL to Return:</strong> $s_r = p * t_b$</li>
+<li><strong>State Transition:</strong>
+    $$ S' = (O, M, T, S_{s_n}, B, C, E, R) $$
+        where:<ul>
+<li>$S_{s_n} = S_s - t_b $</li>
+</ul>
+</li>
+<li><strong>Post-conditions:</strong> $S_s \geq 0$, tokens are burned, the seller receives $s_r$ lamports from escrow, all invariants hold true.</li>
+</ul>
+<h3><code>WithdrawFromEscrow</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The ICO has been initialized.</li>
+<li><strong>Input:</strong> $a \in \mathbb{N}$ (The amount to withdraw in lamports).</li>
+<li><strong>State Transition:</strong>
+    $$ S' = S $$</li>
+<li><strong>Post-conditions:</strong> The owner receives $a$ lamports from the escrow account, and all invariants hold true.</li>
+</ul>
+<h3><code>CreateResourceAccess</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The resource state does not exist.</li>
+<li><strong>Input:</strong>  $id \in String$, $s_a \in Pubkey$, $a_f \in \mathbb{N}$</li>
+<li><strong>State Transition:</strong>
+    $$ S' = (O, M, T, S_s, B, C, E, R') $$
+     where:<ul>
+<li>$R' = R \cup { (id, s_a, a_f) }$</li>
+</ul>
+</li>
+<li><strong>Post-conditions:</strong> Resource state created and stored in $R$, all invariants hold true.</li>
+</ul>
+<h3><code>AccessResource</code></h3>
+<ul>
+<li><strong>Pre-conditions:</strong> The resource state must exist.</li>
+<li><strong>Input:</strong>  $id \in String$, $a \in \mathbb{N}$ (The amount to pay),</li>
+<li><strong>State Transition:</strong>
+        $$ S' = S $$</li>
+<li><strong>Post-conditions:</strong> The server gets a payment of $a_f$ lamports, all invariants hold true.</li>
+</ul>
+<h2>Security Properties</h2>
+<ol>
+<li><strong>Double Spending Prevention:</strong> It is impossible to spend the same tokens more than once. This is guaranteed by the SPL Token program and Solana's transaction execution model.</li>
+<li><strong>Authorization:</strong> Only the owner of the ICO is allowed to withdraw from the escrow account.</li>
+<li><strong>Fee Control:</strong> The server sets access fees for the resource, and the program ensures the correct fee is paid.</li>
+<li><strong>Token Supply Guarantee:</strong> The program guarantees that no new tokens can be minted past the total supply amount.</li>
+<li><strong>Rate Limiting Guarantee</strong>: By combining per-request payments, the servers can add rate limiting mechanics and increase the costs of exploitation.</li>
+</ol>
+<h2>Conclusion</h2>
+<p>This formal specification provides a rigorous description of the ContextCoin program. It enables the creation of tools for testing, verification, and improved trust in the program's correctness. Future work will involve building more complex models and proofs.</p>
+</body>
+</html>
